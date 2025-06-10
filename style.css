@@ -7,8 +7,8 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  background: linear-gradient(135deg, #0f0f1c 0%, #1c1c2e 100%);
-  color: #eee;
+  background: #1e293b; /* dark blue-gray */
+  color: #f1f5f9; /* near white */
   line-height: 1.6;
   overflow-x: hidden;
   scroll-behavior: smooth;
@@ -16,48 +16,108 @@ body {
 
 /* Header */
 header {
-  background-color: rgba(30, 30, 46, 0.9);
-  padding: 1.2rem 0;
-  text-align: center;
   position: sticky;
   top: 0;
+  background-color: rgba(30, 41, 59, 0.95);
+  padding: 1.2rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  transition: all 0.4s ease;
   z-index: 1000;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  backdrop-filter: saturate(180%) blur(10px);
 }
 
-header h1 {
+.header-profile-photo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #3b82f6; /* electric blue */
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+  transition: all 0.4s ease;
+}
+
+#header-name {
   font-size: 2.5rem;
   letter-spacing: 3px;
-  color: #74c0fc;
+  color: #3b82f6;
   text-transform: uppercase;
+  margin: 0;
+  transition: all 0.4s ease;
+  font-weight: 700;
+  user-select: none;
+}
+
+nav {
+  margin-left: auto;
 }
 
 nav a {
-  color: #74c0fc;
-  margin: 0 15px;
-  text-decoration: none;
+  color: #3b82f6;
+  margin-left: 24px;
   font-weight: 600;
   font-size: 1.1rem;
+  text-decoration: none;
   transition: color 0.3s ease;
+  position: relative;
+}
+
+nav a::after {
+  content: '';
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  bottom: -5px;
+  left: 0;
+  background-color: #22d3ee; /* soft cyan */
+  transition: width 0.3s ease;
 }
 
 nav a:hover {
-  color: #4dabf7;
-  text-shadow: 0 0 6px #4dabf7;
+  color: #22d3ee;
 }
 
-/* Sections - common */
+nav a:hover::after {
+  width: 100%;
+}
+
+/* Scrolled header */
+header.scrolled {
+  justify-content: flex-start;
+  padding: 0.6rem 2rem;
+  background-color: rgba(30, 41, 59, 1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
+}
+
+header.scrolled .header-profile-photo {
+  width: 40px;
+  height: 40px;
+  border-width: 2px;
+  box-shadow: 0 0 8px #3b82f6;
+}
+
+header.scrolled #header-name {
+  font-size: 1.4rem;
+  letter-spacing: 1.5px;
+}
+
+/* Sections */
 section {
   min-height: 80vh;
   padding: 5rem 2rem;
   max-width: 900px;
   margin: 0 auto;
   opacity: 0;
-  transform: translateY(50px);
-  transition: all 0.8s ease-out;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 12px;
+  background: linear-gradient(135deg, #334155, #1e293b);
+  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.15);
 }
 
-/* Visible when scrolled into view */
 section.visible {
   opacity: 1;
   transform: translateY(0);
@@ -76,10 +136,12 @@ section.visible {
   height: 180px;
   border-radius: 50%;
   object-fit: cover;
-  border: 5px solid #74c0fc;
-  box-shadow: 0 0 15px #74c0fc;
-  margin-bottom: 1.5rem;
+  border: 5px solid #3b82f6;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+  margin-bottom: 2rem;
   transition: transform 0.3s ease;
+  cursor: default;
+  filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.7));
 }
 
 .profile-photo:hover {
@@ -87,86 +149,90 @@ section.visible {
 }
 
 .about-text h2 {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
-  color: #a5d8ff;
+  font-size: 2.4rem;
+  margin-bottom: 0.75rem;
+  color: #22d3ee;
+  font-weight: 700;
 }
 
 .about-text p {
-  font-size: 1.2rem;
-  color: #ccc;
+  font-size: 1.25rem;
+  color: #cbd5e1;
   max-width: 600px;
   margin: 0 auto;
+  line-height: 1.5;
 }
 
 /* Passion Section */
 .section-passion h2 {
   text-align: center;
-  font-size: 2rem;
+  font-size: 2.2rem;
   margin-bottom: 2rem;
-  color: #74c0fc;
+  color: #3b82f6;
+  font-weight: 700;
 }
 
 .section-passion ul {
   list-style: none;
   display: flex;
   justify-content: center;
-  gap: 1.8rem;
+  gap: 2rem;
   flex-wrap: wrap;
 }
 
 .section-passion li {
-  background: #253051;
-  padding: 1rem 2rem;
+  background: #475569;
+  padding: 1rem 2.5rem;
   border-radius: 25px;
-  color: #a5d8ff;
-  font-weight: 700;
-  font-size: 1.1rem;
-  box-shadow: 0 0 8px #74c0fc55;
-  transition: transform 0.3s ease;
+  color: #a5f3fc;
+  font-weight: 600;
+  font-size: 1.2rem;
+  box-shadow: 0 8px 15px rgba(34, 211, 238, 0.25);
   cursor: default;
+  transition: transform 0.3s ease;
 }
 
 .section-passion li:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 12px #74c0fccc;
+  transform: translateY(-6px) scale(1.1);
+  box-shadow: 0 12px 20px rgba(34, 211, 238, 0.5);
 }
 
 /* Cars Section */
 .section-cars h2 {
-  color: #74c0fc;
+  color: #3b82f6;
   text-align: center;
-  font-size: 2rem;
+  font-size: 2.2rem;
   margin-bottom: 1.5rem;
-  text-shadow: 0 0 5px #74c0fcbb;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(59, 130, 246, 0.7);
 }
 
 .car-categories {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 2rem;
+  gap: 1.2rem;
+  margin-bottom: 2.5rem;
 }
 
 .car-categories button {
-  background-color: #74c0fc;
-  color: #0f0f1c;
+  background-color: #3b82f6;
+  color: #e0e7ff;
   border: none;
-  padding: 12px 28px;
-  border-radius: 30px;
+  padding: 14px 36px;
+  border-radius: 35px;
   font-weight: 700;
   font-size: 1.1rem;
   cursor: pointer;
-  box-shadow: 0 4px 15px #74c0fc88;
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .car-categories button:hover,
 .car-categories button.active {
-  background-color: #4dabf7;
-  box-shadow: 0 6px 20px #4dabf7cc;
-  transform: scale(1.05);
+  background-color: #22d3ee;
+  box-shadow: 0 8px 25px rgba(34, 211, 238, 0.6);
+  transform: scale(1.07);
 }
 
 /* Car Viewer */
@@ -174,49 +240,73 @@ section.visible {
   max-width: 700px;
   margin: 0 auto;
   border-radius: 15px;
-  box-shadow: 0 0 30px #74c0fcaa;
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
   padding: 1rem;
-  background: rgba(30, 30, 46, 0.6);
-  transition: transform 0.8s ease;
-  opacity: 0;
-  transform: translateY(20px);
+  background: linear-gradient(145deg, #334155, #1e293b);
 }
 
-.car-viewer.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
+/* Car Info */
 #car-info {
-  margin-top: 1.5rem;
-  color: #a5d8ff;
-  text-align: left;
+  margin-top: 1rem;
+  color: #cbd5e1;
 }
 
 #car-info h3 {
   font-size: 1.8rem;
-  margin-bottom: 0.8rem;
-  text-shadow: 0 0 8px #74c0fcbb;
+  color: #22d3ee;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+#car-specs {
+  list-style: none;
+  font-size: 1.1rem;
+  line-height: 1.5;
 }
 
 #car-specs li {
-  margin-bottom: 6px;
-  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
 }
 
 /* Contact Section */
 .section-contact {
-  background: rgba(30, 30, 46, 0.9);
-  padding: 3rem 2rem;
   text-align: center;
-  border-radius: 12px;
-  box-shadow: 0 0 30px #74c0fcbb;
+  padding-bottom: 6rem;
 }
 
 .section-contact h2 {
-  color: #74c0fc;
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+  color: #3b82f6;
+  font-weight: 700;
 }
 
-.section-contact p
+.section-contact p {
+  font-size: 1.2rem;
+  color: #cbd5e1;
+  font-weight: 500;
+}
+
+/* Scroll animations helper */
+section.visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  header {
+    padding: 1rem 1.2rem;
+  }
+  nav {
+    display: none;
+  }
+  .section-passion ul {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .profile-photo {
+    width: 140px;
+    height: 140px;
+  }
+}
