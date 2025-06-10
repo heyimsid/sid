@@ -7,8 +7,8 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  background: #1e293b; /* dark blue-gray */
-  color: #f1f5f9; /* near white */
+  background: #0d0d0d; /* Jet black */
+  color: #f8f8f8;
   line-height: 1.6;
   overflow-x: hidden;
   scroll-behavior: smooth;
@@ -18,7 +18,7 @@ body {
 header {
   position: sticky;
   top: 0;
-  background-color: rgba(30, 41, 59, 0.95);
+  background-color: rgba(0, 0, 0, 0.95);
   padding: 1.2rem 2rem;
   display: flex;
   align-items: center;
@@ -26,7 +26,7 @@ header {
   gap: 1rem;
   transition: all 0.4s ease;
   z-index: 1000;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 2px 10px rgba(255, 0, 0, 0.3);
   backdrop-filter: saturate(180%) blur(10px);
 }
 
@@ -35,18 +35,16 @@ header {
   height: 80px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #3b82f6; /* electric blue */
-  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+  border: 3px solid #ff0000;
+  box-shadow: 0 4px 15px rgba(255, 0, 0, 0.6);
   transition: all 0.4s ease;
 }
 
 #header-name {
   font-size: 2.5rem;
   letter-spacing: 3px;
-  color: #3b82f6;
+  color: #ff1e1e;
   text-transform: uppercase;
-  margin: 0;
-  transition: all 0.4s ease;
   font-weight: 700;
   user-select: none;
 }
@@ -56,7 +54,7 @@ nav {
 }
 
 nav a {
-  color: #3b82f6;
+  color: #ff4c4c;
   margin-left: 24px;
   font-weight: 600;
   font-size: 1.1rem;
@@ -72,12 +70,12 @@ nav a::after {
   height: 2px;
   bottom: -5px;
   left: 0;
-  background-color: #22d3ee; /* soft cyan */
+  background-color: #ff1e1e;
   transition: width 0.3s ease;
 }
 
 nav a:hover {
-  color: #22d3ee;
+  color: #ff1e1e;
 }
 
 nav a:hover::after {
@@ -88,15 +86,15 @@ nav a:hover::after {
 header.scrolled {
   justify-content: flex-start;
   padding: 0.6rem 2rem;
-  background-color: rgba(30, 41, 59, 1);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
+  background-color: black;
+  box-shadow: 0 4px 15px rgba(255, 0, 0, 0.5);
 }
 
 header.scrolled .header-profile-photo {
   width: 40px;
   height: 40px;
   border-width: 2px;
-  box-shadow: 0 0 8px #3b82f6;
+  box-shadow: 0 0 8px #ff1e1e;
 }
 
 header.scrolled #header-name {
@@ -114,8 +112,8 @@ section {
   transform: translateY(30px);
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 12px;
-  background: linear-gradient(135deg, #334155, #1e293b);
-  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.15);
+  background: linear-gradient(135deg, #1a1a1a, #111);
+  box-shadow: 0 10px 30px rgba(255, 0, 0, 0.15);
 }
 
 section.visible {
@@ -136,12 +134,12 @@ section.visible {
   height: 180px;
   border-radius: 50%;
   object-fit: cover;
-  border: 5px solid #3b82f6;
-  box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+  border: 5px solid #ff0000;
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
   margin-bottom: 2rem;
   transition: transform 0.3s ease;
   cursor: default;
-  filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.7));
+  filter: drop-shadow(0 0 6px rgba(255, 0, 0, 0.7));
 }
 
 .profile-photo:hover {
@@ -151,13 +149,13 @@ section.visible {
 .about-text h2 {
   font-size: 2.4rem;
   margin-bottom: 0.75rem;
-  color: #22d3ee;
+  color: #ff1e1e;
   font-weight: 700;
 }
 
 .about-text p {
   font-size: 1.25rem;
-  color: #cbd5e1;
+  color: #e0e0e0;
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.5;
@@ -168,7 +166,7 @@ section.visible {
   text-align: center;
   font-size: 2.2rem;
   margin-bottom: 2rem;
-  color: #3b82f6;
+  color: #ff1e1e;
   font-weight: 700;
 }
 
@@ -181,30 +179,30 @@ section.visible {
 }
 
 .section-passion li {
-  background: #475569;
+  background: #222;
   padding: 1rem 2.5rem;
   border-radius: 25px;
-  color: #a5f3fc;
+  color: #ff9e9e;
   font-weight: 600;
   font-size: 1.2rem;
-  box-shadow: 0 8px 15px rgba(34, 211, 238, 0.25);
+  box-shadow: 0 8px 15px rgba(255, 0, 0, 0.25);
   cursor: default;
   transition: transform 0.3s ease;
 }
 
 .section-passion li:hover {
   transform: translateY(-6px) scale(1.1);
-  box-shadow: 0 12px 20px rgba(34, 211, 238, 0.5);
+  box-shadow: 0 12px 20px rgba(255, 0, 0, 0.5);
 }
 
 /* Cars Section */
 .section-cars h2 {
-  color: #3b82f6;
+  color: #ff1e1e;
   text-align: center;
   font-size: 2.2rem;
   margin-bottom: 1.5rem;
   font-weight: 700;
-  text-shadow: 0 0 10px rgba(59, 130, 246, 0.7);
+  text-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
 }
 
 .car-categories {
@@ -216,22 +214,22 @@ section.visible {
 }
 
 .car-categories button {
-  background-color: #3b82f6;
-  color: #e0e7ff;
+  background-color: #ff1e1e;
+  color: #fff;
   border: none;
   padding: 14px 36px;
   border-radius: 35px;
   font-weight: 700;
   font-size: 1.1rem;
   cursor: pointer;
-  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 6px 20px rgba(255, 0, 0, 0.3);
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .car-categories button:hover,
 .car-categories button.active {
-  background-color: #22d3ee;
-  box-shadow: 0 8px 25px rgba(34, 211, 238, 0.6);
+  background-color: #e60000;
+  box-shadow: 0 8px 25px rgba(255, 0, 0, 0.6);
   transform: scale(1.07);
 }
 
@@ -240,20 +238,20 @@ section.visible {
   max-width: 700px;
   margin: 0 auto;
   border-radius: 15px;
-  box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
   padding: 1rem;
-  background: linear-gradient(145deg, #334155, #1e293b);
+  background: linear-gradient(145deg, #222, #111);
 }
 
 /* Car Info */
 #car-info {
   margin-top: 1rem;
-  color: #cbd5e1;
+  color: #e0e0e0;
 }
 
 #car-info h3 {
   font-size: 1.8rem;
-  color: #22d3ee;
+  color: #ff1e1e;
   margin-bottom: 0.5rem;
   font-weight: 700;
 }
@@ -277,13 +275,13 @@ section.visible {
 .section-contact h2 {
   font-size: 2.2rem;
   margin-bottom: 1rem;
-  color: #3b82f6;
+  color: #ff1e1e;
   font-weight: 700;
 }
 
 .section-contact p {
   font-size: 1.2rem;
-  color: #cbd5e1;
+  color: #cccccc;
   font-weight: 500;
 }
 
@@ -297,16 +295,4 @@ section.visible {
 @media (max-width: 768px) {
   header {
     padding: 1rem 1.2rem;
-  }
-  nav {
-    display: none;
-  }
-  .section-passion ul {
-    flex-direction: column;
-    gap: 1rem;
-  }
-  .profile-photo {
-    width: 140px;
-    height: 140px;
-  }
-}
+ 
