@@ -1,0 +1,134 @@
+/* Reset & Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #0f0f1c;
+  color: white;
+  line-height: 1.6;
+}
+
+/* Header */
+header {
+  background-color: #1e1e2e;
+  padding: 1rem;
+  text-align: center;
+}
+
+header h1 {
+  font-size: 2rem;
+}
+
+nav a {
+  color: #74c0fc;
+  margin: 0 10px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+/* About Section */
+.section-about {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+}
+
+.profile-photo {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #74c0fc;
+  margin-bottom: 1rem;
+}
+
+.about-text h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.about-text p {
+  color: #bbb;
+  text-align: center;
+  max-width: 600px;
+}
+
+/* Passion Section */
+.section-passion {
+  padding: 2rem;
+  text-align: center;
+}
+
+.section-passion ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.section-passion li {
+  background: #1e1e2e;
+  padding: 0.75rem 1.5rem;
+  border-radius: 20px;
+  color: #74c0fc;
+  font-weight: 600;
+}
+
+/* Cars Section */
+.section-cars {
+  padding: 2rem;
+  text-align: center;
+}
+
+.car-categories button {
+  background-color: #74c0fc;
+  color: #0f0f1c;
+  border: none;
+  padding: 10px 20px;
+  margin: 0.5rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.car-categories button:hover {
+  background-color: #4dabf7;
+}
+
+.car-viewer {
+  margin-top: 2rem;
+}
+
+#car-info {
+  margin-top: 1rem;
+  text-align: left;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#car-info h3 {
+  color: #74c0fc;
+}
+
+#car-specs li {
+  margin-bottom: 5px;
+}
+
+/* Contact Section */
+.section-contact {
+  padding: 2rem;
+  text-align: center;
+  background-color: #1e1e2e;
+}
