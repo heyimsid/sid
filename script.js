@@ -93,3 +93,27 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.style.backgroundPosition = `center ${scrollY * 0.5}px`;
   });
 });
+// Sticky header effect
+window.addEventListener('scroll', () => {
+  const header = document.querySelector('header');
+  if(window.scrollY > 50) {
+    header.classList.add('scrolled');
+  } else {
+    header.classList.remove('scrolled');
+  }
+});
+
+// Scroll reveal sections
+const sections = document.querySelectorAll('section');
+const revealOnScroll = () => {
+  sections.forEach(section => {
+    const top = section.getBoundingClientRect().top;
+    const windowHeight = window.innerHeight;
+    if (top < windowHeight - 100) {
+      section.classList.add('visible');
+    }
+  });
+};
+
+window.addEventListener('scroll', revealOnScroll);
+window.addEventListener('load', revealOnScroll);
