@@ -4,19 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sid | Portfolio & Car Showcase</title>
-  
+
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
-  
+
   <!-- Your CSS -->
   <link rel="stylesheet" href="style.css" />
-  
+
   <!-- Model Viewer Web Component -->
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
 <body>
   <header>
-    <h1>Sidharth P V</h1>
+    <img src="mypic.jpg" alt="Profile Photo" class="header-profile-photo" />
+    <h1 id="header-name">Sidharth P V</h1>
     <nav>
       <a href="#about">About</a>
       <a href="#passion">Passion</a>
@@ -24,7 +25,7 @@
       <a href="#contact">Contact</a>
     </nav>
   </header>
-  
+
   <section id="about" class="section-about">
     <img src="mypic.jpg" alt="Your Name Photo" class="profile-photo" />
     <div class="about-text">
@@ -42,22 +43,21 @@
       <li>Automotive</li>
     </ul>
   </section>
-  
+
   <section id="cars" class="section-cars">
     <h2>Car Categories</h2>
     <div class="car-categories">
-      <button data-category="sedan">Sedan</button>
+      <button data-category="sedan" class="active">Sedan</button>
       <button data-category="sports">Sports</button>
       <button data-category="pickup">Pickup</button>
       <button data-category="suv">SUV</button>
     </div>
-    
-    <div class="car-viewer">
-      <!-- 3D Model will load here -->
+
+    <div class="car-viewer visible">
       <model-viewer id="car-model" src="models/sedan.glb" alt="3D car model" auto-rotate camera-controls
                     style="width: 100%; height: 400px;">
       </model-viewer>
-      
+
       <div id="car-info">
         <h3 id="car-name">Sedan Model</h3>
         <ul id="car-specs">
@@ -68,14 +68,13 @@
       </div>
     </div>
   </section>
-  
+
   <section id="contact" class="section-contact">
     <h2>Contact Me</h2>
     <p>Email: your.email@example.com</p>
   </section>
-  
+
   <!-- Your JavaScript -->
   <script src="script.js"></script>
 </body>
 </html>
-
