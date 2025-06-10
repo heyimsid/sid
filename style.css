@@ -345,3 +345,13 @@ section.visible {
     padding: 0.4rem 0;
   }
 }
+.car-image {
+  width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+  display: block;
+  margin: 0 auto;
+}
+
