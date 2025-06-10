@@ -2,22 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sid | Portfolio & Car Showcase</title>
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
-
-  <!-- Your CSS -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sid | Portfolio</title>
   <link rel="stylesheet" href="style.css" />
-
-  <!-- Model Viewer Web Component -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
 <body>
-  <header>
-    <img src="mypic.jpg" alt="Profile Photo" class="header-profile-photo" />
-    <h1 id="header-name">Sidharth P V</h1>
+
+  <div class="background-overlay"></div>
+
+  <header id="main-header">
+    <img src="assets/mypic.jpg" alt="Sid Profile" class="profile-thumb" />
+    <h1 class="logo">Sid</h1>
     <nav>
       <a href="#about">About</a>
       <a href="#passion">Passion</a>
@@ -26,55 +23,39 @@
     </nav>
   </header>
 
-  <section id="about" class="section-about">
-    <img src="mypic.jpg" alt="Your Name Photo" class="profile-photo" />
-    <div class="about-text">
-      <h2>Hey, I'm Sid</h2>
-      <p>I'm pursuing B.Tech in Computer Science at College of Engineering Trikaripur.</p>
-    </div>
+  <section id="about">
+    <h2>About Me</h2>
+    <p>I'm pursuing B.Tech in Computer Science at College of Engineering Trikaripur.</p>
   </section>
 
-  <section id="passion" class="section-passion">
+  <section id="passion">
     <h2>My Passions</h2>
     <ul>
-      <li>Cyber Security</li>
       <li>Artificial Intelligence</li>
       <li>Technology</li>
+      <li>Cyber Security</li>
       <li>Automotive</li>
     </ul>
   </section>
 
-  <section id="cars" class="section-cars">
-    <h2>Car Categories</h2>
-    <div class="car-categories">
-      <button data-category="sedan" class="active">Sedan</button>
-      <button data-category="sports">Sports</button>
-      <button data-category="pickup">Pickup</button>
-      <button data-category="suv">SUV</button>
-    </div>
-
-    <div class="car-viewer visible">
-      <model-viewer id="car-model" src="models/sedan.glb" alt="3D car model" auto-rotate camera-controls
-                    style="width: 100%; height: 400px;">
-      </model-viewer>
-
-      <div id="car-info">
-        <h3 id="car-name">Sedan Model</h3>
-        <ul id="car-specs">
-          <li>Engine: 2.0L Turbo</li>
-          <li>Horsepower: 250 HP</li>
-          <li>Price: $25,000</li>
-        </ul>
-      </div>
+  <section id="cars">
+    <h2>Featured Car</h2>
+    <model-viewer src="models/car.glb" alt="3D Car" auto-rotate camera-controls style="width: 100%; height: 400px;"></model-viewer>
+    <div class="car-details">
+      <h3>Model: Nissan GT-R</h3>
+      <ul>
+        <li>Engine: 3.8L V6</li>
+        <li>Horsepower: 565 HP</li>
+        <li>Price: ₹1.6 Cr</li>
+      </ul>
     </div>
   </section>
 
-  <section id="contact" class="section-contact">
+  <section id="contact">
     <h2>Contact Me</h2>
     <p>Email: your.email@example.com</p>
   </section>
 
-  <!-- Your JavaScript -->
   <script src="script.js"></script>
 </body>
 </html>
