@@ -15,6 +15,7 @@
 
   let selectedColor = colorPickerInput.value || '#ff1f1f';
 
+  // Show only the target section, hide others
   function showSection(targetId) {
     sections.forEach(section => {
       if (section.id === targetId) {
@@ -32,21 +33,24 @@
 
     if (targetId !== 'services') {
       collapseServicesCarousel();
-    } else {
-      collapseServicesCarousel(); // Reset when entering services
+      serviceSlides.forEach(s => s.classList.remove('active'));
+      if (serviceSlides.length) serviceSlides[0].classList.add('active');
     }
   }
 
-  function expandServicesCarousel() {
-    servicesCarousel.classList.add('expanded');
-    singleSlide.style.pointerEvents = 'none';
-  }
-
+  // Collapse services carousel to single slide
   function collapseServicesCarousel() {
     servicesCarousel.classList.remove('expanded');
     singleSlide.style.pointerEvents = 'auto';
   }
 
+  // Expand services carousel to show cards
+  function expandServicesCarousel() {
+    servicesCarousel.classList.add('expanded');
+    singleSlide.style.pointerEvents = 'none';
+  }
+
+  // Nav buttons click
   navButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       const targetId = btn.dataset.target;
@@ -55,23 +59,24 @@
     });
   });
 
+  // Hire me button click to go services
   hireBtn.addEventListener('click', () => {
     showSection('services');
     history.pushState(null, '', '#services');
   });
 
-  // Services: on hover first slide, expand
+  // On hover over single slide expand cards
   singleSlide.addEventListener('mouseenter', expandServicesCarousel);
+
+  // Collapse on mouse leave of entire carousel
   servicesCarousel.addEventListener('mouseleave', collapseServicesCarousel);
 
-  // Clicking a slide in expanded shows it as single slide
+  // Allow clicking card to highlight it and collapse carousel
   serviceSlides.forEach(slide => {
     slide.addEventListener('click', () => {
-      // Mark clicked as active - could highlight or style differently
       serviceSlides.forEach(s => s.classList.remove('active'));
       slide.classList.add('active');
       collapseServicesCarousel();
-      // Also update singleSlide content and alt/title dynamically if desired
     });
   });
 
