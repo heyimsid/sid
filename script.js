@@ -1,6 +1,14 @@
 (() => {
   const nav = document.querySelector('.nav');
   const colorPickerInput = nav.querySelector('.color-picker');
+  const graphicWrapper = document.querySelector('.graphic-wrapper');
+  const profileImage = graphicWrapper.querySelector('.profile-image');
+  const heroText = document.querySelector('.hero-text');
+  const hireBtn = document.querySelector('.hire-btn');
+  const logo = document.querySelector('.logo');
+  const highlightEls = [...document.querySelectorAll('.highlight')];
+  const socialIcons = [...document.querySelectorAll('.social-icons i')];
+
   let selectedColor = colorPickerInput.value || '#ff1f1f';
 
   function hexToRgba(hex, alpha = 1) {
@@ -26,15 +34,15 @@
     p.addEventListener('animationend', () => p.remove());
   }
 
-  async function animateColorChange(elems, newColor, oldColor) {
-    elems.forEach(el => {
+  async function animateColorChange(elements, newColor, oldColor) {
+    elements.forEach(el => {
       el.style.transition = 'color 1s ease, text-shadow 1s ease, opacity 1s ease';
       el.style.color = oldColor;
       el.style.textShadow = `0 0 6px ${oldColor}`;
       el.style.opacity = '1';
     });
     const navRect = nav.getBoundingClientRect();
-    elems.forEach(el => {
+    elements.forEach(el => {
       const rect = el.getBoundingClientRect();
       for (let i = 0; i < 6; i++) {
         const x = rect.left + Math.random() * rect.width - navRect.left;
@@ -44,7 +52,7 @@
       el.style.opacity = '0';
     });
     await new Promise(r => setTimeout(r, 1000));
-    elems.forEach(el => {
+    elements.forEach(el => {
       el.style.color = newColor;
       el.style.textShadow = `0 0 6px ${newColor}`;
       el.style.opacity = '1';
@@ -54,13 +62,8 @@
 
   async function updateColors(newColor) {
     if (newColor === selectedColor) return;
-    const highlights = [...document.querySelectorAll('.highlight')];
-    const socialIcons = [...document.querySelectorAll('.social-icons i')];
-    const hireBtn = document.querySelector('.hire-btn');
-    const profileGlow = document.querySelector('.profile-glow');
-    const logo = document.querySelector('.logo');
 
-    await animateColorChange(highlights, newColor, selectedColor);
+    await animateColorChange(highlightEls, newColor, selectedColor);
 
     socialIcons.forEach(icon => {
       icon.style.transition = 'color 1s ease, text-shadow 1s ease';
@@ -69,32 +72,22 @@
     });
 
     hireBtn.style.transition = 'color 1s ease, border-color 1s ease, background-color 1s ease, box-shadow 1s ease, text-shadow 1s ease';
+    hireBtn.style.color = newColor;
+    hireBtn.style.borderColor = newColor;
+    hireBtn.style.textShadow = `0 0 6px ${newColor}`;
+    hireBtn.style.background = 'transparent';
+    hireBtn.style.boxShadow = 'none';
 
-    if (hireBtn.matches(':hover')) {
-      hireBtn.style.background = newColor;
-      hireBtn.style.color = '#000';
-      hireBtn.style.borderColor = newColor;
-      hireBtn.style.textShadow = 'none';
-      hireBtn.style.boxShadow = `0 0 15px ${newColor}`;
-    } else {
-      hireBtn.style.color = newColor;
-      hireBtn.style.borderColor = newColor;
-      hireBtn.style.background = 'transparent';
-      hireBtn.style.textShadow = `0 0 6px ${newColor}`;
-      hireBtn.style.boxShadow = 'none';
-    }
-    
-    if (profileGlow) {
-      profileGlow.style.background = `radial-gradient(circle, ${hexToRgba(newColor, 0.3)} 0%, transparent 70%)`;
-      profileGlow.style.transition = 'background 1s ease';
-    }
-    
-    if (logo) {
-      logo.style.color = newColor;
-      logo.style.textShadow = `0 0 8px ${newColor}`;
-      logo.style.transition = 'color 1s ease, text-shadow 1s ease';
-    }
-    
+    logo.style.color = newColor;
+    logo.style.textShadow = `0 0 8px ${newColor}`;
+
+    profileImage.style.transition = 'box-shadow 1s ease, transform 0.3s ease';
+    profileImage.style.boxShadow = `0 0 40px 4px ${newColor}`;
+
+    graphicWrapper.style.transition = 'box-shadow 1s ease, background 1s ease';
+    graphicWrapper.style.boxShadow = `0 0 30px ${newColor}66`;
+    graphicWrapper.style.background = newColor + '1A';
+
     selectedColor = newColor;
     colorPickerInput.style.backgroundColor = newColor;
     document.documentElement.style.setProperty('--picked-color', newColor);
@@ -104,19 +97,38 @@
     updateColors(e.target.value);
   });
 
+  // 3D tilt effect on graphic wrapper
+  graphicWrapper.addEventListener('mousemove', (e) => {
+    const rect = graphicWrapper.getBoundingClientRect();
+    const x = e.clientX - rect.left;  
+    const y = e.clientY - rect.top;   
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((y - centerY) / centerY) * 10;
+    const rotateY = ((x - centerX) / centerX) * 10;
+    graphicWrapper.style.transform = `rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
+    profileImage.style.transform = `translate(-50%, -50%) rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
+  });
+  graphicWrapper.addEventListener('mouseleave', () => {
+    graphicWrapper.style.transform = `rotateX(0deg) rotateY(0deg)`;
+    profileImage.style.transform = `translate(-50%, -50%) rotateX(0deg) rotateY(0deg)`;
+  });
+
+  // Preloader fade out
   const preloader = document.getElementById("preloader");
   preloader.style.opacity = "1";
   preloader.style.visibility = "visible";
   preloader.setAttribute('aria-busy', 'true');
   window.addEventListener("load", () => {
     setTimeout(() => {
-      preloader.style.transition = "opacity 0.6s ease, visibility 0.5s ease";
+      preloader.style.transition = "opacity 0.5s ease, visibility 0.5s ease";
       preloader.style.opacity = "0";
       preloader.style.visibility = "hidden";
       preloader.setAttribute('aria-busy', 'false');
     }, 1200);
   });
 
+  // Smooth scroll navigation
   document.querySelectorAll('.nav-links li').forEach(link => {
     link.addEventListener('click', () => {
       const id = link.textContent.trim().toLowerCase();
@@ -125,12 +137,17 @@
     });
   });
 
+  // Hire me button smooth scroll or alert
   document.querySelector('.hire-btn').addEventListener('click', () => {
     const contactSection = document.getElementById('contact');
-    if(contactSection) contactSection.scrollIntoView({behavior:'smooth'});
-    else alert("Thanks for your interest! Let's connect.");
+    if(contactSection){
+      contactSection.scrollIntoView({behavior:'smooth'});
+    } else {
+      alert("Thanks for your interest! Let's connect.");
+    }
   });
 
+  // Social icons scale ripple
   document.querySelectorAll('.social-icons i').forEach(icon => {
     icon.addEventListener('click', () => {
       icon.style.transform = "scale(1.4)";
@@ -138,6 +155,7 @@
     });
   });
 
+  // Initialize theme color on load
   window.addEventListener('DOMContentLoaded', () => {
     updateColors(selectedColor);
   });
