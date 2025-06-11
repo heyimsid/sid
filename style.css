@@ -128,7 +128,68 @@ body {
   transition: all 0.3s;
   text-shadow: 0 0 6px #ff1f1f;
 }
+/* 🔥 Thunderbolt: Pulsing Glow Animation */
+@keyframes pulse-glow {
+  0% {
+    filter: drop-shadow(0 0 20px #ff1f1f);
+  }
+  50% {
+    filter: drop-shadow(0 0 45px #ff1f1f);
+  }
+  100% {
+    filter: drop-shadow(0 0 20px #ff1f1f);
+  }
+}
 
+.thunder-svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  animation: pulse-glow 2s infinite ease-in-out;
+}
+
+/* 🧍‍♂️ Profile: Floating Animation */
+@keyframes float {
+  0% {
+    transform: translate(-50%, -50%) translateY(0);
+  }
+  50% {
+    transform: translate(-50%, -50%) translateY(-10px);
+  }
+  100% {
+    transform: translate(-50%, -50%) translateY(0);
+  }
+}
+
+.profile-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  object-fit: contain;
+  animation: float 4s ease-in-out infinite;
+}
+
+/* 💫 Extra Glow Behind Image */
+.profile-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,31,31,0.3) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  border-radius: 50%;
+  animation: pulse-glow 3s infinite ease-in-out;
+  pointer-events: none;
+}
 .hire-btn:hover {
   background: #ff1f1f;
   color: #000;
