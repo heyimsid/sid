@@ -12,109 +12,107 @@
   <div class="nav">
     <h1 class="logo">Sid</h1>
     <ul class="nav-links" role="list">
-      <li><a href="#home">Home</a></li>
-      <li><a href="#services">Services</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#education">Education</a></li>
-      <li><a href="#enqueries">Enqueries</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li><button class="nav-btn" data-target="home" aria-controls="home" aria-expanded="true" aria-label="Home section">Home</button></li>
+      <li><button class="nav-btn" data-target="services" aria-controls="services" aria-expanded="false" aria-label="Services section">Services</button></li>
+      <li><button class="nav-btn" data-target="skills" aria-controls="skills" aria-expanded="false" aria-label="Skills section">Skills</button></li>
+      <li><button class="nav-btn" data-target="education" aria-controls="education" aria-expanded="false" aria-label="Education section">Education</button></li>
+      <li><button class="nav-btn" data-target="enqueries" aria-controls="enqueries" aria-expanded="false" aria-label="Enqueries section">Enqueries</button></li>
+      <li><button class="nav-btn" data-target="contact" aria-controls="contact" aria-expanded="false" aria-label="Contact section">Contact</button></li>
     </ul>
     <input type="color" class="color-picker" aria-label="Select highlight color" value="#ff1f1f" />
   </div>
 </header>
 
-<section id="home" class="hero">
-  <div class="graphic-wrapper" tabindex="0" aria-label="Profile image container with interactive animation">
-    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/c91300af-7504-418d-8441-d028f310dc4d.png" class="profile-image" alt="Profile image of Sidharth with black background and red glow" />
-  </div>
-
-  <div class="hero-text">
-    <h2>Hey, It's <span class="highlight" data-base-color="#ff1f1f">Sid</span></h2>
-    <h3>I'm a <span class="highlight" data-base-color="#ff1f1f">CS Engineer</span></h3>
-    <p>
-      A passionate B.Tech Computer Science student at the College of Engineering Trikaripur. I love exploring technology like AI, cybersecurity, and web development. Always eager to learn and create meaningful digital experiences.
-    </p>
-
-    <div class="social-icons" role="list">
-      <i class="fab fa-linkedin" tabindex="0" role="button" aria-label="LinkedIn"></i>
-      <i class="fab fa-github" tabindex="0" role="button" aria-label="GitHub"></i>
-      <i class="fas fa-times" tabindex="0" role="button" aria-label="Remove"></i>
-      <i class="fab fa-instagram" tabindex="0" role="button" aria-label="Instagram"></i>
+<section id="home" class="page-section active" tabindex="-1">
+  <div class="hero">
+    <div class="graphic-wrapper" tabindex="0" aria-label="Profile image container with interactive animation">
+      <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/9fed2d6b-2e28-4f7d-a453-81a761b8e5a5.png" class="profile-image" alt="Profile image of Sidharth with black background and red glow" />
     </div>
-
-    <a href="#services" class="hire-btn" role="button" tabindex="0">Hire me</a>
+    <div class="hero-text">
+      <h2>Hey, It's <span class="highlight" data-base-color="#ff1f1f">Sid</span></h2>
+      <h3>I'm a <span class="highlight" data-base-color="#ff1f1f">CS Engineer</span></h3>
+      <p>
+        A passionate B.Tech Computer Science student at the College of Engineering Trikaripur. I love exploring technology like AI, cybersecurity, and web development. Always eager to learn and create meaningful digital experiences.
+      </p>
+      <div class="social-icons" role="list">
+        <i class="fab fa-linkedin" tabindex="0" role="button" aria-label="LinkedIn"></i>
+        <i class="fab fa-github" tabindex="0" role="button" aria-label="GitHub"></i>
+        <i class="fas fa-times" tabindex="0" role="button" aria-label="Remove"></i>
+        <i class="fab fa-instagram" tabindex="0" role="button" aria-label="Instagram"></i>
+      </div>
+      <button class="hire-btn" data-target="services" aria-label="Hire me and go to services section">Hire me</button>
+    </div>
   </div>
 </section>
 
-<!-- New Services section with 7 slides -->
-<section id="services" class="services-section" aria-label="Services offerings with hire now calls to action">
+<section id="services" class="page-section" tabindex="-1" aria-label="Services offerings with hire now calls to action">
   <h2 class="section-title">Services</h2>
   <div class="services-carousel" tabindex="0" aria-roledescription="carousel">
-    <article class="service-slide" tabindex="0" role="group" aria-label="Service 1: Web Development">
-      <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e420c16c-e575-4938-94f4-5bb31959d273.png" alt="Modern web development sample with code and laptop" />
-      <div class="slide-text">
-        <h3>Web Development</h3>
+    <div class="service-slide active" tabindex="0" role="group" aria-label="Active Service: Web Development">
+      <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/4c6cb5f7-a604-4c68-866a-7be9730308a0.png" alt="Modern web development sample with code and laptop" />
+      <div class="slide-hire-btn-container">
         <a href="#contact" class="slide-hire-btn" role="button" tabindex="0">Hire Now</a>
       </div>
-    </article>
-    <article class="service-slide" tabindex="0" role="group" aria-label="Service 2: Mobile App Development">
-      <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/1238e671-3f02-417f-9227-fd7796d6334e.png" alt="Mobile app development on smartphone screen with wireframes" />
-      <div class="slide-text">
-        <h3>Mobile App Development</h3>
+      <h3>Web Development</h3>
+    </div>
+    <div class="service-slide" tabindex="0" role="group" aria-label="Service 2: Mobile App Development">
+      <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/69192b7c-d1fb-4949-8c7d-112e1b041c45.png" alt="Mobile app development on smartphone screen with wireframes" />
+      <div class="slide-hire-btn-container">
         <a href="#contact" class="slide-hire-btn" role="button" tabindex="0">Hire Now</a>
       </div>
-    </article>
-    <article class="service-slide" tabindex="0" role="group" aria-label="Service 3: AI & ML Solutions">
-      <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b49aece8-81e8-4c9c-891c-e179125c454b.png" alt="Artificial intelligence and machine learning concept illustration" />
-      <div class="slide-text">
-        <h3>AI &amp; ML Solutions</h3>
+      <h3>Mobile App Development</h3>
+    </div>
+    <div class="service-slide" tabindex="0" role="group" aria-label="Service 3: AI & ML Solutions">
+      <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/ad0d3ba4-5bd0-4131-8cfb-5b9439ae870a.png" alt="Artificial intelligence and machine learning concept illustration" />
+      <div class="slide-hire-btn-container">
         <a href="#contact" class="slide-hire-btn" role="button" tabindex="0">Hire Now</a>
       </div>
-    </article>
-    <article class="service-slide" tabindex="0" role="group" aria-label="Service 4: Cybersecurity">
-      <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/5a981252-3018-41d4-a6a5-32b593630945.png" alt="Cybersecurity protection shield with digital technology concept" />
-      <div class="slide-text">
-        <h3>Cybersecurity</h3>
+      <h3>AI &amp; ML Solutions</h3>
+    </div>
+    <div class="service-slide" tabindex="0" role="group" aria-label="Service 4: Cybersecurity">
+      <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/c0396dfe-fa64-4b57-9f5a-2e06ca4ce65b.png" alt="Cybersecurity protection shield with digital technology concept" />
+      <div class="slide-hire-btn-container">
         <a href="#contact" class="slide-hire-btn" role="button" tabindex="0">Hire Now</a>
       </div>
-    </article>
-    <article class="service-slide" tabindex="0" role="group" aria-label="Service 5: Cloud Computing">
-      <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/8e1269aa-a1e4-43c2-bd2b-9e662f7169a1.png" alt="Cloud computing architecture concept with servers and network" />
-      <div class="slide-text">
-        <h3>Cloud Computing</h3>
+      <h3>Cybersecurity</h3>
+    </div>
+    <div class="service-slide" tabindex="0" role="group" aria-label="Service 5: Cloud Computing">
+      <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/39c8d59a-f7c3-4868-b243-6fe9b3fa313d.png" alt="Cloud computing architecture concept with servers and network" />
+      <div class="slide-hire-btn-container">
         <a href="#contact" class="slide-hire-btn" role="button" tabindex="0">Hire Now</a>
       </div>
-    </article>
-    <article class="service-slide" tabindex="0" role="group" aria-label="Service 6: UI/UX Design">
-      <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/91bf6182-c8ae-4b7c-85e0-9772ef5ee21e.png" alt="User interface and user experience design illustrations on screens" />
-      <div class="slide-text">
-        <h3>UI/UX Design</h3>
+      <h3>Cloud Computing</h3>
+    </div>
+    <div class="service-slide" tabindex="0" role="group" aria-label="Service 6: UI/UX Design">
+      <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/a22ba46e-f064-4ea2-82f9-e9961261876a.png" alt="User interface and user experience design illustrations on screens" />
+      <div class="slide-hire-btn-container">
         <a href="#contact" class="slide-hire-btn" role="button" tabindex="0">Hire Now</a>
       </div>
-    </article>
-    <article class="service-slide" tabindex="0" role="group" aria-label="Service 7: Data Science">
-      <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/26b06a55-3f2a-4d2e-af53-8af0a5edbea1.png" alt="Data science visualization and analytics dashboard" />
-      <div class="slide-text">
-        <h3>Data Science</h3>
+      <h3>UI/UX Design</h3>
+    </div>
+    <div class="service-slide" tabindex="0" role="group" aria-label="Service 7: Data Science">
+      <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/da1d680a-a213-4e42-8df4-3c82dce3c3fe.png" alt="Data science visualization and analytics dashboard" />
+      <div class="slide-hire-btn-container">
         <a href="#contact" class="slide-hire-btn" role="button" tabindex="0">Hire Now</a>
       </div>
-    </article>
+      <h3>Data Science</h3>
+    </div>
   </div>
 </section>
 
-<section id="skills" aria-label="Skills section">
+<section id="skills" class="page-section" tabindex="-1" aria-label="Skills section">
   <!-- Your existing content or placeholder -->
 </section>
 
-<section id="education" aria-label="Education section">
+<section id="education" class="page-section" tabindex="-1" aria-label="Education section">
   <!-- Your existing content or placeholder -->
 </section>
 
-<section id="enqueries" aria-label="Enqueries section">
+<section id="enqueries" class="page-section" tabindex="-1" aria-label="Enqueries section">
   <!-- Your existing content or placeholder -->
 </section>
 
-<section id="contact" aria-label="Contact section">
+<section id="contact" class="page-section" tabindex="-1" aria-label="Contact section">
   <!-- Your existing content or placeholder -->
 </section>
 
