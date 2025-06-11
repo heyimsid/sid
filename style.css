@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #000;
+  background: #000;
   color: #fff;
   font-family: 'Montserrat', sans-serif;
 }
@@ -43,21 +43,36 @@ body {
   flex-wrap: wrap;
 }
 
-.svg-container {
+.graphic-wrapper {
+  position: relative;
   width: 300px;
-  height: 450px;
+  height: 400px;
 }
 
 .thunder-svg {
   width: 100%;
   height: 100%;
-  background: red;
-  border-radius: 20px;
-  filter: drop-shadow(0 0 15px red);
+  object-fit: contain;
+  filter: drop-shadow(0 0 20px red);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.profile-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  object-fit: contain;
 }
 
 .hero-text {
   max-width: 500px;
+  z-index: 3;
 }
 
 .hero-text h2 {
