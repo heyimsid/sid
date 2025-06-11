@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
 body {
   margin: 0;
   padding: 0;
@@ -6,12 +8,16 @@ body {
   font-family: 'Montserrat', sans-serif;
 }
 
+header {
+  background: #000;
+}
+
 .nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 25px 60px;
-  gap: 16px; /* small gap to separate color picker nicely */
+  gap: 16px;
   flex-wrap: nowrap;
   position: relative;
 }
@@ -46,12 +52,11 @@ body {
   text-shadow: 0 0 5px #ff1f1f;
 }
 
-/* Color picker container - minimal impact on layout */
 .color-picker-container {
-  background-color: #111;
+  background-color: #000;
   border-radius: 8px;
   padding: 4px 8px;
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 12px rgba(255, 31, 31, 0.9);
   display: flex;
   align-items: center;
   flex-shrink: 0;
@@ -81,11 +86,10 @@ body {
 }
 
 .color-picker:focus {
-  box-shadow: 0 0 6px 3px rgba(255, 31, 31, 0.7);
+  box-shadow: 0 0 6px 3px rgba(255, 31, 31, 0.95);
   outline: none;
 }
 
-/* Hero and highlight text */
 .hero {
   display: flex;
   justify-content: center;
@@ -129,16 +133,19 @@ body {
   z-index: 3;
 }
 
-.hero-text h2 {
+.hero-text h2,
+.hero-text h3 {
   font-size: 2.5rem;
+  line-height: 1.2;
 }
 
 .hero-text h3 {
-  font-size: 2rem;
   margin-top: 10px;
+  font-size: 2rem;
 }
 
 .highlight {
+  display: inline-block;
   color: #ff1f1f;
   text-shadow: 0 0 6px #ff1f1f;
   transition: color 0.6s ease, text-shadow 0.6s ease;
@@ -150,7 +157,6 @@ body {
   line-height: 1.6;
 }
 
-/* Social Icons */
 .social-icons {
   margin-top: 20px;
   display: flex;
@@ -169,7 +175,6 @@ body {
   text-shadow: 0 0 10px currentColor;
 }
 
-/* Hire Me Button */
 .hire-btn {
   margin-top: 30px;
   padding: 10px 25px;
@@ -190,7 +195,6 @@ body {
   border-color: #ff1f1f;
 }
 
-/* Animations */
 @keyframes pulse-glow {
   0% {
     filter: drop-shadow(0 0 20px #ff1f1f);
@@ -215,7 +219,6 @@ body {
   }
 }
 
-/* Preloader */
 #preloader {
   position: fixed;
   width: 100%;
@@ -254,8 +257,14 @@ body {
 }
 
 @keyframes flicker {
-  0%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-  50% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.2); }
+  0%, 100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
 }
 
 .progress-ring circle {
@@ -283,7 +292,6 @@ body {
   }
 }
 
-/* Particle styles - vanish effect */
 .particle {
   position: absolute;
   border-radius: 50%;
@@ -299,4 +307,3 @@ body {
     transform: translate(var(--dx), var(--dy)) scale(0);
   }
 }
-
