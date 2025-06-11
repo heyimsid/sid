@@ -218,70 +218,62 @@ header {
 
 .services-carousel {
   position: relative;
-  width: 1200px;
+  width: 400px; /* Width to fit single slide initially */
   margin: 0 auto;
   cursor: pointer;
-  display: flex;
-  justify-content: center;
-  flex-wrap: nowrap;
-  transition: all 0.5s ease;
+}
+.single-slide {
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  z-index: 2;
 }
 
-/* Initially show only first slide centered */
-.services-carousel:not(.expanded) .service-slide {
+/* Hide expanded cards container initially */
+.expanded-cards {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+/* Show expanded cards with fade-in */
+.services-carousel.expanded {
+  width: 900px; /* grow container for 4x2 grid */
+}
+.services-carousel.expanded .single-slide {
   opacity: 0;
   pointer-events: none;
-  transform: scale(0.85);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transform: translateY(-30px);
 }
-.services-carousel:not(.expanded) .service-slide.active {
+.services-carousel.expanded .expanded-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(4, 300px);
+  gap: 1.5rem;
   opacity: 1;
   pointer-events: auto;
-  transform: scale(1);
-  z-index: 10;
+  z-index: 3;
 }
 
-/* Carousel expanded: fan out slides in grid 2 rows x 4 columns */
-.services-carousel.expanded {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(2, 320px);
-  gap: 1.5rem;
-  width: 100%;
-  max-width: 1200px;
-}
-
-/* Each slide visible and interactive */
-.services-carousel.expanded .service-slide {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-  transform: scale(1) !important;
-  margin: 0;
-  z-index: auto;
-}
-
-/* Style each slide */
-.service-slide {
-  position: relative;
-  width: 270px;
-  height: 300px;
-  margin: 0 10px;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 16px 40px rgba(255, 31, 31, 0.25);
-  background: #111;
-  flex-shrink: 0;
-  user-select: none;
+/* Style for cards reused from service-slide */
+.service-slide.card {
   display: flex;
   flex-direction: column;
-  transition: transform 0.5s ease, box-shadow 0.5s ease;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  user-select: none;
+  background: #111;
+  border-radius: 20px;
+  box-shadow: 0 16px 40px rgba(255, 31, 31, 0.25);
+  overflow: hidden;
+  opacity: 1;
+  transition: transform 0.3s ease;
 }
 
-.service-slide img {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-  border-bottom: 1px solid var(--picked-color, #ff1f1f);
+/* Individual slide hover scale */
+.service-slide.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 24px 60px rgba(255, 31, 31, 0.45);
 }
 
 .slide-info {
@@ -290,32 +282,34 @@ header {
   align-items: center;
   padding: 0 20px;
   margin-top: 10px;
+  color: #eee;
+  font-weight: 700;
+  font-size: 1.2rem;
+  user-select: text;
 }
 
 .slide-info h3 {
-  color: #eee;
-  font-weight: 700;
-  font-size: 1.3rem;
-  user-select: text;
   margin: 0;
+  flex: 1;
 }
 
 .slide-hire-btn {
-  background: var(--picked-color, #ff1f1f);
+  background: var(--picked-color);
   color: #000;
   padding: 6px 16px;
   border-radius: 30px;
   font-weight: 700;
   text-decoration: none;
-  box-shadow: 0 0 9px var(--picked-color, #ff1f1f);
-  transition: background 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 9px var(--picked-color);
   white-space: nowrap;
   font-size: 0.9rem;
+  flex-shrink: 0;
 }
 .slide-hire-btn:hover,
 .slide-hire-btn:focus {
   background: #fff;
-  box-shadow: 0 0 15px var(--picked-color, #ff1f1f);
+  box-shadow: 0 0 15px var(--picked-color);
   outline: none;
 }
+
 
