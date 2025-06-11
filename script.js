@@ -1,6 +1,4 @@
 (() => {
-  const nav = document.querySelector('.nav');
-  const colorPickerInput = nav.querySelector('.color-picker');
   const navButtons = document.querySelectorAll('.nav-btn');
   const sections = document.querySelectorAll('.page-section');
   const hireBtn = document.querySelector('.hire-btn');
@@ -11,10 +9,11 @@
   const graphicWrapper = document.querySelector('.graphic-wrapper');
   const profileImage = graphicWrapper.querySelector('.profile-image');
   const logo = document.querySelector('.logo');
+  const colorPickerInput = document.querySelector('.color-picker');
 
   let selectedColor = colorPickerInput.value || '#ff1f1f';
 
-  // Section switching logic: only one visible at a time
+  // Show only the target section, hide others
   function showSection(targetId) {
     sections.forEach(section => {
       if (section.id === targetId) {
@@ -30,58 +29,54 @@
       const expanded = btn.dataset.target === targetId;
       btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
     });
-    // Collapse expanded slides view if any
-    collapseServicesCarousel();
+    // For Services, reset carousel to collapsed state
+    if (targetId !== 'services') {
+      collapseServicesCarousel();
+      // Reset active slide to first slide
+      serviceSlides.forEach(s => s.classList.remove('active'));
+      if(serviceSlides.length) serviceSlides[0].classList.add('active');
+    }
   }
 
-  // Collapse slides to show only active slide
+  // Collapse Services carousel (show only first slide)
   function collapseServicesCarousel() {
     servicesCarousel.classList.remove('expanded');
   }
 
-  // Expand slides fan out effect on hover
+  // Expand Services carousel (fan out)
   function expandServicesCarousel() {
     servicesCarousel.classList.add('expanded');
   }
 
-  // Setup event listeners:
-
+  // Event listeners for nav buttons
   navButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       const targetId = btn.dataset.target;
       showSection(targetId);
-      window.history.pushState(null, '', `#${targetId}`); // Update URL hash
+      window.history.pushState(null, '', `#${targetId}`);
     });
   });
 
+  // Event listener for hire button — navigates to services
   hireBtn.addEventListener('click', () => {
     showSection('services');
     window.history.pushState(null, '', '#services');
   });
 
-  // Services carousel hover to expand, leave to collapse
+  // Expand carousel on mouse enter and collapse on leave
   servicesCarousel.addEventListener('mouseenter', expandServicesCarousel);
   servicesCarousel.addEventListener('mouseleave', collapseServicesCarousel);
 
-  // Services slide click: make that slide active and collapse
-  serviceSlides.forEach((slide, idx) => {
+  // Clicking a slide sets it active and collapses carousel
+  serviceSlides.forEach(slide => {
     slide.addEventListener('click', () => {
-      // Remove active from all
       serviceSlides.forEach(s => s.classList.remove('active'));
       slide.classList.add('active');
       collapseServicesCarousel();
     });
   });
 
-  function hexToRgba(hex, alpha = 1) {
-    const hexClean = hex.replace('#', '');
-    const bigint = parseInt(hexClean, 16);
-    const r = (bigint >> 16) & 255;
-    const g = (bigint >> 8) & 255;
-    const b = bigint & 255;
-    return `rgba(${r},${g},${b},${alpha})`;
-  }
-
+  // Update CSS variable and styles on color picker changes
   function updateColors(newColor) {
     document.documentElement.style.setProperty('--picked-color', newColor);
 
@@ -113,11 +108,20 @@
     selectedColor = newColor;
   }
 
+  function hexToRgba(hex, alpha = 1) {
+    const hexClean = hex.replace('#', '');
+    const bigint = parseInt(hexClean, 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+    return `rgba(${r},${g},${b},${alpha})`;
+  }
+
   colorPickerInput.addEventListener('input', e => {
     updateColors(e.target.value);
   });
 
-  // Initialize page and colors and show section from URL hash or default to home
+  // Initialize page and colors on load based on current URL hash or default to home
   window.addEventListener('DOMContentLoaded', () => {
     updateColors(selectedColor);
 
@@ -131,7 +135,7 @@
     showSection(initialSection);
   });
 
-  // Preloader fade out
+  // Preloader fade out on window load
   const preloader = document.getElementById("preloader");
   window.addEventListener("load", () => {
     setTimeout(() => {
@@ -142,22 +146,7 @@
     }, 1200);
   });
 
-  // Smooth scroll handled by CSS scroll-behavior but added fallback:
-  document.querySelectorAll('.nav-btn, .hire-btn, .slide-hire-btn').forEach(el => {
-    el.addEventListener('click', e => {
-      e.preventDefault();
-      const href = el.getAttribute('href') || el.dataset.target;
-      if (!href) return;
-      const id = href.startsWith('#') ? href.substring(1) : href;
-      const section = document.getElementById(id);
-      if (section) {
-        showSection(id);
-        window.history.pushState(null, '', '#'+id);
-      }
-    });
-  });
-
-  // Social icons scale ripple on click
+  // Social icons scale effect on click
   document.querySelectorAll('.social-icons i').forEach(icon => {
     icon.addEventListener('click', () => {
       icon.style.transform = "scale(1.4)";
