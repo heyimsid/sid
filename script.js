@@ -81,7 +81,7 @@
     logo.style.color = newColor;
     logo.style.textShadow = `0 0 8px ${newColor}`;
 
-    profileImage.style.transition = 'box-shadow 1s ease, transform 0.3s ease';
+    profileImage.style.transition = 'box-shadow 1s ease';
     profileImage.style.boxShadow = `0 0 40px 4px ${newColor}`;
 
     graphicWrapper.style.transition = 'box-shadow 1s ease, background 1s ease';
@@ -95,17 +95,6 @@
 
   colorPickerInput.addEventListener('input', e => {
     updateColors(e.target.value);
-  });
-
-  // 3D tilt effect on graphic wrapper - simplified for 3D hover rotation
-  graphicWrapper.addEventListener('mouseenter', () => {
-    graphicWrapper.classList.add('tilt');
-  });
-
-  graphicWrapper.addEventListener('mouseleave', () => {
-    graphicWrapper.classList.remove('tilt');
-    graphicWrapper.style.transform = `rotateX(0deg) rotateY(0deg)`;
-    profileImage.style.transform = `translate(-50%, -50%) rotateX(0deg) rotateY(0deg)`;
   });
 
   // Preloader fade out
@@ -132,7 +121,7 @@
   });
 
   // Hire me button smooth scroll or alert
-  document.querySelector('.hire-btn').addEventListener('click', () => {
+  hireBtn.addEventListener('click', () => {
     const contactSection = document.getElementById('contact');
     if(contactSection){
       contactSection.scrollIntoView({behavior:'smooth'});
@@ -141,8 +130,8 @@
     }
   });
 
-  // Social icons scale ripple
-  document.querySelectorAll('.social-icons i').forEach(icon => {
+  // Social icons scale ripple effect
+  socialIcons.forEach(icon => {
     icon.addEventListener('click', () => {
       icon.style.transform = "scale(1.4)";
       setTimeout(() => icon.style.transform = "scale(1)", 300);
