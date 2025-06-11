@@ -6,7 +6,10 @@ body {
   background: #000;
   color: #fff;
   font-family: 'Montserrat', sans-serif;
+  /* Restore scroll */
+  overflow-y: auto;
   overflow-x: hidden;
+  perspective: 1200px; /* Needed for 3D effect */
 }
 header {
   background: #000;
@@ -19,6 +22,7 @@ header {
   gap: 16px;
   flex-wrap: nowrap;
   position: relative;
+  z-index: 10;
 }
 .logo {
   color: #ff1f1f;
@@ -27,6 +31,9 @@ header {
   text-shadow: 0 0 8px #ff1f1f;
   flex-shrink: 0;
   user-select: none;
+  transition: color 1s ease, text-shadow 1s ease; /* animate color changes */
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
 }
 .nav-links {
   list-style: none;
@@ -65,18 +72,15 @@ header {
   box-shadow: 0 0 10px #ff1f1f99;
   transition: box-shadow 0.3s ease;
 }
-
 .color-picker::-webkit-color-swatch-wrapper {
   padding: 0;
   border-radius: 50%;
   background-color: #000;
 }
-
 .color-picker::-webkit-color-swatch {
   border-radius: 50%;
   border: none;
 }
-
 .color-picker:focus {
   outline: none;
   box-shadow: 0 0 20px 3px #ff1f1fcc;
@@ -96,6 +100,22 @@ header {
   width: 280px;
   height: 280px;
   margin: 0 auto;
+  border-radius: 30px;
+  background: rgba(255,31,31,0.1);
+  box-shadow: 0 0 30px rgba(255,31,31,0.3);
+  transition: background 1s ease, box-shadow 1s ease, transform 0.3s ease;
+  transform-style: preserve-3d;
+  will-change: transform, box-shadow, background;
+}
+
+.graphic-wrapper:hover {
+  box-shadow: 0 0 60px rgba(255,31,31,0.7);
+  background: rgba(255,31,31,0.2);
+}
+
+/* 3D rotate effect on mouse move */
+.graphic-wrapper.tilt {
+  transition: none;
 }
 
 .profile-image {
@@ -106,11 +126,16 @@ header {
   box-shadow: 0 0 40px 4px var(--picked-color, #ff1f1f);
   position: relative;
   z-index: 5;
+  transition: box-shadow 1s ease, transform 1s ease;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
 }
 
 .hero-text {
   max-width: 500px;
   z-index: 3;
+  transition: color 1s ease, text-shadow 1s ease; /* animate color changes */
+  transform-style: preserve-3d;
 }
 
 .hero-text h2,
@@ -127,7 +152,7 @@ header {
 .highlight {
   color: var(--picked-color, #ff1f1f);
   text-shadow: 0 0 6px var(--picked-color, #ff1f1f);
-  transition: color 0.6s ease, text-shadow 0.6s ease;
+  transition: color 1s ease, text-shadow 1s ease;
   display: inline-block;
   user-select: text;
 }
@@ -148,7 +173,7 @@ header {
 .social-icons i {
   color: var(--picked-color, #ff1f1f);
   cursor: pointer;
-  transition: transform 0.3s, text-shadow 0.3s, color 0.6s ease;
+  transition: transform 0.3s, text-shadow 0.3s, color 1s ease;
 }
 
 .social-icons i:hover {
@@ -165,8 +190,9 @@ header {
   border: 2px solid var(--picked-color, #ff1f1f);
   border-radius: 30px;
   cursor: pointer;
-  transition: all 0.6s ease;
+  transition: all 1s ease;
   text-shadow: 0 0 6px var(--picked-color, #ff1f1f);
+  transform-style: preserve-3d;
 }
 
 .hire-btn:hover {
