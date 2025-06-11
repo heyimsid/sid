@@ -6,90 +6,165 @@ body {
   background: #000;
   color: #fff;
   font-family: 'Montserrat', sans-serif;
+  overflow-x: hidden;
 }
-
 header {
   background: #000;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(255, 31, 31, 0.2);
 }
-
 .nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 25px 60px;
-  gap: 16px;
-  flex-wrap: nowrap;
+  gap: 24px;
   position: relative;
 }
-
 .logo {
   color: #ff1f1f;
   font-size: 1.8rem;
+  font-weight: 700;
   text-shadow: 0 0 8px #ff1f1f;
   flex-shrink: 0;
+  user-select: none;
 }
-
 .nav-links {
   list-style: none;
   display: flex;
-  gap: 30px;
+  gap: 32px;
   margin: 0;
   padding: 0;
   align-items: center;
   flex-grow: 1;
   justify-content: center;
 }
-
 .nav-links li {
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 700;
   color: white;
+  font-size: 1rem;
   transition: 0.3s;
+  user-select: none;
 }
-
-.nav-links li:hover {
+.nav-links li:hover,
+.nav-links li:focus {
   color: #ff1f1f;
-  text-shadow: 0 0 5px #ff1f1f;
-}
-
-.color-picker-container {
-  background-color: #000;
-  border-radius: 8px;
-  padding: 4px 8px;
-  box-shadow: 0 0 12px rgba(255, 31, 31, 0.9);
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-.color-picker {
-  cursor: pointer;
-  width: 36px;
-  height: 36px;
-  border: none;
-  padding: 0;
-  background: transparent;
-  appearance: none;
-  -webkit-appearance: none;
-  border-radius: 50%;
-  outline-offset: 2px;
-  transition: box-shadow 0.3s ease;
-}
-
-.color-picker::-webkit-color-swatch-wrapper {
-  padding: 0;
-  border-radius: 50%;
-}
-
-.color-picker::-webkit-color-swatch {
-  border-radius: 50%;
-}
-
-.color-picker:focus {
-  box-shadow: 0 0 6px 3px rgba(255, 31, 31, 0.95);
+  text-shadow: 0 0 8px #ff1f1f;
   outline: none;
 }
 
+/* Custom Color Picker Button */
+.color-picker-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #ff1f1f;
+  background: linear-gradient(135deg, #ff1f1f, #660000);
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 0 12px #ff1f1f88;
+  transition: box-shadow 0.3s ease;
+}
+.color-picker-button:focus {
+  outline: none;
+  box-shadow: 0 0 20px 3px #ff1f1fcc;
+}
+.color-picker-circle {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid white;
+  background: var(--picked-color, #ff1f1f);
+  box-shadow: 0 0 8px white;
+  transition: background 0.4s ease;
+}
+
+/* Color Picker Modal Styles */
+.color-picker-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(8px);
+  display: none;
+  z-index: 1200;
+  align-items: center;
+  justify-content: center;
+}
+.color-picker-modal-backdrop.show {
+  display: flex;
+}
+.color-picker-modal {
+  background: #111;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(255, 31, 31, 0.8);
+  padding: 20px 24px 28px;
+  width: 320px;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  color: white;
+  user-select: none;
+  outline: none;
+}
+.color-picker-modal h2 {
+  margin: 0 0 16px;
+  font-weight: 700;
+  font-size: 1.4rem;
+  text-align: center;
+  color: #ff1f1f;
+  text-shadow: 0 0 6px #ff1f1f;
+}
+/* Color input inside modal */
+.color-picker-modal input[type="color"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 50px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  box-shadow:
+    inset 0 0 10px rgba(255,255,255,0.15),
+    0 0 8px #ff1f1f99;
+  outline-offset: 3px;
+  outline: none;
+  transition: box-shadow 0.3s ease;
+}
+.color-picker-modal input[type="color"]:focus {
+  box-shadow:
+    inset 0 0 12px rgba(255,255,255,0.3),
+    0 0 12px #ff1f1fcc;
+}
+
+/* Modal buttons */
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+}
+.btn {
+  padding: 10px 22px;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1rem;
+  background: #ff1f1f;
+  color: white;
+  box-shadow: 0 0 12px #ff1f1fbb;
+  transition: background 0.3s ease;
+  user-select: none;
+}
+.btn:hover, .btn:focus {
+  background: #cc1818;
+  outline: none;
+}
+
+/* Hero styles */
 .hero {
   display: flex;
   justify-content: center;
@@ -98,25 +173,23 @@ header {
   gap: 60px;
   flex-wrap: wrap;
 }
-
 .graphic-wrapper {
   position: relative;
   width: 350px;
   height: 500px;
 }
-
 .thunder-svg {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 0 25px #ff1f1f);
+  filter: drop-shadow(0 0 25px var(--picked-color, #ff1f1f));
   position: absolute;
   top: 0;
   left: 0;
   z-index: 1;
   animation: pulse-glow 2s infinite ease-in-out;
+  transition: filter 0.6s ease;
 }
-
 .profile-image {
   position: absolute;
   top: 60%;
@@ -127,86 +200,75 @@ header {
   object-fit: contain;
   animation: float 4s ease-in-out infinite;
 }
-
 .hero-text {
   max-width: 500px;
   z-index: 3;
 }
-
 .hero-text h2,
 .hero-text h3 {
   font-size: 2.5rem;
   line-height: 1.2;
 }
-
 .hero-text h3 {
   margin-top: 10px;
   font-size: 2rem;
 }
-
 .highlight {
   display: inline-block;
-  color: #ff1f1f;
-  text-shadow: 0 0 6px #ff1f1f;
+  color: var(--picked-color, #ff1f1f);
+  text-shadow: 0 0 6px var(--picked-color, #ff1f1f);
   transition: color 0.6s ease, text-shadow 0.6s ease;
+  user-select: text;
 }
-
 .hero-text p {
   margin-top: 20px;
   color: #ccc;
   line-height: 1.6;
 }
-
 .social-icons {
   margin-top: 20px;
   display: flex;
   gap: 20px;
   font-size: 1.5rem;
 }
-
 .social-icons i {
-  color: #ff1f1f;
+  color: var(--picked-color, #ff1f1f);
   cursor: pointer;
   transition: transform 0.3s, text-shadow 0.3s, color 0.6s ease;
 }
-
 .social-icons i:hover {
   transform: scale(1.2);
   text-shadow: 0 0 10px currentColor;
 }
-
 .hire-btn {
   margin-top: 30px;
   padding: 10px 25px;
   font-size: 1rem;
-  color: #ff1f1f;
+  color: var(--picked-color, #ff1f1f);
   background: transparent;
-  border: 2px solid #ff1f1f;
+  border: 2px solid var(--picked-color, #ff1f1f);
   border-radius: 30px;
   cursor: pointer;
   transition: all 0.3s;
-  text-shadow: 0 0 6px #ff1f1f;
+  text-shadow: 0 0 6px var(--picked-color, #ff1f1f);
 }
-
 .hire-btn:hover {
-  background: #ff1f1f;
+  background: var(--picked-color, #ff1f1f);
   color: #000;
-  box-shadow: 0 0 15px #ff1f1f;
-  border-color: #ff1f1f;
+  box-shadow: 0 0 15px var(--picked-color, #ff1f1f);
+  border-color: var(--picked-color, #ff1f1f);
 }
-
 @keyframes pulse-glow {
   0% {
-    filter: drop-shadow(0 0 20px #ff1f1f);
+    filter: drop-shadow(0 0 20px var(--picked-color, #ff1f1f));
   }
   50% {
-    filter: drop-shadow(0 0 45px #ff1f1f);
+    filter: drop-shadow(0 0 45px var(--picked-color, #ff1f1f));
   }
   100% {
-    filter: drop-shadow(0 0 20px #ff1f1f);
+    filter: drop-shadow(0 0 20px var(--picked-color, #ff1f1f));
   }
 }
-
 @keyframes float {
   0% {
     transform: translate(-50%, -50%) translateY(0);
@@ -218,7 +280,6 @@ header {
     transform: translate(-50%, -50%) translateY(0);
   }
 }
-
 #preloader {
   position: fixed;
   width: 100%;
@@ -230,32 +291,29 @@ header {
   align-items: center;
   transition: opacity 0.5s ease, visibility 0.5s ease;
 }
-
 .loader-container {
   position: relative;
   width: 120px;
   height: 120px;
   text-align: center;
 }
-
 .loader-container p {
-  color: #ff1f1f;
+  color: var(--picked-color, #ff1f1f);
   margin-top: 10px;
   font-family: 'Montserrat', sans-serif;
-  text-shadow: 0 0 8px #ff1f1f;
+  text-shadow: 0 0 8px var(--picked-color, #ff1f1f);
 }
-
 .bolt {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 2rem;
-  color: #ff1f1f;
+  color: var(--picked-color, #ff1f1f);
   animation: flicker 1.5s infinite;
-  text-shadow: 0 0 10px #ff1f1f, 0 0 20px #ff1f1f;
+  text-shadow: 0 0 10px var(--picked-color, #ff1f1f), 0 0 20px var(--picked-color, #ff1f1f);
+  transition: color 0.6s ease;
 }
-
 @keyframes flicker {
   0%, 100% {
     opacity: 1;
@@ -266,32 +324,28 @@ header {
     transform: translate(-50%, -50%) scale(1.2);
   }
 }
-
 .progress-ring circle {
   fill: none;
   stroke-width: 8;
   transform: rotate(-90deg);
   transform-origin: 50% 50%;
 }
-
 .progress-ring .bg {
   stroke: rgba(255, 255, 255, 0.1);
 }
-
 .progress-ring .progress {
-  stroke: #ff1f1f;
+  stroke: var(--picked-color, #ff1f1f);
   stroke-dasharray: 339.292;
   stroke-dashoffset: 339.292;
   animation: load-ring 3s ease-out forwards;
-  filter: drop-shadow(0 0 6px #ff1f1f);
+  filter: drop-shadow(0 0 6px var(--picked-color, #ff1f1f));
+  transition: stroke 0.6s ease;
 }
-
 @keyframes load-ring {
   to {
     stroke-dashoffset: 0;
   }
 }
-
 .particle {
   position: absolute;
   border-radius: 50%;
@@ -300,10 +354,91 @@ header {
   will-change: transform, opacity;
   animation: particle-fade-move 800ms forwards ease-out;
 }
-
 @keyframes particle-fade-move {
   to {
     opacity: 0;
     transform: translate(var(--dx), var(--dy)) scale(0);
   }
+}
+/* Modal backdrop */
+.color-picker-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(8px);
+  display: none;
+  z-index: 1200;
+  align-items: center;
+  justify-content: center;
+}
+.color-picker-modal-backdrop.show {
+  display: flex;
+}
+/* Modal container */
+.color-picker-modal {
+  background: #111;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(255, 31, 31, 0.8);
+  padding: 20px 24px 28px;
+  width: 320px;
+  max-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  color: white;
+  user-select: none;
+  outline: none;
+}
+.color-picker-modal h2 {
+  margin: 0 0 16px;
+  font-weight: 700;
+  font-size: 1.4rem;
+  text-align: center;
+  color: #ff1f1f;
+  text-shadow: 0 0 6px #ff1f1f;
+}
+/* Color input inside modal */
+.color-picker-modal input[type="color"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 50px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  box-shadow:
+    inset 0 0 10px rgba(255,255,255,0.15),
+    0 0 8px #ff1f1f99;
+  outline-offset: 3px;
+  outline: none;
+  transition: box-shadow 0.3s ease;
+}
+.color-picker-modal input[type="color"]:focus {
+  box-shadow:
+    inset 0 0 12px rgba(255,255,255,0.3),
+    0 0 12px #ff1f1fcc;
+}
+
+/* Modal buttons */
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+}
+.btn {
+  padding: 10px 22px;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1rem;
+  background: #ff1f1f;
+  color: white;
+  box-shadow: 0 0 12px #ff1f1fbb;
+  transition: background 0.3s ease;
+  user-select: none;
+}
+.btn:hover, .btn:focus {
+  background: #cc1818;
+  outline: none;
 }
