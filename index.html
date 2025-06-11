@@ -8,8 +8,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
 </head>
 <body>
+  <!-- Loading Screen -->
+  <div id="loading-screen">
+    <div class="loader"></div>
+    <div class="progress-ring">
+      <svg class="progress-ring__svg" width="120" height="120">
+        <circle class="progress-ring__circle" stroke="#1e90ff" stroke-width="4" fill="transparent" r="52" cx="60" cy="60" />
+      </svg>
+    </div>
+  </div>
 
-  <header id="main-header" class="glass">
+  <!-- Main Content -->
+  <header id="main-header">
     <img src="mypic.jpg" alt="Sid Profile" class="header-profile-photo" />
     <h1 class="logo">Sid</h1>
     <nav>
@@ -21,12 +31,12 @@
   </header>
 
   <main>
-    <section id="about" class="section glass">
+    <section id="about" class="section">
       <h2>About Me</h2>
       <p>I'm a B.Tech Computer Science student at College of Engineering Trikaripur, passionate about solving problems with code and staying on the edge of emerging tech.</p>
     </section>
 
-    <section id="skills" class="section glass">
+    <section id="skills" class="section">
       <h2>Skills & Interests</h2>
       <ul>
         <li>Artificial Intelligence</li>
@@ -36,27 +46,24 @@
       </ul>
     </section>
 
-    <section id="projects" class="section glass">
+    <section id="projects" class="section">
       <h2>Projects</h2>
       <p>Coming soon: a curated list of my personal and academic projects in AI, web, and cyber security.</p>
     </section>
 
-    <section id="contact" class="section glass">
-     
-  <h2>Contact Me</h2>
-  <p>Email: <a href="mailto:sidneo510@gmail.com">sidneo510@gmail.com</a></p>
-  
-  <h3>Send an Enquiry</h3>
-  <form class="enquiry-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-    <input type="text" name="name" placeholder="Your Name" required />
-    <input type="email" name="email" placeholder="Your Email" required />
-    <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
-    <button type="submit">Send Message</button>
-  </form>
-</section>
-
+    <section id="contact" class="section">
+      <h2>Contact Me</h2>
+      <p>Email: <a href="mailto:sidneo510@gmail.com">sidneo510@gmail.com</a></p>
+      <h3>Send an Enquiry</h3>
+      <form class="enquiry-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        <input type="text" name="name" placeholder="Your Name" required />
+        <input type="email" name="email" placeholder="Your Email" required />
+        <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
     </section>
   </main>
 
+  <script src="script.js"></script>
 </body>
 </html>
