@@ -8,8 +8,8 @@ body {
   font-family: 'Montserrat', sans-serif;
   overflow-y: auto;
   overflow-x: hidden;
-  perspective: 1200px;
 }
+
 header {
   background: #000;
 }
@@ -24,10 +24,10 @@ header {
   z-index: 10;
 }
 .logo {
-  color: #ff1f1f;
+  color: var(--picked-color, #ff1f1f);
   font-size: 1.8rem;
   font-weight: 700;
-  text-shadow: 0 0 8px #ff1f1f;
+  text-shadow: 0 0 8px var(--picked-color, #ff1f1f);
   flex-shrink: 0;
   user-select: none;
   transition: color 1s ease, text-shadow 1s ease;
@@ -49,15 +49,16 @@ header {
   font-weight: 700;
   color: white;
   font-size: 1rem;
-  transition: 0.3s;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
   user-select: none;
 }
 .nav-links li:hover,
 .nav-links li:focus {
-  color: #ff1f1f;
-  text-shadow: 0 0 8px #ff1f1f;
+  color: var(--picked-color, #ff1f1f);
+  text-shadow: 0 0 8px var(--picked-color, #ff1f1f);
   outline: none;
 }
+
 .color-picker {
   width: 40px;
   height: 40px;
@@ -66,7 +67,7 @@ header {
   border-radius: 50%;
   background-color: #111;
   cursor: pointer;
-  box-shadow: 0 0 10px #ff1f1f99;
+  box-shadow: 0 0 10px var(--picked-color, #ff1f1f, #ff1f1f99);
   transition: box-shadow 0.3s ease;
 }
 .color-picker::-webkit-color-swatch-wrapper {
@@ -80,7 +81,7 @@ header {
 }
 .color-picker:focus {
   outline: none;
-  box-shadow: 0 0 20px 3px #ff1f1fcc;
+  box-shadow: 0 0 20px 3px var(--picked-color, #ff1f1f);
 }
 
 .hero {
@@ -90,25 +91,19 @@ header {
   padding: 50px 60px;
   gap: 60px;
   flex-wrap: wrap;
-  position: relative; /* Container needed for absolute children */
-}
-
-.graphic-container {
-  position: relative;
-  width: 280px;
-  height: 280px;
 }
 
 .graphic-wrapper {
   position: relative;
   width: 280px;
   height: 280px;
+  margin: 0 auto;
   border-radius: 30px;
   background: rgba(255,31,31,0.1);
   box-shadow: 0 0 30px rgba(255,31,31,0.3);
   transform-style: preserve-3d;
-  z-index: 10; /* On top */
   transition: box-shadow 1s ease, background 1s ease;
+  cursor: pointer;
 }
 
 .profile-image {
@@ -123,56 +118,103 @@ header {
   transition: box-shadow 1s ease;
 }
 
-/* This animated background will travel and revolve behind the graphic-wrapper */
-.animated-background {
-  position: absolute;
-  width: 280px;
-  height: 280px;
-  border-radius: 30px;
-  background: rgba(255,31,31,0.15);
-  box-shadow: 0 0 50px rgba(255,31,31,0.6);
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  opacity: 0;
-  transform-style: preserve-3d;
-  will-change: transform, opacity;
-  transition: opacity 0.3s ease;
-  z-index: 5; /* behind the graphic-wrapper */
-}
-
-/* When active, fully visible with animation */
-.animated-background.active {
-  opacity: 1;
-  animation: travelRevolve 10s linear infinite;
-}
-
-/* Keyframes to travel in elliptical path and revolve */
-@keyframes travelRevolve {
-  0% {
-    transform: translate(0px, 0px) rotateY(0deg);
-  }
-  25% {
-    transform: translate(60px, 20px) rotateY(90deg);
+/* Float up and down animation */
+@keyframes floatUpDown {
+  0%, 100% {
+    transform: translateY(0);
   }
   50% {
-    transform: translate(0px, 40px) rotateY(180deg);
-  }
-  75% {
-    transform: translate(-60px, 20px) rotateY(270deg);
-  }
-  100% {
-    transform: translate(0px, 0px) rotateY(360deg);
+    transform: translateY(-15px);
   }
 }
 
-/* Ensure text overlays container */
-.hero-text, .nav, .social-icons, .hire-btn {
-  position: relative;
-  z-index: 20;
+.profile-image:hover {
+  animation: floatUpDown 3s ease-in-out infinite;
 }
 
-/* Particle and preloader styles unchanged from previous versions */
+.hero-text {
+  max-width: 500px;
+  z-index: 3;
+  transition: color 1s ease, text-shadow 1s ease;
+  transform-style: preserve-3d;
+}
+
+.hero-text h2,
+.hero-text h3 {
+  font-size: 2.5rem;
+  line-height: 1.2;
+}
+
+.hero-text h3 {
+  margin-top: 10px;
+  font-size: 2rem;
+}
+
+.highlight {
+  color: var(--picked-color, #ff1f1f);
+  text-shadow: 0 0 6px var(--picked-color, #ff1f1f);
+  transition: color 1s ease, text-shadow 1s ease;
+  display: inline-block;
+  user-select: text;
+}
+
+.hero-text p {
+  margin-top: 20px;
+  color: #ccc;
+  line-height: 1.6;
+}
+
+.social-icons {
+  margin-top: 20px;
+  display: flex;
+  gap: 20px;
+  font-size: 1.5rem;
+}
+
+.social-icons i {
+  color: var(--picked-color, #ff1f1f);
+  cursor: pointer;
+  transition: transform 0.3s, text-shadow 0.3s, color 1s ease;
+}
+
+.social-icons i:hover {
+  transform: scale(1.2);
+  text-shadow: 0 0 10px currentColor;
+}
+
+.hire-btn {
+  margin-top: 30px;
+  padding: 10px 25px;
+  font-size: 1rem;
+  color: var(--picked-color, #ff1f1f);
+  background: transparent;
+  border: 2px solid var(--picked-color, #ff1f1f);
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 1s ease;
+  text-shadow: 0 0 6px var(--picked-color, #ff1f1f);
+  transform-style: preserve-3d;
+}
+
+.hire-btn:hover {
+  background: var(--picked-color, #ff1f1f);
+  color: #000;
+  box-shadow: 0 0 15px var(--picked-color, #ff1f1f);
+  border-color: var(--picked-color, #ff1f1f);
+}
+
+#preloader {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
 .loader-container {
   position: relative;
   width: 120px;
@@ -202,3 +244,4 @@ header {
     transform: translate(var(--dx), var(--dy)) scale(0);
   }
 }
+
