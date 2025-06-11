@@ -69,7 +69,7 @@ header {
 .color-picker::-webkit-color-swatch-wrapper {
   padding: 0;
   border-radius: 50%;
-  background-color: #000; /* make swatch background dark */
+  background-color: #000;
 }
 
 .color-picker::-webkit-color-swatch {
@@ -93,39 +93,9 @@ header {
 
 .graphic-wrapper {
   position: relative;
-  width: 360px;
-  height: 360px;
-}
-
-.progress-ring-wrapper {
-  position: relative;
-  width: 140px;
-  height: 140px;
+  width: 280px;
+  height: 280px;
   margin: 0 auto;
-}
-
-.progress-ring {
-  transform-origin: center;
-  filter: drop-shadow(0 0 8px var(--picked-color, #ff1f1f));
-}
-
-.progress-ring .bg {
-  stroke: rgba(255, 255, 255, 0.1);
-}
-
-.progress-ring .progress {
-  stroke: var(--picked-color, #ff1f1f);
-  stroke-width: 8;
-  stroke-dasharray: 389.557;
-  stroke-dashoffset: 389.557;
-  transition: stroke 0.6s ease;
-  animation: load-ring 3s ease-out forwards;
-}
-
-@keyframes load-ring {
-  to {
-    stroke-dashoffset: 0;
-  }
 }
 
 .profile-image {
@@ -133,10 +103,9 @@ header {
   width: 280px;
   max-width: 100%;
   border-radius: 24px;
-  box-shadow: 0 0 32px 6px var(--picked-color, #ff1f1f);
+  box-shadow: 0 0 40px 4px var(--picked-color, #ff1f1f);
   position: relative;
   z-index: 5;
-  margin: 0 auto;
 }
 
 .hero-text {
@@ -196,7 +165,7 @@ header {
   border: 2px solid var(--picked-color, #ff1f1f);
   border-radius: 30px;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.6s ease;
   text-shadow: 0 0 6px var(--picked-color, #ff1f1f);
 }
 
