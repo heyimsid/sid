@@ -6,10 +6,9 @@ body {
   background: #000;
   color: #fff;
   font-family: 'Montserrat', sans-serif;
-  /* Restore scroll */
   overflow-y: auto;
   overflow-x: hidden;
-  perspective: 1200px; /* Needed for 3D effect */
+  perspective: 1200px;
 }
 header {
   background: #000;
@@ -31,7 +30,7 @@ header {
   text-shadow: 0 0 8px #ff1f1f;
   flex-shrink: 0;
   user-select: none;
-  transition: color 1s ease, text-shadow 1s ease; /* animate color changes */
+  transition: color 1s ease, text-shadow 1s ease;
   transform-style: preserve-3d;
   backface-visibility: hidden;
 }
@@ -59,8 +58,6 @@ header {
   text-shadow: 0 0 8px #ff1f1f;
   outline: none;
 }
-
-/* Color picker input styling - dark background */
 .color-picker {
   width: 40px;
   height: 40px;
@@ -85,7 +82,6 @@ header {
   outline: none;
   box-shadow: 0 0 20px 3px #ff1f1fcc;
 }
-
 .hero {
   display: flex;
   justify-content: center;
@@ -103,20 +99,27 @@ header {
   border-radius: 30px;
   background: rgba(255,31,31,0.1);
   box-shadow: 0 0 30px rgba(255,31,31,0.3);
-  transition: background 1s ease, box-shadow 1s ease, transform 0.3s ease;
   transform-style: preserve-3d;
   will-change: transform, box-shadow, background;
+  transition: transform 0.6s ease;
 }
 
-/* 3D rotation on hover with smooth transition */
-.graphic-wrapper:hover .profile-image {
-  transform: rotateY(20deg) rotateX(20deg);
-  transition: transform 0.5s ease;
+/* Keyframe for continuous rotation */
+@keyframes rotate360 {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
 }
 
-/* 3D rotate effect on mouse move */
-.graphic-wrapper.tilt {
-  transition: none;
+/* On hover, apply continuous 3D rotation */
+.graphic-wrapper:hover {
+  animation: rotate360 4s linear infinite;
+  /* Keep box shadow and background same on hover */
+  box-shadow: 0 0 40px rgba(255,31,31,0.8);
+  background: rgba(255,31,31,0.15);
 }
 
 .profile-image {
@@ -127,15 +130,21 @@ header {
   box-shadow: 0 0 40px 4px var(--picked-color, #ff1f1f);
   position: relative;
   z-index: 5;
-  transition: box-shadow 1s ease, transform 1s ease;
+  transition: box-shadow 1s ease;
   backface-visibility: hidden;
   transform-style: preserve-3d;
+  /* Inherit rotation from parent */
+  animation: none;
+}
+
+.graphic-wrapper:hover .profile-image {
+  animation: rotate360 4s linear infinite;
 }
 
 .hero-text {
   max-width: 500px;
   z-index: 3;
-  transition: color 1s ease, text-shadow 1s ease; /* animate color changes */
+  transition: color 1s ease, text-shadow 1s ease;
   transform-style: preserve-3d;
 }
 
@@ -203,7 +212,6 @@ header {
   border-color: var(--picked-color, #ff1f1f);
 }
 
-/* Loading Preloader */
 #preloader {
   position: fixed;
   width: 100%;
@@ -230,7 +238,6 @@ header {
   text-shadow: 0 0 8px var(--picked-color, #ff1f1f);
 }
 
-/* Particle vanish effect */
 .particle {
   position: absolute;
   border-radius: 50%;
@@ -246,4 +253,3 @@ header {
     transform: translate(var(--dx), var(--dy)) scale(0);
   }
 }
-
