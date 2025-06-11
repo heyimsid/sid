@@ -1,52 +1,38 @@
-// Wait for full page load to hide loading screen
-window.addEventListener('load', () => {
-  const loadingScreen = document.getElementById('loading-screen');
-  if (loadingScreen) {
-    loadingScreen.style.opacity = '0';
-    setTimeout(() => {
-      loadingScreen.style.display = 'none';
-    }, 500);
-  }
-
-  revealSections();
-});
-
-// Reveal sections on scroll
-function revealSections() {
-  const sections = document.querySelectorAll('section');
-  sections.forEach(section => {
-    const top = section.getBoundingClientRect().top;
-    const windowHeight = window.innerHeight;
-    if (top < windowHeight - 100) {
-      section.classList.add('visible');
+// Smooth scroll to sections (if IDs are added later)
+document.querySelectorAll('.nav-links li').forEach(link => {
+  link.addEventListener('click', () => {
+    const sectionId = link.textContent.trim().toLowerCase();
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
     }
   });
-}
+});
 
-window.addEventListener('scroll', revealSections);
-
-// Sticky header shadow effect
-window.addEventListener('scroll', () => {
-  const header = document.querySelector('header');
-  if (window.scrollY > 50) {
-    header.classList.add('scrolled');
+// Hire Me button click
+document.querySelector('.hire-btn').addEventListener('click', () => {
+  // Scroll to contact section or show a pop-up
+  const contactSection = document.getElementById('contact');
+  if (contactSection) {
+    contactSection.scrollIntoView({ behavior: 'smooth' });
   } else {
-    header.classList.remove('scrolled');
+    alert("Thanks for your interest! Let's connect.");
   }
 });
 
-// Optional: Theme switcher
-const themeToggle = document.getElementById('theme-toggle');
-
-if (themeToggle) {
-  themeToggle.addEventListener('change', () => {
-    const theme = themeToggle.value;
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
+// Ripple animation for social icons (optional visual touch)
+document.querySelectorAll('.social-icons i').forEach(icon => {
+  icon.addEventListener('click', () => {
+    icon.style.transform = "scale(1.4)";
+    setTimeout(() => {
+      icon.style.transform = "scale(1)";
+    }, 300);
   });
+});
 
-  // Load saved theme
-  const savedTheme = localStorage.getItem('theme') || 'blue';
-  themeToggle.value = savedTheme;
-  document.documentElement.setAttribute('data-theme', savedTheme);
+// Optional: Dark mode toggle logic (if you want a button for it later)
+let isDark = true;
+function toggleTheme() {
+  document.body.classList.toggle('dark-mode', isDark);
+  isDark = !isDark;
 }
