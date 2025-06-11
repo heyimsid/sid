@@ -39,114 +39,123 @@ window.addEventListener("load", () => {
   }, 1000); // Fade out after ring completes
 });
 
-// --- COLOR PALETTE SYSTEM ---
+// Color picker for highlight color
 
-const colors = [
-  '#ff1f1f', // original red
-  '#1f1fff', 
-  '#1fff1f', 
-  '#ffae1f', 
-  '#9d1fff',
-  '#1fffd7',
-  '#ff1fb2',
-  '#ff551f',
-  '#55ff1f',
-  '#1f55ff',
-  '#d4ff1f'
-];
+const colorPickerInput = document.querySelector('.color-picker');
+const nav = document.querySelector('.nav');
+let selectedColor = colorPickerInput.value || '#ff1f1f';
 
-// Dynamically generate color palette items in the navbar
-const colorPaletteContainer = document.querySelector('.color-palette');
-
-colors.forEach(color => {
-  const colorDiv = document.createElement('div');
-  colorDiv.classList.add('color-option');
-  colorDiv.setAttribute('tabindex', '0');
-  colorDiv.setAttribute('role', 'button');
-  colorDiv.setAttribute('aria-label', `Select color ${color}`);
-  colorDiv.style.backgroundColor = color;
-  colorDiv.dataset.color = color;
-  colorPaletteContainer.appendChild(colorDiv);
-});
-
-// Keep track of currently selected color
-let selectedColor = '#ff1f1f';
-
-// Initialize first color as selected
-function markSelectedColor(newColor) {
-  document.querySelectorAll('.color-option').forEach(el => {
-    el.classList.toggle('selected', el.dataset.color === newColor);
+// Set initial colors dynamically to match initial selectedColor
+function initializeColors(color) {
+  // Highlights
+  const highlights = document.querySelectorAll('.highlight');
+  highlights.forEach(el => {
+    el.style.color = color;
+    el.style.textShadow = `0 0 6px ${color}`;
   });
+
+  // Social icons
+  document.querySelectorAll('.social-icons i').forEach(icon => {
+    icon.style.color = color;
+    icon.style.textShadow = `0 0 10px ${color}`;
+  });
+
+  // Hire button
+  const hireBtn = document.querySelector('.hire-btn');
+  hireBtn.style.color = color;
+  hireBtn.style.borderColor = color;
+  hireBtn.style.textShadow = `0 0 6px ${color}`;
+  hireBtn.style.background = 'transparent';
+  hireBtn.style.boxShadow = 'none';
+
+  // Thunderbolt glow
+  updateThunderAndGlow(color);
+
+  // Update nav logo color and shadow
+  const logo = document.querySelector('.logo');
+  logo.style.color = color;
+  logo.style.textShadow = `0 0 8px ${color}`;
+
+  // Update profile glow
+  const profileGlow = document.querySelector('.profile-glow');
+  profileGlow.style.background = `radial-gradient(circle, ${hexToRgba(color, 0.3)} 0%, transparent 70%)`;
 }
 
-markSelectedColor(selectedColor);
-
-// Particle generation utility
-function createParticle(x, y, parent, baseColor) {
-  const particle = document.createElement('div');
-  particle.classList.add('particle');
-  particle.style.backgroundColor = baseColor;
-  particle.style.left = `${x}px`;
-  particle.style.top = `${y}px`;
-  const dx = (Math.random() - 0.5) * 100 + 'px';
-  const dy = (Math.random() - 0.5) * 100 + 'px';
-  particle.style.setProperty('--dx', dx);
-  particle.style.setProperty('--dy', dy);
-  parent.appendChild(particle);
-
-  particle.addEventListener('animationend', () => {
-    particle.remove();
-  });
+// Utility - hex to rgba with alpha
+function hexToRgba(hex, alpha = 1) {
+  const hexClean = hex.replace('#', '');
+  const bigint = parseInt(hexClean, 16);
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+  return `rgba(${r},${g},${b},${alpha})`;
 }
 
-// Color change function with vanish + paint step by step
+// Update thunderbolt and ring colors dynamically
+function updateThunderAndGlow(color) {
+  const thunderSvg = document.querySelector('.thunder-svg');
+  thunderSvg.style.filter = `drop-shadow(0 0 25px ${color})`;
+  thunderSvg.style.animation = 'none';
+  setTimeout(() => {
+    thunderSvg.style.animation = null;
+  }, 20);
+
+  // Update progress ring stroke to match color
+  const progressCircle = document.querySelector('.progress-ring .progress');
+  if(progressCircle){
+    progressCircle.style.stroke = color;
+    progressCircle.style.filter = `drop-shadow(0 0 6px ${color})`;
+  }
+}
+
+let animationLock = false;
+
 async function updateHighlightColors(newColor) {
+  if(animationLock) return; // prevent overlapping animations
+  if(newColor === selectedColor) return;
+  animationLock = true;
+
   const allHighlights = [...document.querySelectorAll('.highlight')];
-  if (newColor === selectedColor) return; // do nothing if same color
 
-  const nav = document.querySelector('.nav');
-
-  // VANISH PHASE: fade out text color and shadow in sequence with particle effect
-  for (const el of allHighlights) {
-    // create particles at random positions over the element
+  // VANISH PHASE: fade out all highlights and create particles
+  for(const el of allHighlights) {
     const rect = el.getBoundingClientRect();
     const navRect = nav.getBoundingClientRect();
-
-    for(let i = 0; i < 5; i++) {
-      // particle position relative to nav container
-      const x = rect.left + Math.random() * rect.width - navRect.left;
-      const y = rect.top + Math.random() * rect.height - navRect.top;
+    // create multiple particles per element
+    for(let i=0; i<5; i++){
+      const x = rect.left + Math.random()*rect.width - navRect.left;
+      const y = rect.top + Math.random()*rect.height - navRect.top;
       createParticle(x, y, nav, selectedColor);
     }
-
-    // fade color out smoothly
     el.style.transition = 'color 0.5s ease, text-shadow 0.5s ease';
     el.style.color = 'transparent';
     el.style.textShadow = 'none';
-
-    // wait for fade out
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await sleep(100); // small delay to stagger fade start
   }
 
-  // PAINT PHASE: apply new color gradually, one by one with delay
-  for (const el of allHighlights) {
+  // wait for vanish fade duration
+  await sleep(600);
+
+  // PAINT PHASE: apply new color one by one with delay
+  for(const el of allHighlights){
     el.style.transition = 'color 0.4s ease, text-shadow 0.4s ease';
     el.style.color = newColor;
     el.style.textShadow = `0 0 6px ${newColor}`;
-    await new Promise(resolve => setTimeout(resolve, 150));
+    await sleep(150);
   }
 
-  // Update social icons and button colors similarly for consistency
+  // Update social icons
   document.querySelectorAll('.social-icons i').forEach(icon => {
     icon.style.transition = 'color 0.6s ease, text-shadow 0.6s ease';
     icon.style.color = newColor;
     icon.style.textShadow = `0 0 10px ${newColor}`;
   });
 
+  // Update hire button
   const hireBtn = document.querySelector('.hire-btn');
   hireBtn.style.transition = 'color 0.6s ease, border-color 0.6s ease, background-color 0.6s ease, box-shadow 0.6s ease, text-shadow 0.6s ease';
-  if(hireBtn.matches(':hover')) {
-    // if hovered, set background to new color and black text
+
+  if(hireBtn.matches(':hover')){
     hireBtn.style.background = newColor;
     hireBtn.style.color = '#000';
     hireBtn.style.borderColor = newColor;
@@ -160,15 +169,10 @@ async function updateHighlightColors(newColor) {
     hireBtn.style.boxShadow = 'none';
   }
 
-  // Update thunder-svg filter and animation shadows dynamically 
-  const thunderSvg = document.querySelector('.thunder-svg');
-  thunderSvg.style.filter = `drop-shadow(0 0 25px ${newColor})`;
-  thunderSvg.style.animation = 'none';
-  setTimeout(() => {
-    thunderSvg.style.animation = null;
-  }, 20);
-  
-  // Update profile glow background gradient to new color with transparency 
+  // Update thunderbolt and progress ring colors
+  updateThunderAndGlow(newColor);
+
+  // Update profile glow
   const profileGlow = document.querySelector('.profile-glow');
   profileGlow.style.background = `radial-gradient(circle, ${hexToRgba(newColor, 0.3)} 0%, transparent 70%)`;
 
@@ -177,33 +181,54 @@ async function updateHighlightColors(newColor) {
   logo.style.color = newColor;
   logo.style.textShadow = `0 0 8px ${newColor}`;
 
-  // Update nav links hover color and shadow using CSS custom properties for smooth transitions
-  document.documentElement.style.setProperty('--highlight-color', newColor);
-
-  // Save new color as selected
+  // Save new color
   selectedColor = newColor;
-  markSelectedColor(newColor);
+  updateColorPickerValue(newColor);
+
+  animationLock = false;
 }
 
-// Utility: converts hex color to rgba with given alpha (0-1)
-function hexToRgba(hex, alpha = 1) {
-  const hexClean = hex.replace('#', '');
-  const bigint = parseInt(hexClean, 16);
-  const r = (bigint >> 16) & 255;
-  const g = (bigint >> 8) & 255;
-  const b = bigint & 255;
-  return `rgba(${r},${g},${b},${alpha})`;
-}
-
-// Handle color option clicks + keyboard accessibility
-colorPaletteContainer.addEventListener('click', event => {
-  if (event.target.classList.contains('color-option')) {
-    updateHighlightColors(event.target.dataset.color);
+// Update color picker input value visually
+function updateColorPickerValue(color){
+  if(colorPickerInput.value.toLowerCase()!==color.toLowerCase()){
+    colorPickerInput.value = color;
   }
+}
+
+// Particle helper
+function createParticle(x, y, parent, baseColor){
+  const particle = document.createElement('div');
+  particle.classList.add('particle');
+  particle.style.backgroundColor = baseColor;
+  particle.style.left = `${x}px`;
+  particle.style.top = `${y}px`;
+
+  // Random direction and distance for animation
+  const dx = (Math.random() - 0.5) * 100 + 'px';
+  const dy = (Math.random() - 0.5) * 100 + 'px';
+
+  particle.style.setProperty('--dx', dx);
+  particle.style.setProperty('--dy', dy);
+
+  parent.appendChild(particle);
+
+  particle.addEventListener('animationend', () => {
+    particle.remove();
+  });
+}
+
+// Sleep helper
+function sleep(ms){
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// Listen to color picker changes
+colorPickerInput.addEventListener('input', e => {
+  const color = e.target.value;
+  updateHighlightColors(color);
 });
-colorPaletteContainer.addEventListener('keydown', event => {
-  if (event.target.classList.contains('color-option') && (event.key === 'Enter' || event.key === ' ')) {
-    event.preventDefault();
-    updateHighlightColors(event.target.dataset.color);
-  }
+
+// Initialize colors on page load
+window.addEventListener('DOMContentLoaded', () => {
+  initializeColors(selectedColor);
 });
