@@ -52,25 +52,52 @@ body {
   height: 500px;
 }
 
+@keyframes pulse-glow {
+  0% { filter: drop-shadow(0 0 20px #ff1f1f); }
+  50% { filter: drop-shadow(0 0 45px #ff1f1f); }
+  100% { filter: drop-shadow(0 0 20px #ff1f1f); }
+}
+
 .thunder-svg {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 0 25px #ff1f1f);
   position: absolute;
   top: 0;
   left: 0;
   z-index: 1;
+  animation: pulse-glow 2s infinite ease-in-out;
+}
+
+@keyframes float {
+  0% { transform: translate(-50%, -50%) translateY(0); }
+  50% { transform: translate(-50%, -50%) translateY(-10px); }
+  100% { transform: translate(-50%, -50%) translateY(0); }
 }
 
 .profile-image {
   position: absolute;
-  top: 90%;
-  left: 70%;
-  width: 85%;
+  top: 60%;
+  left: 60%;
+  width: 100%;
   transform: translate(-50%, -50%);
   z-index: 2;
   object-fit: contain;
+  animation: float 4s ease-in-out infinite;
+}
+
+.profile-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,31,31,0.3) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  border-radius: 50%;
+  animation: pulse-glow 3s infinite ease-in-out;
+  pointer-events: none;
 }
 
 .hero-text {
@@ -128,74 +155,13 @@ body {
   transition: all 0.3s;
   text-shadow: 0 0 6px #ff1f1f;
 }
-/* 🔥 Thunderbolt: Pulsing Glow Animation */
-@keyframes pulse-glow {
-  0% {
-    filter: drop-shadow(0 0 20px #ff1f1f);
-  }
-  50% {
-    filter: drop-shadow(0 0 45px #ff1f1f);
-  }
-  100% {
-    filter: drop-shadow(0 0 20px #ff1f1f);
-  }
-}
 
-.thunder-svg {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  animation: pulse-glow 2s infinite ease-in-out;
-}
-
-/* 🧍‍♂️ Profile: Floating Animation */
-@keyframes float {
-  0% {
-    transform: translate(-50%, -50%) translateY(0);
-  }
-  50% {
-    transform: translate(-50%, -50%) translateY(-10px);
-  }
-  100% {
-    transform: translate(-50%, -50%) translateY(0);
-  }
-}
-
-.profile-image {
-  position: absolute;
-  top: 60%;
-  left: 60%;
-  width: 100%;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-  object-fit: contain;
-  animation: float 4s ease-in-out infinite;
-}
-
-/* 💫 Extra Glow Behind Image */
-.profile-glow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle, rgba(255,31,31,0.3) 0%, transparent 70%);
-  transform: translate(-50%, -50%);
-  z-index: 0;
-  border-radius: 50%;
-  animation: pulse-glow 3s infinite ease-in-out;
-  pointer-events: none;
-}
 .hire-btn:hover {
   background: #ff1f1f;
   color: #000;
   box-shadow: 0 0 15px #ff1f1f;
 }
-/* Preloader styles */
+
 #preloader {
   position: fixed;
   width: 100%;
@@ -232,13 +198,11 @@ body {
   text-shadow: 0 0 10px #ff1f1f, 0 0 20px #ff1f1f;
 }
 
-/* Flickering lightning effect */
 @keyframes flicker {
   0%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
   50% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.2); }
 }
 
-/* Ring Progress Styling */
 .progress-ring circle {
   fill: none;
   stroke-width: 8;
@@ -252,7 +216,7 @@ body {
 
 .progress-ring .progress {
   stroke: #ff1f1f;
-  stroke-dasharray: 339.292; /* 2πr where r = 54 */
+  stroke-dasharray: 339.292;
   stroke-dashoffset: 339.292;
   animation: load-ring 3s ease-out forwards;
   filter: drop-shadow(0 0 6px #ff1f1f);
