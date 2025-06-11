@@ -1,27 +1,57 @@
-/* Existing styles unchanged, only additions/updates below */
-
-/* Navigation */
+body {
+  margin: 0;
+  padding: 0;
+  background: #000;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+}
 
 .nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 25px 60px;
-  gap: 30px;
-  flex-wrap: wrap;
+  gap: 16px; /* small gap to separate color picker nicely */
+  flex-wrap: nowrap;
   position: relative;
-  background: #000; /* ensure black background for nav */
 }
 
-/* Logo and nav-links unchanged */
+.logo {
+  color: #ff1f1f;
+  font-size: 1.8rem;
+  text-shadow: 0 0 8px #ff1f1f;
+  flex-shrink: 0;
+}
 
-/* Color picker container styling */
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  flex-grow: 1;
+  justify-content: center;
+}
 
+.nav-links li {
+  cursor: pointer;
+  font-weight: bold;
+  color: white;
+  transition: 0.3s;
+}
+
+.nav-links li:hover {
+  color: #ff1f1f;
+  text-shadow: 0 0 5px #ff1f1f;
+}
+
+/* Color picker container - minimal impact on layout */
 .color-picker-container {
   background-color: #111;
   border-radius: 8px;
   padding: 4px 8px;
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
   display: flex;
   align-items: center;
   flex-shrink: 0;
@@ -50,14 +80,210 @@
   border-radius: 50%;
 }
 
-/* Focus state for accessibility */
 .color-picker:focus {
   box-shadow: 0 0 6px 3px rgba(255, 31, 31, 0.7);
   outline: none;
 }
 
-/* Particle styles for vanish effect */
+/* Hero and highlight text */
+.hero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px 60px;
+  gap: 60px;
+  flex-wrap: wrap;
+}
 
+.graphic-wrapper {
+  position: relative;
+  width: 350px;
+  height: 500px;
+}
+
+.thunder-svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 25px #ff1f1f);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  animation: pulse-glow 2s infinite ease-in-out;
+}
+
+.profile-image {
+  position: absolute;
+  top: 60%;
+  left: 60%;
+  width: 100%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  object-fit: contain;
+  animation: float 4s ease-in-out infinite;
+}
+
+.hero-text {
+  max-width: 500px;
+  z-index: 3;
+}
+
+.hero-text h2 {
+  font-size: 2.5rem;
+}
+
+.hero-text h3 {
+  font-size: 2rem;
+  margin-top: 10px;
+}
+
+.highlight {
+  color: #ff1f1f;
+  text-shadow: 0 0 6px #ff1f1f;
+  transition: color 0.6s ease, text-shadow 0.6s ease;
+}
+
+.hero-text p {
+  margin-top: 20px;
+  color: #ccc;
+  line-height: 1.6;
+}
+
+/* Social Icons */
+.social-icons {
+  margin-top: 20px;
+  display: flex;
+  gap: 20px;
+  font-size: 1.5rem;
+}
+
+.social-icons i {
+  color: #ff1f1f;
+  cursor: pointer;
+  transition: transform 0.3s, text-shadow 0.3s, color 0.6s ease;
+}
+
+.social-icons i:hover {
+  transform: scale(1.2);
+  text-shadow: 0 0 10px currentColor;
+}
+
+/* Hire Me Button */
+.hire-btn {
+  margin-top: 30px;
+  padding: 10px 25px;
+  font-size: 1rem;
+  color: #ff1f1f;
+  background: transparent;
+  border: 2px solid #ff1f1f;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-shadow: 0 0 6px #ff1f1f;
+}
+
+.hire-btn:hover {
+  background: #ff1f1f;
+  color: #000;
+  box-shadow: 0 0 15px #ff1f1f;
+  border-color: #ff1f1f;
+}
+
+/* Animations */
+@keyframes pulse-glow {
+  0% {
+    filter: drop-shadow(0 0 20px #ff1f1f);
+  }
+  50% {
+    filter: drop-shadow(0 0 45px #ff1f1f);
+  }
+  100% {
+    filter: drop-shadow(0 0 20px #ff1f1f);
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translate(-50%, -50%) translateY(0);
+  }
+  50% {
+    transform: translate(-50%, -50%) translateY(-10px);
+  }
+  100% {
+    transform: translate(-50%, -50%) translateY(0);
+  }
+}
+
+/* Preloader */
+#preloader {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.loader-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  text-align: center;
+}
+
+.loader-container p {
+  color: #ff1f1f;
+  margin-top: 10px;
+  font-family: 'Montserrat', sans-serif;
+  text-shadow: 0 0 8px #ff1f1f;
+}
+
+.bolt {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  color: #ff1f1f;
+  animation: flicker 1.5s infinite;
+  text-shadow: 0 0 10px #ff1f1f, 0 0 20px #ff1f1f;
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.2); }
+}
+
+.progress-ring circle {
+  fill: none;
+  stroke-width: 8;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+.progress-ring .bg {
+  stroke: rgba(255, 255, 255, 0.1);
+}
+
+.progress-ring .progress {
+  stroke: #ff1f1f;
+  stroke-dasharray: 339.292;
+  stroke-dashoffset: 339.292;
+  animation: load-ring 3s ease-out forwards;
+  filter: drop-shadow(0 0 6px #ff1f1f);
+}
+
+@keyframes load-ring {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Particle styles - vanish effect */
 .particle {
   position: absolute;
   border-radius: 50%;
@@ -74,8 +300,3 @@
   }
 }
 
-/* Highlight class already sets color and shadow with transition */
-
-/* Preloader styles unchanged */
-
-/* Other styles unchanged */
