@@ -29,26 +29,26 @@
       const expanded = btn.dataset.target === targetId;
       btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
     });
-    // For Services, reset carousel to collapsed state
+    // Reset Services carousel fan out when not on services page
     if (targetId !== 'services') {
       collapseServicesCarousel();
-      // Reset active slide to first slide
+      // Reset active slide
       serviceSlides.forEach(s => s.classList.remove('active'));
-      if(serviceSlides.length) serviceSlides[0].classList.add('active');
+      if (serviceSlides.length) serviceSlides[0].classList.add('active');
     }
   }
 
-  // Collapse Services carousel (show only first slide)
+  // Collapse services carousel: show only active slide
   function collapseServicesCarousel() {
     servicesCarousel.classList.remove('expanded');
   }
 
-  // Expand Services carousel (fan out)
+  // Expand services carousel: show fan out grid
   function expandServicesCarousel() {
     servicesCarousel.classList.add('expanded');
   }
 
-  // Event listeners for nav buttons
+  // Nav button handlers
   navButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       const targetId = btn.dataset.target;
@@ -57,17 +57,17 @@
     });
   });
 
-  // Event listener for hire button — navigates to services
+  // Hire me button navigates to services section
   hireBtn.addEventListener('click', () => {
     showSection('services');
     window.history.pushState(null, '', '#services');
   });
 
-  // Expand carousel on mouse enter and collapse on leave
+  // Hover on services carousel to fan out slides
   servicesCarousel.addEventListener('mouseenter', expandServicesCarousel);
   servicesCarousel.addEventListener('mouseleave', collapseServicesCarousel);
 
-  // Clicking a slide sets it active and collapses carousel
+  // Click on service slide to make active and collapse fan out
   serviceSlides.forEach(slide => {
     slide.addEventListener('click', () => {
       serviceSlides.forEach(s => s.classList.remove('active'));
@@ -76,7 +76,15 @@
     });
   });
 
-  // Update CSS variable and styles on color picker changes
+  function hexToRgba(hex, alpha=1) {
+    const hexClean = hex.replace('#', '');
+    const bigint = parseInt(hexClean, 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+    return `rgba(${r},${g},${b},${alpha})`;
+  }
+
   function updateColors(newColor) {
     document.documentElement.style.setProperty('--picked-color', newColor);
 
@@ -108,20 +116,10 @@
     selectedColor = newColor;
   }
 
-  function hexToRgba(hex, alpha = 1) {
-    const hexClean = hex.replace('#', '');
-    const bigint = parseInt(hexClean, 16);
-    const r = (bigint >> 16) & 255;
-    const g = (bigint >> 8) & 255;
-    const b = bigint & 255;
-    return `rgba(${r},${g},${b},${alpha})`;
-  }
-
   colorPickerInput.addEventListener('input', e => {
     updateColors(e.target.value);
   });
 
-  // Initialize page and colors on load based on current URL hash or default to home
   window.addEventListener('DOMContentLoaded', () => {
     updateColors(selectedColor);
 
@@ -135,7 +133,7 @@
     showSection(initialSection);
   });
 
-  // Preloader fade out on window load
+  // Preloader fade out
   const preloader = document.getElementById("preloader");
   window.addEventListener("load", () => {
     setTimeout(() => {
@@ -153,5 +151,4 @@
       setTimeout(() => icon.style.transform = "scale(1)", 300);
     });
   });
-
 })();
