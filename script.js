@@ -1,15 +1,77 @@
 (() => {
   const nav = document.querySelector('.nav');
   const colorPickerInput = nav.querySelector('.color-picker');
-  const graphicWrapper = document.querySelector('.graphic-wrapper');
-  const profileImage = graphicWrapper.querySelector('.profile-image');
-  const heroText = document.querySelector('.hero-text');
+  const navButtons = document.querySelectorAll('.nav-btn');
+  const sections = document.querySelectorAll('.page-section');
   const hireBtn = document.querySelector('.hire-btn');
-  const logo = document.querySelector('.logo');
+  const servicesCarousel = document.querySelector('.services-carousel');
+  const serviceSlides = document.querySelectorAll('.service-slide');
   const highlightEls = [...document.querySelectorAll('.highlight')];
   const socialIcons = [...document.querySelectorAll('.social-icons i')];
+  const graphicWrapper = document.querySelector('.graphic-wrapper');
+  const profileImage = graphicWrapper.querySelector('.profile-image');
+  const logo = document.querySelector('.logo');
 
   let selectedColor = colorPickerInput.value || '#ff1f1f';
+
+  // Section switching logic: only one visible at a time
+  function showSection(targetId) {
+    sections.forEach(section => {
+      if (section.id === targetId) {
+        section.classList.add('active');
+        section.setAttribute('tabindex', '-1');
+        section.focus();
+      } else {
+        section.classList.remove('active');
+        section.setAttribute('tabindex', '-1');
+      }
+    });
+    navButtons.forEach(btn => {
+      const expanded = btn.dataset.target === targetId;
+      btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    });
+    // Collapse expanded slides view if any
+    collapseServicesCarousel();
+  }
+
+  // Collapse slides to show only active slide
+  function collapseServicesCarousel() {
+    servicesCarousel.classList.remove('expanded');
+  }
+
+  // Expand slides fan out effect on hover
+  function expandServicesCarousel() {
+    servicesCarousel.classList.add('expanded');
+  }
+
+  // Setup event listeners:
+
+  navButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.dataset.target;
+      showSection(targetId);
+      window.history.pushState(null, '', `#${targetId}`); // Update URL hash
+    });
+  });
+
+  hireBtn.addEventListener('click', () => {
+    showSection('services');
+    window.history.pushState(null, '', '#services');
+  });
+
+  // Services carousel hover to expand, leave to collapse
+  servicesCarousel.addEventListener('mouseenter', expandServicesCarousel);
+  servicesCarousel.addEventListener('mouseleave', collapseServicesCarousel);
+
+  // Services slide click: make that slide active and collapse
+  serviceSlides.forEach((slide, idx) => {
+    slide.addEventListener('click', () => {
+      // Remove active from all
+      serviceSlides.forEach(s => s.classList.remove('active'));
+      slide.classList.add('active');
+      collapseServicesCarousel();
+    });
+  });
 
   function hexToRgba(hex, alpha = 1) {
     const hexClean = hex.replace('#', '');
@@ -20,89 +82,57 @@
     return `rgba(${r},${g},${b},${alpha})`;
   }
 
-  function createParticle(x, y, parent, baseColor) {
-    const p = document.createElement('div');
-    p.className = 'particle';
-    p.style.backgroundColor = baseColor;
-    p.style.left = `${x}px`;
-    p.style.top = `${y}px`;
-    const dx = (Math.random() - 0.5) * 100 + 'px';
-    const dy = (Math.random() - 0.5) * 100 + 'px';
-    p.style.setProperty('--dx', dx);
-    p.style.setProperty('--dy', dy);
-    parent.appendChild(p);
-    p.addEventListener('animationend', () => p.remove());
-  }
+  function updateColors(newColor) {
+    document.documentElement.style.setProperty('--picked-color', newColor);
 
-  async function animateColorChange(elements, newColor, oldColor) {
-    elements.forEach(el => {
-      el.style.transition = 'color 1s ease, text-shadow 1s ease, opacity 1s ease';
-      el.style.color = oldColor;
-      el.style.textShadow = `0 0 6px ${oldColor}`;
-      el.style.opacity = '1';
-    });
-    const navRect = nav.getBoundingClientRect();
-    elements.forEach(el => {
-      const rect = el.getBoundingClientRect();
-      for (let i = 0; i < 6; i++) {
-        const x = rect.left + Math.random() * rect.width - navRect.left;
-        const y = rect.top + Math.random() * rect.height - navRect.top;
-        createParticle(x, y, nav, oldColor);
-      }
-      el.style.opacity = '0';
-    });
-    await new Promise(r => setTimeout(r, 1000));
-    elements.forEach(el => {
+    highlightEls.forEach(el => {
       el.style.color = newColor;
       el.style.textShadow = `0 0 6px ${newColor}`;
-      el.style.opacity = '1';
     });
-    await new Promise(r => setTimeout(r, 1000));
-  }
-
-  async function updateColors(newColor) {
-    if (newColor === selectedColor) return;
-
-    await animateColorChange(highlightEls, newColor, selectedColor);
 
     socialIcons.forEach(icon => {
-      icon.style.transition = 'color 1s ease, text-shadow 1s ease';
       icon.style.color = newColor;
       icon.style.textShadow = `0 0 10px ${newColor}`;
     });
 
-    hireBtn.style.transition = 'color 1s ease, border-color 1s ease, background-color 1s ease, box-shadow 1s ease, text-shadow 1s ease';
     hireBtn.style.color = newColor;
     hireBtn.style.borderColor = newColor;
     hireBtn.style.textShadow = `0 0 6px ${newColor}`;
-    hireBtn.style.background = 'transparent';
-    hireBtn.style.boxShadow = 'none';
 
     logo.style.color = newColor;
     logo.style.textShadow = `0 0 8px ${newColor}`;
 
-    profileImage.style.transition = 'box-shadow 1s ease';
+    serviceSlides.forEach(slide => {
+      slide.style.boxShadow = `0 16px 40px ${hexToRgba(newColor, 0.25)}`;
+    });
+
     profileImage.style.boxShadow = `0 0 40px 4px ${newColor}`;
 
-    graphicWrapper.style.transition = 'box-shadow 1s ease, background 1s ease';
-    graphicWrapper.style.boxShadow = `0 0 30px ${newColor}66`;
-    graphicWrapper.style.background = newColor + '1A';
-
-    document.documentElement.style.setProperty('--picked-color', newColor);
+    colorPickerInput.style.backgroundColor = newColor;
 
     selectedColor = newColor;
-    colorPickerInput.style.backgroundColor = newColor;
   }
 
   colorPickerInput.addEventListener('input', e => {
     updateColors(e.target.value);
   });
 
+  // Initialize page and colors and show section from URL hash or default to home
+  window.addEventListener('DOMContentLoaded', () => {
+    updateColors(selectedColor);
+
+    let initialSection = 'home';
+    if (location.hash) {
+      const hashSection = location.hash.substring(1);
+      if (document.getElementById(hashSection)) {
+        initialSection = hashSection;
+      }
+    }
+    showSection(initialSection);
+  });
+
   // Preloader fade out
   const preloader = document.getElementById("preloader");
-  preloader.style.opacity = "1";
-  preloader.style.visibility = "visible";
-  preloader.setAttribute('aria-busy', 'true');
   window.addEventListener("load", () => {
     setTimeout(() => {
       preloader.style.transition = "opacity 0.5s ease, visibility 0.5s ease";
@@ -112,35 +142,27 @@
     }, 1200);
   });
 
-  // Smooth scroll navigation
-  document.querySelectorAll('.nav-links li').forEach(link => {
-    link.addEventListener('click', () => {
-      const id = link.textContent.trim().toLowerCase();
+  // Smooth scroll handled by CSS scroll-behavior but added fallback:
+  document.querySelectorAll('.nav-btn, .hire-btn, .slide-hire-btn').forEach(el => {
+    el.addEventListener('click', e => {
+      e.preventDefault();
+      const href = el.getAttribute('href') || el.dataset.target;
+      if (!href) return;
+      const id = href.startsWith('#') ? href.substring(1) : href;
       const section = document.getElementById(id);
-      if(section) section.scrollIntoView({behavior:'smooth'});
+      if (section) {
+        showSection(id);
+        window.history.pushState(null, '', '#'+id);
+      }
     });
   });
 
-  // Hire me button smooth scroll or alert
-  hireBtn.addEventListener('click', () => {
-    const contactSection = document.getElementById('contact');
-    if(contactSection){
-      contactSection.scrollIntoView({behavior:'smooth'});
-    } else {
-      alert("Thanks for your interest! Let's connect.");
-    }
-  });
-
-  // Social icons scale ripple
-  socialIcons.forEach(icon => {
+  // Social icons scale ripple on click
+  document.querySelectorAll('.social-icons i').forEach(icon => {
     icon.addEventListener('click', () => {
       icon.style.transform = "scale(1.4)";
       setTimeout(() => icon.style.transform = "scale(1)", 300);
     });
   });
 
-  // Initialize theme color on load
-  window.addEventListener('DOMContentLoaded', () => {
-    updateColors(selectedColor);
-  });
 })();
