@@ -29,12 +29,21 @@ document.querySelectorAll('.social-icons i').forEach(icon => {
   });
 });
 
-// Optional: Dark mode toggle logic (if you want a button for it later)
-let isDark = true;
-function toggleTheme() {
-  document.body.classList.toggle('dark-mode', isDark);
-  isDark = !isDark;
-}
+// Color changing system
+document.querySelectorAll('.color-option').forEach(option => {
+  option.addEventListener('click', () => {
+    const newColor = option.getAttribute('data-color');
+    const highlightElements = document.querySelectorAll('.highlight');
+
+    highlightElements.forEach(el => {
+      el.style.transition = 'color 0.5s ease';
+      el.style.color = 'transparent'; // Fade out
+      setTimeout(() => {
+        el.style.color = newColor; // Change to new color
+      }, 500);
+    });
+  });
+});
 
 // Hide preloader after everything loads
 window.addEventListener("load", () => {
