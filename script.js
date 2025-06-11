@@ -1,19 +1,7 @@
 (() => {
   const nav = document.querySelector('.nav');
-  const colorPickerBtn = nav.querySelector('.color-picker-button');
-  const colorCircle = colorPickerBtn.querySelector('.color-picker-circle');
-
-  const modalBackdrop = document.querySelector('.color-picker-modal-backdrop');
-  const modalColorInput = modalBackdrop.querySelector('input[type="color"]');
-  const cancelBtn = modalBackdrop.querySelector('.btn:contains("Cancel"), .btn:nth-child(1)');
-  const applyBtn = modalBackdrop.querySelector('.btn:contains("Apply"), .btn:nth-child(2)');
-
-  let selectedColor = '#ff1f1f';
-
-  // Replace :contains fallback with explicit selectors:
-  // Because :contains is not standard in document.querySelector, use ids for buttons instead or select by order
-  const cancelButton = document.getElementById('cancelPickerButton') || cancelBtn;
-  const applyButton = document.getElementById('applyPickerButton') || applyBtn;
+  const colorPickerInput = nav.querySelector('.color-picker');
+  let selectedColor = colorPickerInput.value || '#ff1f1f';
 
   // Utility for hex to rgba conversion
   function hexToRgba(hex, alpha = 1) {
@@ -40,84 +28,68 @@
     p.addEventListener('animationend', () => p.remove());
   }
 
-  // Animate simultaneous fade out/in letter by letter
-  async function animateColorChange(elemList, newColor, oldColor) {
-    elemList.forEach(el => {
-      if (!el.dataset.originalText) {
-        el.dataset.originalText = el.textContent;
-      }
-      const chars = el.dataset.originalText.split('');
-      el.innerHTML = '';
-      chars.forEach(ch => {
-        const span = document.createElement('span');
-        span.textContent = ch;
-        span.style.color = oldColor;
-        el.appendChild(span);
-      });
+  // Smooth simultaneous fade out/in animation using opacity and color for all highlight elements
+  async function animateColorChange(elems, newColor, oldColor) {
+    elems.forEach(el => {
+      el.style.transition = 'color 1.2s ease, text-shadow 1.2s ease';
+      el.style.color = oldColor;
+      el.style.textShadow = `0 0 6px ${oldColor}`;
+      el.style.opacity = '1';
     });
+    // Fade out + vanish particles simultaneously
+    const navRect = nav.getBoundingClientRect();
+    elems.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      for (let i = 0; i < 6; i++) {
+        const x = rect.left + Math.random() * rect.width - navRect.left;
+        const y = rect.top + Math.random() * rect.height - navRect.top;
+        createParticle(x, y, nav, oldColor);
+      }
+      el.style.opacity = '0';
+    });
+    // Wait fade out duration
+    await new Promise(r => setTimeout(r, 900));
 
-    const spansList = elemList.flatMap(el => Array.from(el.querySelectorAll('span')));
-    const totalLetters = spansList.length;
-
-    let delay = 0;
-
-    for(let i=0; i<totalLetters; i++){
-      const span = spansList[i];
-      setTimeout(() => {
-        span.style.transition = 'color 0.4s ease';
-        span.style.color = 'transparent';
-      }, delay);
-      setTimeout(() => {
-        span.style.color = newColor;
-      }, delay + 400);
-      delay += 70;
-    }
-
-    await new Promise(r => setTimeout(r, delay + 500));
-    elemList.forEach(el => {
-      el.textContent = el.dataset.originalText;
+    // Change color while transparent
+    elems.forEach(el => {
       el.style.color = newColor;
       el.style.textShadow = `0 0 6px ${newColor}`;
     });
+
+    // Fade in new color
+    elems.forEach(el => {
+      el.style.opacity = '1';
+    });
+    // Wait fade in duration
+    await new Promise(r => setTimeout(r, 900));
   }
 
   async function updateColors(newColor) {
-    if(newColor === selectedColor) return;
-
-    const highlightEls = [...document.querySelectorAll('.highlight')];
+    if (newColor === selectedColor) return;
+    const highlights = [...document.querySelectorAll('.highlight')];
     const socialIcons = [...document.querySelectorAll('.social-icons i')];
     const hireBtn = document.querySelector('.hire-btn');
-    const thunderSvg = document.querySelector('.thunder-svg');
+    const thunderSvg = document.querySelector('.progress-ring .progress').parentElement.parentElement.querySelector('.thunder-svg');
     const progressCircle = document.querySelector('.progress-ring .progress');
     const profileGlow = document.querySelector('.profile-glow');
     const logo = document.querySelector('.logo');
 
-    highlightEls.forEach(el => {
-      const rect = el.getBoundingClientRect();
-      const navRect = nav.getBoundingClientRect();
-      for(let i=0; i<5; i++){
-        const x = rect.left + Math.random()*rect.width - navRect.left;
-        const y = rect.top + Math.random()*rect.height - navRect.top;
-        createParticle(x, y, nav, selectedColor);
-      }
-    });
+    await animateColorChange(highlights, newColor, selectedColor);
 
-    await animateColorChange(highlightEls, newColor, selectedColor);
-
-    socialIcons.forEach(icon=>{
-      icon.style.transition = 'color 0.6s ease, text-shadow 0.6s ease';
+    socialIcons.forEach(icon => {
+      icon.style.transition = 'color 1.2s ease, text-shadow 1.2s ease';
       icon.style.color = newColor;
       icon.style.textShadow = `0 0 10px ${newColor}`;
     });
 
-    hireBtn.style.transition = 'color 0.6s ease, border-color 0.6s ease, background-color 0.6s ease, box-shadow 0.6s ease, text-shadow 0.6s ease';
-    if(hireBtn.matches(':hover')){
+    hireBtn.style.transition = 'color 1.2s ease, border-color 1.2s ease, background-color 1.2s ease, box-shadow 1.2s ease, text-shadow 1.2s ease';
+    if (hireBtn.matches(':hover')) {
       hireBtn.style.background = newColor;
       hireBtn.style.color = '#000';
       hireBtn.style.borderColor = newColor;
       hireBtn.style.textShadow = 'none';
       hireBtn.style.boxShadow = `0 0 15px ${newColor}`;
-    } else{
+    } else {
       hireBtn.style.color = newColor;
       hireBtn.style.borderColor = newColor;
       hireBtn.style.background = 'transparent';
@@ -125,49 +97,37 @@
       hireBtn.style.boxShadow = 'none';
     }
 
-    thunderSvg.style.filter = `drop-shadow(0 0 25px ${newColor})`;
-    thunderSvg.style.animation = 'none';
-    setTimeout(() => { thunderSvg.style.animation = null; }, 20);
+    if (thunderSvg) {
+      thunderSvg.style.filter = `drop-shadow(0 0 25px ${newColor})`;
+      thunderSvg.style.transition = 'filter 1.2s ease';
+    }
 
-    if(progressCircle){
+    if (progressCircle) {
       progressCircle.style.stroke = newColor;
+      progressCircle.style.transition = 'stroke 1.2s ease';
       progressCircle.style.filter = `drop-shadow(0 0 6px ${newColor})`;
     }
 
-    profileGlow.style.background = `radial-gradient(circle, ${hexToRgba(newColor, 0.3)} 0%, transparent 70%)`;
-    logo.style.color = newColor;
-    logo.style.textShadow = `0 0 8px ${newColor}`;
+    if (profileGlow) {
+      profileGlow.style.background = `radial-gradient(circle, ${hexToRgba(newColor, 0.3)} 0%, transparent 70%)`;
+      profileGlow.style.transition = 'background 1.2s ease';
+    }
+
+    if (logo) {
+      logo.style.color = newColor;
+      logo.style.textShadow = `0 0 8px ${newColor}`;
+      logo.style.transition = 'color 1.2s ease, text-shadow 1.2s ease';
+    }
 
     selectedColor = newColor;
-    colorCircle.style.background = newColor;
+    colorPickerInput.style.backgroundColor = newColor;
     document.documentElement.style.setProperty('--picked-color', newColor);
   }
 
-  // Open/close modal
-  colorPickerBtn.addEventListener('click', () => {
-    modalColorInput.value = selectedColor;
-    modalBackdrop.classList.add('show');
-    modalBackdrop.focus();
-  });
-
-  cancelBtn.addEventListener('click', () => {
-    modalBackdrop.classList.remove('show');
-  });
-
-  modalBackdrop.addEventListener('click', e => {
-    if(e.target === modalBackdrop) {
-      modalBackdrop.classList.remove('show');
-    }
-  });
-
-  applyBtn.addEventListener('click', () => {
-    const newColor = modalColorInput.value;
-    updateColors(newColor);
-    modalBackdrop.classList.remove('show');
-  });
-
-  modalColorInput.addEventListener('input', e => {
-    colorCircle.style.background = e.target.value;
+  // Handle color picker input
+  colorPickerInput.addEventListener('input', e => {
+    const val = e.target.value;
+    updateColors(val);
   });
 
   // Preloader fade out
@@ -184,12 +144,12 @@
     }, 1200);
   });
 
-  // Smooth scroll nav links
+  // Smooth scroll for nav links
   document.querySelectorAll('.nav-links li').forEach(link => {
     link.addEventListener('click', () => {
       const id = link.textContent.trim().toLowerCase();
       const section = document.getElementById(id);
-      if(section) section.scrollIntoView({behavior: 'smooth'});
+      if(section) section.scrollIntoView({behavior:'smooth'});
     });
   });
 
@@ -208,7 +168,7 @@
     });
   });
 
-  // Init color on DOM ready
+  // Initialize color on DOM load
   window.addEventListener('DOMContentLoaded', () => {
     updateColors(selectedColor);
   });
