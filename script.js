@@ -1,8 +1,6 @@
 (() => {
   const nav = document.querySelector('.nav');
   const colorPickerInput = nav.querySelector('.color-picker');
-  // Wrap the graphic-wrapper inside a container div called graphic-container in HTML
-  const graphicContainer = document.querySelector('.graphic-container');
   const graphicWrapper = document.querySelector('.graphic-wrapper');
   const profileImage = graphicWrapper.querySelector('.profile-image');
   const heroText = document.querySelector('.hero-text');
@@ -12,22 +10,6 @@
   const socialIcons = [...document.querySelectorAll('.social-icons i')];
 
   let selectedColor = colorPickerInput.value || '#ff1f1f';
-
-  // Create the animated background element dynamically and append inside graphic-container
-  const animatedBackground = document.createElement('div');
-  animatedBackground.classList.add('animated-background');
-  graphicContainer.appendChild(animatedBackground);
-
-  // Mouse enter handler: show animated background
-  graphicWrapper.addEventListener('mouseenter', () => {
-    animatedBackground.classList.add('active');
-  });
-
-  // Mouse leave handler: hide animated background
-  graphicWrapper.addEventListener('mouseleave', () => {
-    // Remove animation class to fade out and stop animation
-    animatedBackground.classList.remove('active');
-  });
 
   function hexToRgba(hex, alpha = 1) {
     const hexClean = hex.replace('#', '');
@@ -106,13 +88,15 @@
     graphicWrapper.style.boxShadow = `0 0 30px ${newColor}66`;
     graphicWrapper.style.background = newColor + '1A';
 
-    animatedBackground.style.boxShadow = `0 0 50px 4px ${newColor}aa`;
-    animatedBackground.style.background = newColor + '44';
+    document.documentElement.style.setProperty('--picked-color', newColor);
 
     selectedColor = newColor;
     colorPickerInput.style.backgroundColor = newColor;
-    document.documentElement.style.setProperty('--picked-color', newColor);
   }
+
+  colorPickerInput.addEventListener('input', e => {
+    updateColors(e.target.value);
+  });
 
   // Preloader fade out
   const preloader = document.getElementById("preloader");
@@ -137,7 +121,7 @@
     });
   });
 
-  // Hire me button scroll or alert
+  // Hire me button smooth scroll or alert
   hireBtn.addEventListener('click', () => {
     const contactSection = document.getElementById('contact');
     if(contactSection){
@@ -147,7 +131,7 @@
     }
   });
 
-  // Social icons ripple effect
+  // Social icons scale ripple
   socialIcons.forEach(icon => {
     icon.addEventListener('click', () => {
       icon.style.transform = "scale(1.4)";
@@ -155,6 +139,7 @@
     });
   });
 
+  // Initialize theme color on load
   window.addEventListener('DOMContentLoaded', () => {
     updateColors(selectedColor);
   });
