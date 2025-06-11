@@ -3,7 +3,9 @@
   const sections = document.querySelectorAll('.page-section');
   const hireBtn = document.querySelector('.hire-btn');
   const servicesCarousel = document.querySelector('.services-carousel');
-  const serviceSlides = document.querySelectorAll('.service-slide');
+  const singleSlide = servicesCarousel.querySelector('.single-slide');
+  const expandedCards = servicesCarousel.querySelector('.expanded-cards');
+  const serviceSlides = servicesCarousel.querySelectorAll('.service-slide.card');
   const highlightEls = [...document.querySelectorAll('.highlight')];
   const socialIcons = [...document.querySelectorAll('.social-icons i')];
   const graphicWrapper = document.querySelector('.graphic-wrapper');
@@ -13,7 +15,6 @@
 
   let selectedColor = colorPickerInput.value || '#ff1f1f';
 
-  // Show only the target section, hide others
   function showSection(targetId) {
     sections.forEach(section => {
       if (section.id === targetId) {
@@ -26,57 +27,55 @@
       }
     });
     navButtons.forEach(btn => {
-      const expanded = btn.dataset.target === targetId;
-      btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      btn.setAttribute('aria-expanded', btn.dataset.target === targetId ? 'true' : 'false');
     });
-    // Reset Services carousel fan out when not on services page
+
     if (targetId !== 'services') {
       collapseServicesCarousel();
-      // Reset active slide
-      serviceSlides.forEach(s => s.classList.remove('active'));
-      if (serviceSlides.length) serviceSlides[0].classList.add('active');
+    } else {
+      collapseServicesCarousel(); // Reset when entering services
     }
   }
 
-  // Collapse services carousel: show only active slide
-  function collapseServicesCarousel() {
-    servicesCarousel.classList.remove('expanded');
-  }
-
-  // Expand services carousel: show fan out grid
   function expandServicesCarousel() {
     servicesCarousel.classList.add('expanded');
+    singleSlide.style.pointerEvents = 'none';
   }
 
-  // Nav button handlers
+  function collapseServicesCarousel() {
+    servicesCarousel.classList.remove('expanded');
+    singleSlide.style.pointerEvents = 'auto';
+  }
+
   navButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       const targetId = btn.dataset.target;
       showSection(targetId);
-      window.history.pushState(null, '', `#${targetId}`);
+      history.pushState(null, '', `#${targetId}`);
     });
   });
 
-  // Hire me button navigates to services section
   hireBtn.addEventListener('click', () => {
     showSection('services');
-    window.history.pushState(null, '', '#services');
+    history.pushState(null, '', '#services');
   });
 
-  // Hover on services carousel to fan out slides
-  servicesCarousel.addEventListener('mouseenter', expandServicesCarousel);
+  // Services: on hover first slide, expand
+  singleSlide.addEventListener('mouseenter', expandServicesCarousel);
   servicesCarousel.addEventListener('mouseleave', collapseServicesCarousel);
 
-  // Click on service slide to make active and collapse fan out
+  // Clicking a slide in expanded shows it as single slide
   serviceSlides.forEach(slide => {
     slide.addEventListener('click', () => {
+      // Mark clicked as active - could highlight or style differently
       serviceSlides.forEach(s => s.classList.remove('active'));
       slide.classList.add('active');
       collapseServicesCarousel();
+      // Also update singleSlide content and alt/title dynamically if desired
     });
   });
 
-  function hexToRgba(hex, alpha=1) {
+  function hexToRgba(hex, alpha = 1) {
     const hexClean = hex.replace('#', '');
     const bigint = parseInt(hexClean, 16);
     const r = (bigint >> 16) & 255;
@@ -125,7 +124,7 @@
 
     let initialSection = 'home';
     if (location.hash) {
-      const hashSection = location.hash.substring(1);
+      let hashSection = location.hash.substring(1);
       if (document.getElementById(hashSection)) {
         initialSection = hashSection;
       }
@@ -133,7 +132,6 @@
     showSection(initialSection);
   });
 
-  // Preloader fade out
   const preloader = document.getElementById("preloader");
   window.addEventListener("load", () => {
     setTimeout(() => {
@@ -144,7 +142,6 @@
     }, 1200);
   });
 
-  // Social icons scale effect on click
   document.querySelectorAll('.social-icons i').forEach(icon => {
     icon.addEventListener('click', () => {
       icon.style.transform = "scale(1.4)";
