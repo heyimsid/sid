@@ -6,58 +6,57 @@
   <title>Sid | Portfolio</title>
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
 <body>
 
-  <div class="background-overlay"></div>
-
-  <header id="main-header">
-    <!-- Changed class to header-profile-photo -->
+  <header id="main-header" class="glass">
     <img src="mypic.jpg" alt="Sid Profile" class="header-profile-photo" />
     <h1 class="logo">Sid</h1>
     <nav>
       <a href="#about">About</a>
-      <a href="#passion">Passion</a>
-      <a href="#cars">Cars</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
 
-  <section id="about">
-    <h2>About Me</h2>
-    <p>I'm pursuing B.Tech in Computer Science at College of Engineering Trikaripur.</p>
-  </section>
+  <main>
+    <section id="about" class="section glass">
+      <h2>About Me</h2>
+      <p>I'm a B.Tech Computer Science student at College of Engineering Trikaripur, passionate about solving problems with code and staying on the edge of emerging tech.</p>
+    </section>
 
-  <section id="passion">
-    <h2>My Passions</h2>
-    <ul>
-      <li>Artificial Intelligence</li>
-      <li>Technology</li>
-      <li>Cyber Security</li>
-      <li>Automotive</li>
-    </ul>
-  </section>
-
-  <section id="cars">
-    <h2>Featured Car</h2>
-<img src="gtr.jpg" alt="Nissan GTR" class="car-image" />
-
-    <div class="car-details">
-      <h3>Model: Nissan GT-R</h3>
+    <section id="skills" class="section glass">
+      <h2>Skills & Interests</h2>
       <ul>
-        <li>Engine: 3.8L V6</li>
-        <li>Horsepower: 565 HP</li>
-        <li>Price: ₹1.6 Cr</li>
+        <li>Artificial Intelligence</li>
+        <li>Cyber Security</li>
+        <li>Web Development</li>
+        <li>Cloud Computing</li>
       </ul>
-    </div>
-  </section>
+    </section>
 
-  <section id="contact">
-    <h2>Contact Me</h2>
-    <p>Email: sidneo510@gmail.com</p> 
-  </section>
+    <section id="projects" class="section glass">
+      <h2>Projects</h2>
+      <p>Coming soon: a curated list of my personal and academic projects in AI, web, and cyber security.</p>
+    </section>
 
-  <script src="script.js"></script>
+    <section id="contact" class="section glass">
+     
+  <h2>Contact Me</h2>
+  <p>Email: <a href="mailto:sidneo510@gmail.com">sidneo510@gmail.com</a></p>
+  
+  <h3>Send an Enquiry</h3>
+  <form class="enquiry-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+    <input type="text" name="name" placeholder="Your Name" required />
+    <input type="email" name="email" placeholder="Your Email" required />
+    <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+    <button type="submit">Send Message</button>
+  </form>
+</section>
+
+    </section>
+  </main>
+
 </body>
 </html>
