@@ -36,3 +36,12 @@ function toggleTheme() {
   document.body.classList.toggle('dark-mode', isDark);
   isDark = !isDark;
 }
+
+// Hide preloader after everything loads
+window.addEventListener("load", () => {
+  const preloader = document.getElementById("preloader");
+  setTimeout(() => {
+    preloader.style.opacity = "0";
+    preloader.style.visibility = "hidden";
+  }, 1000); // Fade out after ring completes
+});
