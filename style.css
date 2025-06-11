@@ -90,23 +90,25 @@ header {
   padding: 50px 60px;
   gap: 60px;
   flex-wrap: wrap;
+  position: relative; /* Container needed for absolute children */
+}
+
+.graphic-container {
+  position: relative;
+  width: 280px;
+  height: 280px;
 }
 
 .graphic-wrapper {
   position: relative;
   width: 280px;
   height: 280px;
-  margin: 0 auto;
   border-radius: 30px;
   background: rgba(255,31,31,0.1);
   box-shadow: 0 0 30px rgba(255,31,31,0.3);
   transform-style: preserve-3d;
-  will-change: transform;
-  transition:
-    box-shadow 1s ease,
-    background 1s ease,
-    transform 0.1s linear;
-  z-index: 1;
+  z-index: 10; /* On top */
+  transition: box-shadow 1s ease, background 1s ease;
 }
 
 .profile-image {
@@ -116,44 +118,61 @@ header {
   border-radius: 24px;
   box-shadow: 0 0 40px 4px var(--picked-color, #ff1f1f);
   position: relative;
-  z-index: 5;
   backface-visibility: hidden;
   transform-style: preserve-3d;
   transition: box-shadow 1s ease;
-  will-change: transform;
 }
 
-/* Rotation animation keyframe */
-@keyframes rotate360 {
-  from {
-    transform: rotateY(0deg);
-  }
-  to {
-    transform: rotateY(360deg);
-  }
-}
-
-/* Floating clone style */
-.floating-clone {
-  position: fixed !important;
+/* This animated background will travel and revolve behind the graphic-wrapper */
+.animated-background {
+  position: absolute;
   width: 280px;
   height: 280px;
   border-radius: 30px;
   background: rgba(255,31,31,0.15);
-  box-shadow: 0 0 40px rgba(255,31,31,0.8);
+  box-shadow: 0 0 50px rgba(255,31,31,0.6);
+  top: 0;
+  left: 0;
   pointer-events: none;
-  will-change: transform, left, top;
-  z-index: 2;
-  user-select: none;
+  opacity: 0;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  transition: opacity 0.3s ease;
+  z-index: 5; /* behind the graphic-wrapper */
 }
 
-/* Text and content layering */
+/* When active, fully visible with animation */
+.animated-background.active {
+  opacity: 1;
+  animation: travelRevolve 10s linear infinite;
+}
+
+/* Keyframes to travel in elliptical path and revolve */
+@keyframes travelRevolve {
+  0% {
+    transform: translate(0px, 0px) rotateY(0deg);
+  }
+  25% {
+    transform: translate(60px, 20px) rotateY(90deg);
+  }
+  50% {
+    transform: translate(0px, 40px) rotateY(180deg);
+  }
+  75% {
+    transform: translate(-60px, 20px) rotateY(270deg);
+  }
+  100% {
+    transform: translate(0px, 0px) rotateY(360deg);
+  }
+}
+
+/* Ensure text overlays container */
 .hero-text, .nav, .social-icons, .hire-btn {
   position: relative;
-  z-index: 10;
+  z-index: 20;
 }
 
-/* Particle and preloader styles below (unchanged) */
+/* Particle and preloader styles unchanged from previous versions */
 .loader-container {
   position: relative;
   width: 120px;
@@ -183,4 +202,3 @@ header {
     transform: translate(var(--dx), var(--dy)) scale(0);
   }
 }
-
