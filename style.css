@@ -101,13 +101,11 @@ header {
   background: rgba(255,31,31,0.1);
   box-shadow: 0 0 30px rgba(255,31,31,0.3);
   transform-style: preserve-3d;
-  will-change: transform, left, top;
+  will-change: transform;
   transition:
     box-shadow 1s ease,
     background 1s ease,
-    transform 0.1s linear,
-    left 1s ease,
-    top 1s ease;
+    transform 0.1s linear;
   z-index: 1;
 }
 
@@ -125,7 +123,7 @@ header {
   will-change: transform;
 }
 
-/* Rotation keyframe */
+/* Rotation animation keyframe */
 @keyframes rotate360 {
   from {
     transform: rotateY(0deg);
@@ -135,25 +133,27 @@ header {
   }
 }
 
-/* .traveling is toggled in JS to trigger animations & positioning */
-.graphic-wrapper.traveling {
-  position: fixed;
-  z-index: 2;
-  box-shadow: 0 0 40px rgba(255,31,31,0.8);
+/* Floating clone style */
+.floating-clone {
+  position: fixed !important;
+  width: 280px;
+  height: 280px;
+  border-radius: 30px;
   background: rgba(255,31,31,0.15);
+  box-shadow: 0 0 40px rgba(255,31,31,0.8);
+  pointer-events: none;
+  will-change: transform, left, top;
+  z-index: 2;
+  user-select: none;
 }
 
-.graphic-wrapper.traveling .profile-image {
-  animation: rotate360 4s linear infinite;
-}
-
-/* Ensure text overlays container */
+/* Text and content layering */
 .hero-text, .nav, .social-icons, .hire-btn {
   position: relative;
   z-index: 10;
 }
 
-/* Particle and preloader styles (unchanged below…) */
+/* Particle and preloader styles below (unchanged) */
 .loader-container {
   position: relative;
   width: 120px;
