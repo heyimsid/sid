@@ -1,70 +1,516 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sidharth - CS Engineer</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&amp;display=swap" rel="stylesheet" />
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sidharth - CS Engineer</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+  /* Reset and base */
+  body {
+    margin: 0;
+    padding: 0;
+    background: #000;
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+  }
+  header {
+    background: #000;
+  }
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 60px;
+    gap: 16px;
+    flex-wrap: nowrap;
+    position: relative;
+  }
+  .logo {
+    color: #ff1f1f;
+    font-size: 1.8rem;
+    text-shadow: 0 0 8px #ff1f1f;
+    flex-shrink: 0;
+  }
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    flex-grow: 1;
+    justify-content: center;
+  }
+  .nav-links li {
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    transition: 0.3s;
+  }
+  .nav-links li:hover {
+    color: #ff1f1f;
+    text-shadow: 0 0 5px #ff1f1f;
+  }
+  /* Color picker container */
+  .color-picker-container {
+    background-color: #111;
+    border-radius: 8px;
+    padding: 4px 8px;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .color-picker {
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    border: none;
+    padding: 0;
+    background: transparent;
+    appearance: none;
+    -webkit-appearance: none;
+    border-radius: 50%;
+    outline-offset: 2px;
+    transition: box-shadow 0.3s ease;
+  }
+  .color-picker::-webkit-color-swatch-wrapper {
+    padding: 0;
+    border-radius: 50%;
+  }
+  .color-picker::-webkit-color-swatch {
+    border-radius: 50%;
+  }
+  .color-picker:focus {
+    box-shadow: 0 0 6px 3px rgba(255, 31, 31, 0.7);
+    outline: none;
+  }
+
+  .hero {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 60px;
+    gap: 60px;
+    flex-wrap: wrap;
+  }
+  .graphic-wrapper {
+    position: relative;
+    width: 350px;
+    height: 500px;
+  }
+  .thunder-svg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 25px #ff1f1f);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    animation: pulse-glow 2s infinite ease-in-out;
+  }
+  .profile-image {
+    position: absolute;
+    top: 60%;
+    left: 60%;
+    width: 100%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    object-fit: contain;
+    animation: float 4s ease-in-out infinite;
+  }
+  .hero-text {
+    max-width: 500px;
+    z-index: 3;
+  }
+  .hero-text h2 {
+    font-size: 2.5rem;
+  }
+  .hero-text h3 {
+    font-size: 2rem;
+    margin-top: 10px;
+  }
+  .highlight {
+    color: #ff1f1f;
+    text-shadow: 0 0 6px #ff1f1f;
+    transition: color 0.6s ease, text-shadow 0.6s ease;
+  }
+  .hero-text p {
+    margin-top: 20px;
+    color: #ccc;
+    line-height: 1.6;
+  }
+  .social-icons {
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+    font-size: 1.5rem;
+  }
+  .social-icons i {
+    color: #ff1f1f;
+    cursor: pointer;
+    transition: transform 0.3s, text-shadow 0.3s, color 0.6s ease;
+  }
+  .social-icons i:hover {
+    transform: scale(1.2);
+    text-shadow: 0 0 10px currentColor;
+  }
+  .hire-btn {
+    margin-top: 30px;
+    padding: 10px 25px;
+    font-size: 1rem;
+    color: #ff1f1f;
+    background: transparent;
+    border: 2px solid #ff1f1f;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-shadow: 0 0 6px #ff1f1f;
+  }
+  .hire-btn:hover {
+    background: #ff1f1f;
+    color: #000;
+    box-shadow: 0 0 15px #ff1f1f;
+    border-color: #ff1f1f;
+  }
+  @keyframes pulse-glow {
+    0% {
+      filter: drop-shadow(0 0 20px #ff1f1f);
+    }
+    50% {
+      filter: drop-shadow(0 0 45px #ff1f1f);
+    }
+    100% {
+      filter: drop-shadow(0 0 20px #ff1f1f);
+    }
+  }
+  @keyframes float {
+    0% {
+      transform: translate(-50%, -50%) translateY(0);
+    }
+    50% {
+      transform: translate(-50%, -50%) translateY(-10px);
+    }
+    100% {
+      transform: translate(-50%, -50%) translateY(0);
+    }
+  }
+  #preloader {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+  }
+  .loader-container {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    text-align: center;
+  }
+  .loader-container p {
+    color: #ff1f1f;
+    margin-top: 10px;
+    font-family: 'Montserrat', sans-serif;
+    text-shadow: 0 0 8px #ff1f1f;
+  }
+  .bolt {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    color: #ff1f1f;
+    animation: flicker 1.5s infinite;
+    text-shadow: 0 0 10px #ff1f1f, 0 0 20px #ff1f1f;
+  }
+  @keyframes flicker {
+    0%, 100% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+      opacity: 0.7;
+      transform: translate(-50%, -50%) scale(1.2);
+    }
+  }
+  .progress-ring circle {
+    fill: none;
+    stroke-width: 8;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+  }
+  .progress-ring .bg {
+    stroke: rgba(255, 255, 255, 0.1);
+  }
+  .progress-ring .progress {
+    stroke: #ff1f1f;
+    stroke-dasharray: 339.292;
+    stroke-dashoffset: 339.292;
+    animation: load-ring 3s ease-out forwards;
+    filter: drop-shadow(0 0 6px #ff1f1f);
+  }
+  @keyframes load-ring {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 1;
+    will-change: transform, opacity;
+    animation: particle-fade-move 800ms forwards ease-out;
+  }
+  @keyframes particle-fade-move {
+    to {
+      opacity: 0;
+      transform: translate(var(--dx), var(--dy)) scale(0);
+    }
+  }
+</style>
 </head>
 <body>
 
-  <header>
-    <div class="nav">
-      <h1 class="logo">Sid</h1>
-      <ul class="nav-links">
-        <li>Home</li>
-        <li>Services</li>
-        <li>Skills</li>
-        <li>Education</li>
-        <li>Enqueries</li>
-        <li>Contact</li>
-      </ul>
-      <!-- Added the color picker container here, minimal impact on layout -->
-      <div class="color-picker-container" aria-label="Select highlight color">
-        <input type="color" class="color-picker" aria-label="Color picker for highlight color" value="#ff1f1f" />
+<header>
+  <div class="nav">
+    <h1 class="logo">Sid</h1>
+    <ul class="nav-links" role="list">
+      <li>Home</li>
+      <li>Services</li>
+      <li>Skills</li>
+      <li>Education</li>
+      <li>Enqueries</li>
+      <li>Contact</li>
+    </ul>
+    <div class="color-picker-container" aria-label="Select highlight color">
+      <input type="color" class="color-picker" aria-label="Color picker for highlight color" value="#ff1f1f" />
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="graphic-wrapper">
+    <img src="thunderbolt.svg" class="thunder-svg" alt="Thunderbolt" />
+    <div class="profile-glow"></div>
+    <img src="sidai.png" class="profile-image" alt="Your Image" />
+  </div>
+
+  <div class="hero-text">
+    <h2>Hey, It's <span class="highlight" data-base-color="#ff1f1f">Sid</span></h2>
+    <h3>I'm a <span class="highlight" data-base-color="#ff1f1f">Cs Engineer</span></h3>
+    <p>
+      a passionate B.Tech Computer Science student at the College of Engineering Trikaripur. I love exploring the world of technology, especially in areas like AI, cybersecurity, and web development. I'm always eager to learn, solve real-world problems with code, and create meaningful digital experiences.
+    </p>
+
+    <div class="social-icons">
+      <i class="fab fa-linkedin" tabindex="0" role="button" aria-label="LinkedIn"></i>
+      <i class="fab fa-github" tabindex="0" role="button" aria-label="GitHub"></i>
+      <i class="fas fa-times" tabindex="0" role="button" aria-label="Close"></i>
+      <i class="fab fa-instagram" tabindex="0" role="button" aria-label="Instagram"></i>
+    </div>
+
+    <div id="preloader" aria-live="polite" aria-busy="true" role="alert">
+      <div class="loader-container">
+        <svg class="progress-ring" width="120" height="120" aria-hidden="true" role="img" aria-label="Loading progress">
+          <circle class="bg" cx="60" cy="60" r="54" />
+          <circle class="progress" cx="60" cy="60" r="54" />
+        </svg>
+        <div class="bolt" aria-hidden="true">⚡</div>
+        <p>Loading...</p>
       </div>
     </div>
-  </header>
 
-  <section class="hero">
-    <div class="graphic-wrapper">
-      <img src="thunderbolt.svg" class="thunder-svg" alt="Thunderbolt" />
-      <div class="profile-glow"></div>
-      <img src="sidai.png" class="profile-image" alt="Your Image" />
-    </div>
+    <button class="hire-btn">Hire me</button>
+  </div>
+</section>
 
-    <div class="hero-text">
-      <h2>Hey, It's <span class="highlight" data-base-color="#ff1f1f">Sid</span></h2>
-      <h3>I'm a <span class="highlight" data-base-color="#ff1f1f">Cs Engineer</span></h3>
-      <p>
-        a passionate B.Tech Computer Science student at the College of Engineering Trikaripur. I love exploring the world of technology, especially in areas like AI, cybersecurity, and web development. I'm always eager to learn, solve real-world problems with code, and create meaningful digital experiences.
-      </p>
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<script>
+  // Smooth scroll to sections (if IDs are added later)
+  document.querySelectorAll('.nav-links li').forEach(link => {
+    link.addEventListener('click', () => {
+      const sectionId = link.textContent.trim().toLowerCase();
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
 
-      <div class="social-icons">
-        <i class="fab fa-linkedin" tabindex="0" role="button" aria-label="LinkedIn"></i>
-        <i class="fab fa-github" tabindex="0" role="button" aria-label="GitHub"></i>
-        <i class="fas fa-times" tabindex="0" role="button" aria-label="Close"></i>
-        <i class="fab fa-instagram" tabindex="0" role="button" aria-label="Instagram"></i>
-      </div>
+  // Hire Me button click
+  document.querySelector('.hire-btn').addEventListener('click', () => {
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      alert("Thanks for your interest! Let's connect.");
+    }
+  });
 
-      <div id="preloader" aria-live="polite" aria-busy="true" role="alert">
-        <div class="loader-container">
-          <svg class="progress-ring" width="120" height="120" aria-hidden="true" role="img" aria-label="Loading progress">
-            <circle class="bg" cx="60" cy="60" r="54" />
-            <circle class="progress" cx="60" cy="60" r="54" />
-          </svg>
-          <div class="bolt" aria-hidden="true">⚡</div>
-          <p>Loading...</p>
-        </div>
-      </div>
+  // Ripple animation for social icons
+  document.querySelectorAll('.social-icons i').forEach(icon => {
+    icon.addEventListener('click', () => {
+      icon.style.transform = "scale(1.4)";
+      setTimeout(() => {
+        icon.style.transform = "scale(1)";
+      }, 300);
+    });
+  });
 
-      <button class="hire-btn">Hire me</button>
-    </div>
-  </section>
+  // Preloader handling
+  const preloader = document.getElementById("preloader");
+  preloader.style.opacity = "1";
+  preloader.style.visibility = "visible";
+  preloader.setAttribute('aria-busy', 'true');
 
-  <script src="script.js"></script>
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      preloader.style.transition = "opacity 0.6s ease, visibility 0.6s ease";
+      preloader.style.opacity = "0";
+      preloader.style.visibility = "hidden";
+      preloader.setAttribute('aria-busy', 'false');
+    }, 1200);
+  });
+
+  // Color picker and highlight system
+  const colorPickerInput = document.querySelector('.color-picker');
+  const nav = document.querySelector('.nav');
+  let selectedColor = colorPickerInput.value || '#ff1f1f';
+
+  // util to convert hex to rgba
+  function hexToRgba(hex, alpha = 1) {
+    const hexClean = hex.replace('#', '');
+    const bigint = parseInt(hexClean, 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+    return `rgba(${r},${g},${b},${alpha})`;
+  }
+
+  // particle effect create
+  function createParticle(x, y, parent, baseColor) {
+    const particle = document.createElement('div');
+    particle.classList.add('particle');
+    particle.style.backgroundColor = baseColor;
+    particle.style.left = `${x}px`;
+    particle.style.top = `${y}px`;
+
+    const dx = (Math.random() - 0.5) * 100 + 'px';
+    const dy = (Math.random() - 0.5) * 100 + 'px';
+
+    particle.style.setProperty('--dx', dx);
+    particle.style.setProperty('--dy', dy);
+
+    parent.appendChild(particle);
+
+    particle.addEventListener('animationend', () => {
+      particle.remove();
+    });
+  }
+
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  async function updateHighlightColors(newColor) {
+    if (newColor === selectedColor) return;
+
+    const allHighlights = [...document.querySelectorAll('.highlight')];
+
+    // vanish phase
+    for (const el of allHighlights) {
+      const rect = el.getBoundingClientRect();
+      const navRect = nav.getBoundingClientRect();
+      for (let i = 0; i < 5; i++) {
+        const x = rect.left + Math.random() * rect.width - navRect.left;
+        const y = rect.top + Math.random() * rect.height - navRect.top;
+        createParticle(x, y, nav, selectedColor);
+      }
+      el.style.transition = 'color 0.5s ease, text-shadow 0.5s ease';
+      el.style.color = 'transparent';
+      el.style.textShadow = 'none';      
+      await sleep(100);
+    }
+
+    await sleep(600);
+
+    // paint phase
+    for (const el of allHighlights) {
+      el.style.transition = 'color 0.4s ease, text-shadow 0.4s ease';
+      el.style.color = newColor;
+      el.style.textShadow = `0 0 6px ${newColor}`;
+      await sleep(150);
+    }
+
+    // social icons
+    document.querySelectorAll('.social-icons i').forEach(icon => {
+      icon.style.transition = 'color 0.6s ease, text-shadow 0.6s ease';
+      icon.style.color = newColor;
+      icon.style.textShadow = `0 0 10px ${newColor}`;
+    });
+
+    // hire button
+    const hireBtn = document.querySelector('.hire-btn');
+    hireBtn.style.transition = 'color 0.6s ease, border-color 0.6s ease, background-color 0.6s ease, box-shadow 0.6s ease, text-shadow 0.6s ease';
+    if (hireBtn.matches(':hover')) {
+      hireBtn.style.background = newColor;
+      hireBtn.style.color = '#000';
+      hireBtn.style.borderColor = newColor;
+      hireBtn.style.textShadow = 'none';
+      hireBtn.style.boxShadow = `0 0 15px ${newColor}`;
+    } else {
+      hireBtn.style.color = newColor;
+      hireBtn.style.borderColor = newColor;
+      hireBtn.style.background = 'transparent';
+      hireBtn.style.textShadow = `0 0 6px ${newColor}`;
+      hireBtn.style.boxShadow = 'none';
+    }
+
+    // thunderbolt glow and ring stroke
+    const thunderSvg = document.querySelector('.thunder-svg');
+    thunderSvg.style.filter = `drop-shadow(0 0 25px ${newColor})`;
+    thunderSvg.style.animation = 'none';
+    setTimeout(() => {
+      thunderSvg.style.animation = null;
+    }, 20);
+
+    const progressCircle = document.querySelector('.progress-ring .progress');
+    if (progressCircle) {
+      progressCircle.style.stroke = newColor;
+      progressCircle.style.filter = `drop-shadow(0 0 6px ${newColor})`;
+    }
+
+    // profile glow
+    const profileGlow = document.querySelector('.profile-glow');
+    profileGlow.style.background = `radial-gradient(circle, ${hexToRgba(newColor, 0.3)} 0%, transparent 70%)`;
+
+    // nav logo
+    const logo = document.querySelector('.logo');
+    logo.style.color = newColor;
+    logo.style.textShadow = `0 0 8px ${newColor}`;
+
+    selectedColor = newColor;
+  }
+
+  colorPickerInput.addEventListener('input', (e) => {
+    const newColor = e.target.value;
+    updateHighlightColors(newColor);
+  });
+
+  // Initialize colors on DOMContentLoaded
+  window.addEventListener('DOMContentLoaded', () => {
+    updateHighlightColors(selectedColor);
+  });
+</script>
 </body>
 </html>
 
