@@ -253,3 +253,62 @@ header {
     transform: translate(var(--dx), var(--dy)) scale(0);
   }
 }
+/* Base styles remain mostly unchanged */
+/* ... (Your existing style.css content, as before) ... */
+
+/* Add layering and positioning styles for animation */
+
+.graphic-wrapper {
+  position: relative; /* default */
+  left: auto;
+  top: auto;
+  transition: box-shadow 1s ease, background 1s ease, transform 0.6s ease, left 1s ease, top 1s ease;
+  pointer-events: auto;
+  will-change: transform, left, top;
+  z-index: 1; /* base */
+}
+
+/* While traveling (hovered), elevate z-index so it stays below text but above background */
+.graphic-wrapper.traveling {
+  position: fixed;
+  z-index: 2;
+  /* box-shadow and background on hover as before */
+  box-shadow: 0 0 40px rgba(255,31,31,0.8);
+  background: rgba(255,31,31,0.15);
+}
+
+/* Profile image rotation inherits from wrapper */
+
+.profile-image {
+  transition: box-shadow 1s ease;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  width: 280px;
+  border-radius: 24px;
+  box-shadow: 0 0 40px 4px var(--picked-color, #ff1f1f);
+  will-change: transform;
+}
+
+/* Rotation animation keyframe */
+@keyframes rotate360 {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
+/* While traveling, rotate continuously */
+.graphic-wrapper.traveling .profile-image {
+  animation: rotate360 4s linear infinite;
+}
+
+/* Ensure page text containers have higher z-index to visually appear on top */
+.hero-text, .nav, .social-icons, .hire-btn {
+  position: relative;
+  z-index: 10;
+}
+
+/* Additional helper classes if needed */
+/* ... */
