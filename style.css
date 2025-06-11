@@ -167,9 +167,9 @@ body {
 
 .profile-image {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 60%;
+  top: 90%;
+  left: 80%;
+  width: 700%;
   transform: translate(-50%, -50%);
   z-index: 2;
   object-fit: contain;
