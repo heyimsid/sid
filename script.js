@@ -3,6 +3,7 @@
   const sections = document.querySelectorAll('.page-section');
   const hireBtnHome = document.querySelector('.hire-btn');
   const servicesCarousel = document.querySelector('.services-carousel');
+  const slideHireButtons = document.querySelectorAll('.slide-hire-btn');
   const highlightEls = [...document.querySelectorAll('.highlight')];
   const socialIcons = [...document.querySelectorAll('.social-icons i')];
   const logo = document.querySelector('.logo');
@@ -15,53 +16,67 @@
   const colorPickerInput = document.querySelector('.color-picker');
   let selectedColor = colorPickerInput.value || '#ff1f1f';
 
-  // Manage sections display
-  function showSection(id) {
-    sections.forEach(sec => {
-      if (sec.id === id) sec.classList.add('active');
-      else sec.classList.remove('active');
+  // Show only the specified section, hide others
+  function showSection(targetId) {
+    sections.forEach(section => {
+      if (section.id === targetId) {
+        section.classList.add('active');
+        section.setAttribute('tabindex', '-1');
+        section.focus();
+      } else {
+        section.classList.remove('active');
+        section.setAttribute('tabindex', '-1');
+      }
     });
     navButtons.forEach(btn => {
-      btn.setAttribute('aria-expanded', btn.dataset.target === id ? 'true' : 'false');
+      btn.setAttribute('aria-expanded', btn.dataset.target === targetId ? 'true' : 'false');
     });
-    if (id === 'services') {
+
+    if (targetId !== 'services') {
       collapseServices();
     } else {
       collapseServices();
     }
   }
 
-  // Services carousel collapse & expand
+  // Collapse services carousel to default state (show only intro slide)
   function collapseServices() {
-    // Show only the intro slide, fade in
-    const introSlide = servicesCarousel.querySelector('.intro-slide');
     servicesCarousel.classList.remove('expanded');
+    const introSlide = servicesCarousel.querySelector('.intro-slide');
+    if (introSlide) {
+      introSlide.style.opacity = '1';
+      introSlide.style.pointerEvents = 'auto';
+      introSlide.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+      introSlide.style.transform = 'scale(1)';
+    }
+    // Reset other slides
     servicesCarousel.querySelectorAll('.service-slide:not(.intro-slide)').forEach(slide => {
       slide.style.opacity = '0';
       slide.style.pointerEvents = 'none';
-      slide.style.transition = 'opacity 0.5s ease';
+      slide.style.transform = 'scale(0.5)';
+      slide.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
     });
-    introSlide.style.opacity = '1';
-    introSlide.style.pointerEvents = 'auto';
-    introSlide.style.transition = 'opacity 0.5s ease';
   }
 
+  // Expand services carousel to show all slides
   function expandServices() {
-    // Fade out and hide intro slide
-    const introSlide = servicesCarousel.querySelector('.intro-slide');
-    introSlide.style.opacity = '0';
-    introSlide.style.pointerEvents = 'none';
-
-    // Animate other slides in
     servicesCarousel.classList.add('expanded');
+    const introSlide = servicesCarousel.querySelector('.intro-slide');
+    if (introSlide) {
+      introSlide.style.opacity = '0';
+      introSlide.style.pointerEvents = 'none';
+      introSlide.style.transform = 'scale(0)';
+      introSlide.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+    }
     servicesCarousel.querySelectorAll('.service-slide:not(.intro-slide)').forEach(slide => {
       slide.style.opacity = '1';
       slide.style.pointerEvents = 'auto';
-      slide.style.transition = 'opacity 0.5s ease';
+      slide.style.transform = 'scale(1)';
+      slide.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
     });
   }
 
-  // Nav buttons handler
+  // Setup nav button click listeners
   navButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       showSection(btn.dataset.target);
@@ -69,61 +84,59 @@
     });
   });
 
-  // Home Hire me button scrolls to services
+  // Home Hire Me button navigates to services
   hireBtnHome.addEventListener('click', () => {
     showSection('services');
     window.history.pushState(null, '', '#services');
   });
 
-  // Services carousel expand/collapse on hover and focus
+  // Hover/focus events on services carousel to expand/collapse slides
   servicesCarousel.addEventListener('mouseenter', expandServices);
   servicesCarousel.addEventListener('mouseleave', collapseServices);
   servicesCarousel.addEventListener('focusin', expandServices);
   servicesCarousel.addEventListener('focusout', collapseServices);
 
-  // Hide popup on load
-  popup.style.display = 'none';
-  popup.setAttribute('aria-hidden', 'true');
-
-  // Show popup with service name person clicked
-  document.querySelectorAll('.slide-hire-btn').forEach(btn => {
+  // Show popup form on clicking "Hire Me" buttons inside slides
+  slideHireButtons.forEach(btn => {
     btn.addEventListener('click', e => {
       e.preventDefault();
       const serviceName = btn.getAttribute('data-service-name') || 'Service';
-      popupServiceName.textContent = serviceName;
-      popup.style.display = 'flex';
-      popup.setAttribute('aria-hidden', 'false');
-      form.elements['name'].focus();
+      openPopup(serviceName);
     });
   });
 
-  // Cancel popup
-  cancelBtn.addEventListener('click', () => {
+  function openPopup(serviceName) {
+    popupServiceName.textContent = serviceName;
+    popup.style.display = 'flex';
+    popup.setAttribute('aria-hidden', 'false');
+    form.elements['name'].focus();
+  }
+
+  function closePopup() {
     popup.style.display = 'none';
     popup.setAttribute('aria-hidden', 'true');
     form.reset();
+  }
+
+  cancelBtn.addEventListener('click', () => {
+    closePopup();
   });
 
-  // Clicking outside popup content closes popup
   popup.addEventListener('click', e => {
     if (e.target === popup) {
-      popup.style.display = 'none';
-      popup.setAttribute('aria-hidden', 'true');
-      form.reset();
+      closePopup();
     }
   });
 
-  // Form submission - configure this to send email via EmailJS or server
+  // Handle form submission (you need to configure email sending via EmailJS or backend)
   form.addEventListener('submit', e => {
     e.preventDefault();
-    // Here you put your email sending logic
-    alert(`Request submitted for ${popupServiceName.textContent}! Thank you.`);
-    popup.style.display = 'none';
-    popup.setAttribute('aria-hidden', 'true');
-    form.reset();
+    // Replace the following with your email sending logic or integration:
+    alert(`Thank you, your request for ${popupServiceName.textContent} has been submitted!`);
+    closePopup();
   });
 
-  // Color syncing
+  // Dynamic color syncing with color picker
   function hexToRgba(hex, alpha = 1) {
     const hexClean = hex.replace('#', '');
     const bigint = parseInt(hexClean, 16);
@@ -153,8 +166,8 @@
     logo.style.color = newColor;
     logo.style.textShadow = `0 0 8px ${newColor}`;
 
-    const serviceSlides = document.querySelectorAll('.service-slide');
-    serviceSlides.forEach(slide => {
+    const allServiceSlides = document.querySelectorAll('.service-slide');
+    allServiceSlides.forEach(slide => {
       slide.style.boxShadow = `0 16px 40px ${hexToRgba(newColor, 0.25)}`;
     });
 
@@ -168,8 +181,7 @@
 
   window.addEventListener('DOMContentLoaded', () => {
     updateColors(selectedColor);
-    // Default to home section on load
-    let initialSection = 'home';
+    let initialSection = 'home'; // Default to home
     if (location.hash) {
       const hashSection = location.hash.substring(1);
       if (document.getElementById(hashSection)) {
@@ -190,7 +202,7 @@
     }, 1200);
   });
 
-  // Social icons ripple click
+  // Social icons ripple effect
   document.querySelectorAll('.social-icons i').forEach(icon => {
     icon.addEventListener('click', () => {
       icon.style.transform = "scale(1.4)";
