@@ -218,5 +218,125 @@ header {
 .services-carousel:not(.expanded) .service-slide:not(:first-child) {
   display: none;
 }
+/* Popup modal background */
+.popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+/* Show popup */
+.popup[aria-hidden="false"] {
+  display: flex;
+}
+
+/* Popup content container */
+.popup-content {
+  background: #111;
+  padding: 30px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 480px;
+  color: #eee;
+  box-shadow: 0 0 25px var(--picked-color, #ff1f1f);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* Popup headings */
+.popup-content h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: var(--picked-color, #ff1f1f);
+}
+
+/* Form input styling */
+.popup-content label {
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.popup-content input[type="text"],
+.popup-content input[type="email"],
+.popup-content input[type="tel"],
+.popup-content textarea,
+.popup-content input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background: #222;
+  color: #eee;
+  transition: border-color 0.3s ease;
+}
+
+.popup-content input[type="text"]:focus,
+.popup-content input[type="email"]:focus,
+.popup-content input[type="tel"]:focus,
+.popup-content textarea:focus,
+.popup-content input[type="file"]:focus {
+  outline: none;
+  border-color: var(--picked-color, #ff1f1f);
+  box-shadow: 0 0 6px var(--picked-color, #ff1f1f);
+}
+
+/* Textarea resize */
+.popup-content textarea {
+  resize: vertical;
+}
+
+/* Form buttons container */
+.popup-actions {
+  margin-top: 30px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* Buttons style */
+.popup-actions button {
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 10px 25px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#popup-cancel-btn {
+  background: transparent;
+  color: #eee;
+  border: 2px solid var(--picked-color, #ff1f1f);
+}
+
+#popup-cancel-btn:hover,
+#popup-cancel-btn:focus {
+  background: var(--picked-color, #ff1f1f);
+  color: #000;
+  outline: none;
+}
+
+.popup-actions button[type="submit"] {
+  background: var(--picked-color, #ff1f1f);
+  color: #000;
+  border: 2px solid var(--picked-color, #ff1f1f);
+}
+
+.popup-actions button[type="submit"]:hover,
+.popup-actions button[type="submit"]:focus {
+  background: #fff;
+  outline: none;
+}
 
 /* Show all on hover */
