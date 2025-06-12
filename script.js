@@ -16,7 +16,6 @@
   const colorPickerInput = document.querySelector('.color-picker');
   let selectedColor = colorPickerInput.value || '#ff1f1f';
 
-  // Show only the specified section, hide others
   function showSection(targetId) {
     sections.forEach(section => {
       if (section.id === targetId) {
@@ -31,7 +30,6 @@
     navButtons.forEach(btn => {
       btn.setAttribute('aria-expanded', btn.dataset.target === targetId ? 'true' : 'false');
     });
-
     if (targetId !== 'services') {
       collapseServices();
     } else {
@@ -39,7 +37,6 @@
     }
   }
 
-  // Collapse services: show only first slide, fade others out
   function collapseServices() {
     servicesCarousel.classList.remove('expanded');
     const introSlide = servicesCarousel.querySelector('.intro-slide');
@@ -52,19 +49,18 @@
     servicesCarousel.querySelectorAll('.service-slide:not(.intro-slide)').forEach(slide => {
       slide.style.opacity = '0';
       slide.style.pointerEvents = 'none';
-      slide.style.transform = 'scale(0.5)';
+      slide.style.transform = 'scale(0.8)';
       slide.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
     });
   }
 
-  // Expand services: fade out first slide and show others rescaled
   function expandServices() {
     servicesCarousel.classList.add('expanded');
     const introSlide = servicesCarousel.querySelector('.intro-slide');
     if (introSlide) {
       introSlide.style.opacity = '0';
       introSlide.style.pointerEvents = 'none';
-      introSlide.style.transform = 'scale(0)';
+      introSlide.style.transform = 'scale(0.8)';
       introSlide.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
     }
     servicesCarousel.querySelectorAll('.service-slide:not(.intro-slide)').forEach(slide => {
@@ -75,7 +71,6 @@
     });
   }
 
-  // Nav click handlers
   navButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       showSection(btn.dataset.target);
@@ -83,19 +78,16 @@
     });
   });
 
-  // Home "Hire Me" button click goes to services
   hireBtnHome.addEventListener('click', () => {
     showSection('services');
     window.history.pushState(null, '', '#services');
   });
 
-  // Expand / collapse services on hover or focus
   servicesCarousel.addEventListener('mouseenter', expandServices);
   servicesCarousel.addEventListener('mouseleave', collapseServices);
   servicesCarousel.addEventListener('focusin', expandServices);
   servicesCarousel.addEventListener('focusout', collapseServices);
 
-  // Open popup on "Hire Now" button click
   slideHireButtons.forEach(btn => {
     btn.addEventListener('click', e => {
       e.preventDefault();
@@ -104,7 +96,6 @@
     });
   });
 
-  // Popup open function
   function openPopup(serviceName) {
     popupServiceName.textContent = serviceName;
     popup.style.display = 'flex';
@@ -112,7 +103,6 @@
     form.elements['name'].focus();
   }
 
-  // Popup close function
   function closePopup() {
     popup.style.display = 'none';
     popup.setAttribute('aria-hidden', 'true');
@@ -127,14 +117,12 @@
     }
   });
 
-  // Form submission handler (customize with your email sending service)
   form.addEventListener('submit', e => {
     e.preventDefault();
     alert(`Thank you, your request for ${popupServiceName.textContent} has been submitted!`);
     closePopup();
   });
 
-  // Dynamic color syncing for theme accent color
   function hexToRgba(hex, alpha = 1) {
     const hexClean = hex.replace('#', '');
     const bigint = parseInt(hexClean, 16);
@@ -189,7 +177,6 @@
     showSection(initialSection);
   });
 
-  // Preloader fade out
   const preloader = document.getElementById("preloader");
   window.addEventListener("load", () => {
     setTimeout(() => {
@@ -200,7 +187,6 @@
     }, 1200);
   });
 
-  // Social icons scale ripple effect on click
   document.querySelectorAll('.social-icons i').forEach(icon => {
     icon.addEventListener('click', () => {
       icon.style.transform = "scale(1.4)";
