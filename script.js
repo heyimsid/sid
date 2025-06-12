@@ -1,21 +1,17 @@
 (() => {
+  const nav = document.querySelector('.nav');
+  const colorPickerInput = nav.querySelector('.color-picker');
   const navButtons = document.querySelectorAll('.nav-btn');
   const sections = document.querySelectorAll('.page-section');
   const hireBtn = document.querySelector('.hire-btn');
   const servicesCarousel = document.querySelector('.services-carousel');
-  const singleSlide = servicesCarousel.querySelector('.single-slide');
-  const expandedCards = servicesCarousel.querySelector('.expanded-cards');
-  const serviceSlides = servicesCarousel.querySelectorAll('.service-slide.card');
   const highlightEls = [...document.querySelectorAll('.highlight')];
   const socialIcons = [...document.querySelectorAll('.social-icons i')];
-  const graphicWrapper = document.querySelector('.graphic-wrapper');
-  const profileImage = graphicWrapper.querySelector('.profile-image');
   const logo = document.querySelector('.logo');
-  const colorPickerInput = document.querySelector('.color-picker');
 
   let selectedColor = colorPickerInput.value || '#ff1f1f';
 
-  // Show only the target section, hide others
+  // Show one section and hide others
   function showSection(targetId) {
     sections.forEach(section => {
       if (section.id === targetId) {
@@ -28,58 +24,48 @@
       }
     });
     navButtons.forEach(btn => {
-      btn.setAttribute('aria-expanded', btn.dataset.target === targetId ? 'true' : 'false');
+      const expanded = btn.dataset.target === targetId;
+      btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
     });
-
     if (targetId !== 'services') {
       collapseServicesCarousel();
-      serviceSlides.forEach(s => s.classList.remove('active'));
-      if (serviceSlides.length) serviceSlides[0].classList.add('active');
     }
   }
 
-  // Collapse services carousel to single slide
-  function collapseServicesCarousel() {
-    servicesCarousel.classList.remove('expanded');
-    singleSlide.style.pointerEvents = 'auto';
-  }
-
-  // Expand services carousel to show cards
+  // Expand services carousel (show all slides)
   function expandServicesCarousel() {
     servicesCarousel.classList.add('expanded');
-    singleSlide.style.pointerEvents = 'none';
   }
 
-  // Nav buttons click
+  // Collapse services carousel (show only first slide)
+  function collapseServicesCarousel() {
+    servicesCarousel.classList.remove('expanded');
+  }
+
+  // Nav button click handlers
   navButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       const targetId = btn.dataset.target;
       showSection(targetId);
-      history.pushState(null, '', `#${targetId}`);
+      window.history.pushState(null, '', `#${targetId}`);
     });
   });
 
-  // Hire me button click to go services
+  // Hire me button click handler goes to services
   hireBtn.addEventListener('click', () => {
     showSection('services');
-    history.pushState(null, '', '#services');
+    window.history.pushState(null, '', '#services');
   });
 
-  // On hover over single slide expand cards
-  singleSlide.addEventListener('mouseenter', expandServicesCarousel);
-
-  // Collapse on mouse leave of entire carousel
+  // Expand/collapse carousel on hover for mouse users
+  servicesCarousel.addEventListener('mouseenter', expandServicesCarousel);
   servicesCarousel.addEventListener('mouseleave', collapseServicesCarousel);
 
-  // Allow clicking card to highlight it and collapse carousel
-  serviceSlides.forEach(slide => {
-    slide.addEventListener('click', () => {
-      serviceSlides.forEach(s => s.classList.remove('active'));
-      slide.classList.add('active');
-      collapseServicesCarousel();
-    });
-  });
+  // Also expand/collapse on focus/blur for keyboard users
+  servicesCarousel.addEventListener('focusin', expandServicesCarousel);
+  servicesCarousel.addEventListener('focusout', collapseServicesCarousel);
 
+  // Sync color picker changes dynamically
   function hexToRgba(hex, alpha = 1) {
     const hexClean = hex.replace('#', '');
     const bigint = parseInt(hexClean, 16);
@@ -109,27 +95,26 @@
     logo.style.color = newColor;
     logo.style.textShadow = `0 0 8px ${newColor}`;
 
+    const serviceSlides = document.querySelectorAll('.service-slide');
     serviceSlides.forEach(slide => {
       slide.style.boxShadow = `0 16px 40px ${hexToRgba(newColor, 0.25)}`;
     });
 
-    profileImage.style.boxShadow = `0 0 40px 4px ${newColor}`;
-
-    colorPickerInput.style.backgroundColor = newColor;
-
     selectedColor = newColor;
+    colorPickerInput.style.backgroundColor = newColor;
   }
 
   colorPickerInput.addEventListener('input', e => {
     updateColors(e.target.value);
   });
 
+  // Initialize page and colors and show section from URL hash or default to home
   window.addEventListener('DOMContentLoaded', () => {
     updateColors(selectedColor);
 
     let initialSection = 'home';
     if (location.hash) {
-      let hashSection = location.hash.substring(1);
+      const hashSection = location.hash.substring(1);
       if (document.getElementById(hashSection)) {
         initialSection = hashSection;
       }
@@ -137,6 +122,7 @@
     showSection(initialSection);
   });
 
+  // Preloader fade out
   const preloader = document.getElementById("preloader");
   window.addEventListener("load", () => {
     setTimeout(() => {
@@ -147,10 +133,12 @@
     }, 1200);
   });
 
+  // Social icons scale ripple on click
   document.querySelectorAll('.social-icons i').forEach(icon => {
     icon.addEventListener('click', () => {
       icon.style.transform = "scale(1.4)";
       setTimeout(() => icon.style.transform = "scale(1)", 300);
     });
   });
+
 })();
