@@ -199,33 +199,12 @@
 
   window.addEventListener('DOMContentLoaded', () => {
     updateColors(selectedColor);
-    let initialSection = 'home';
-    if (location.hash) {
-      const hashSection = location.hash.substring(1);
-      if (document.getElementById(hashSection)) {
-        initialSection = hashSection;
-      }
-    }
-    showSection(initialSection);
+    // Set initial section to services
+    showSection('services');
   });
 
   // Preloader fade out
   const preloader = document.getElementById("preloader");
   window.addEventListener("load", () => {
     setTimeout(() => {
-      preloader.style.transition = "opacity 0.5s ease, visibility 0.5s ease";
-      preloader.style.opacity = "0";
-      preloader.style.visibility = "hidden";
-      preloader.setAttribute('aria-busy', 'false');
-    }, 1200);
-  });
-
-  // Social icons scale ripple on click
-  document.querySelectorAll('.social-icons i').forEach(icon => {
-    icon.addEventListener('click', () => {
-      icon.style.transform = "scale(1.4)";
-      setTimeout(() => icon.style.transform = "scale(1)", 300);
-    });
-  });
-
-})();
+      pre
