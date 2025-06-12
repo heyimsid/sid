@@ -204,7 +204,7 @@ header {
 .services-carousel {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(2, 300px); /* fixed height for uniformity */
+  grid-template-rows: repeat(2, 300px);
   gap: 20px 15px;
   max-width: 1280px;
   margin: 0 auto;
@@ -212,12 +212,15 @@ header {
   position: relative;
 }
 
-/* First slide is centered using grid lines */
+/* Center first slide spanning 2 columns & rows */
 .intro-slide {
   grid-column: 2 / span 2;
-  grid-row: 1 / 3; /* span both rows */
+  grid-row: 1 / 3;
   z-index: 10;
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
 }
 
 /* Hide other slides initially */
@@ -229,15 +232,16 @@ header {
   z-index: 1;
 }
 
-/* On expand, first slide fades out and others appear */
+/* On expand, fade out first slide */
 .services-carousel.expanded .intro-slide {
   opacity: 0;
   pointer-events: none;
   transform: scale(0.8);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition: opacity 0.6s ease, transform 0.6s ease;
   z-index: 1;
 }
 
+/* Show all others when expanded */
 .services-carousel.expanded .service-slide:not(.intro-slide) {
   opacity: 1 !important;
   pointer-events: auto !important;
@@ -246,11 +250,11 @@ header {
   z-index: 10;
 }
 
-/* Slide styles */
+/* Service slide styles */
 .service-slide {
   background: #111;
   border-radius: 20px;
-  box-shadow: 0 16px 40px rgba(255, 31, 31, 0.25);
+  box-shadow: 0 16px 40px rgba(255,31,31,0.25);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -267,14 +271,14 @@ header {
   border-bottom: 1px solid var(--picked-color, #ff1f1f);
 }
 
-/* Transparent overlay with name and hire me button */
+/* Transparent overlay with name and Hire Me opposite */
 .slide-hire-btn-container {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
+  background: rgba(0,0,0,0.7);
   padding: 12px 20px;
-  background: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -289,7 +293,7 @@ header {
   user-select: text;
 }
 
-/* Hire Me button in slides matching home style */
+/* Hire Me style button in slides */
 .slide-hire-btn {
   background: var(--picked-color, #ff1f1f);
   color: #000;
@@ -314,12 +318,12 @@ header {
 .popup {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(0,0,0,0.75);
   display: none;
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  padding: 20px 10px;
+  padding: 40px 20px;
 }
 
 .popup[aria-hidden="false"] {
@@ -330,9 +334,8 @@ header {
   background: #111;
   padding: 30px 40px;
   border-radius: 12px;
-  width: 90%;
-  max-width: 600px;
-  height: auto;
+  width: 95%;
+  max-width: 700px;
   max-height: 90vh;
   overflow-y: auto;
   color: #eee;
@@ -381,14 +384,13 @@ header {
 
 .popup-content textarea {
   resize: vertical;
-  min-height: 120px;
+  min-height: 140px;
 }
 
-/* Buttons */
 .popup-actions {
   margin-top: 30px;
   display: flex;
-  justify-content: space-between; /* Cancel left, submit right */
+  justify-content: space-between;
 }
 
 .popup-actions button {
