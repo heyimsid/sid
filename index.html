@@ -155,6 +155,39 @@
     <p>Loading...</p>
   </div>
 </div>
+<!-- Hire request popup (hidden by default) -->
+<div id="hire-popup" class="popup" aria-hidden="true" role="dialog" aria-modal="true" tabindex="-1">
+  <div class="popup-content" role="document">
+    <h2>You are hired for <span id="popup-service-name"></span></h2>
+    <form id="hire-form">
+      <label for="hire-name">Name:</label>
+      <input type="text" id="hire-name" name="name" required autocomplete="name" />
+
+      <label for="hire-email">Email:</label>
+      <input type="email" id="hire-email" name="email" required autocomplete="email" />
+
+      <label for="hire-phone">Phone Number:</label>
+      <input type="tel" id="hire-phone" name="phone" required autocomplete="tel" />
+
+      <label for="hire-desc">Project Description:</label>
+      <textarea id="hire-desc" name="description" rows="4" required></textarea>
+
+      <label for="hire-budget">Budget:</label>
+      <input type="text" id="hire-budget" name="budget" required />
+
+      <label for="hire-company">Company / Organization (if any):</label>
+      <input type="text" id="hire-company" name="company" />
+
+      <label for="hire-attachment">Attachment:</label>
+      <input type="file" id="hire-attachment" name="attachment" />
+
+      <div class="popup-actions">
+        <button type="button" id="popup-cancel-btn">Cancel</button>
+        <button type="submit">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>
 
 <script src="script.js"></script>
 </body>
