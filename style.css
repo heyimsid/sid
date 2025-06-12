@@ -62,7 +62,6 @@ header {
 .nav-links li button.nav-btn:focus {
   color: var(--picked-color, #ff1f1f);
   text-shadow: 0 0 8px var(--picked-color, #ff1f1f);
-  outline: none;
 }
 .color-picker {
   width: 40px;
@@ -74,15 +73,6 @@ header {
   cursor: pointer;
   box-shadow: 0 0 10px var(--picked-color, #ff1f1f);
   transition: box-shadow 0.3s ease;
-}
-.color-picker::-webkit-color-swatch-wrapper {
-  padding: 0;
-  border-radius: 50%;
-  background-color: #000;
-}
-.color-picker::-webkit-color-swatch {
-  border-radius: 50%;
-  border: none;
 }
 .color-picker:focus {
   outline: none;
@@ -222,7 +212,6 @@ header {
   transition: max-height 0.5s ease;
   overflow: hidden;
   cursor: pointer;
-  position: relative;
 }
 
 /* By default show only first slide */
@@ -231,87 +220,3 @@ header {
 }
 
 /* Show all on hover */
-.services-carousel:hover,
-.services-carousel.expanded {
-  max-height: 2000px; /* large enough */
-}
-.services-carousel:hover .service-slide,
-.services-carousel.expanded .service-slide {
-  display: flex;
-  flex-direction: column;
-  opacity: 1;
-  pointer-events: auto;
-  box-shadow: 0 16px 40px rgba(255, 31, 31, 0.25);
-  transition: transform 0.4s ease;
-}
-
-/* Style each slide */
-.service-slide {
-  position: relative;
-  height: 300px;
-  border-radius: 20px;
-  background: #111;
-  box-shadow: 0 16px 40px rgba(255, 31, 31, 0.15);
-  overflow: hidden;
-  user-select: none;
-  flex-shrink: 0;
-  flex-direction: column;
-  transition: box-shadow 0.4s ease;
-}
-
-/* Image fills top */
-.service-slide img {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-  border-bottom: 1px solid var(--picked-color, #ff1f1f);
-}
-
-/* Transparent overlay bottom bar for text and button */
-.slide-hire-btn-container {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0,0,0,0.6);
-  padding: 12px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: #eee;
-  font-weight: 600;
-  font-size: 1.1rem;
-  gap: 20px;
-}
-
-/* Slide name */
-.slide-hire-btn-container h3 {
-  margin: 0;
-  user-select: text;
-}
-
-/* Hire Now button */
-.slide-hire-btn {
-  background: var(--picked-color, #ff1f1f);
-  color: #000;
-  padding: 8px 16px;
-  border-radius: 30px;
-  font-weight: 700;
-  text-decoration: none;
-  box-shadow: 0 0 9px var(--picked-color, #ff1f1f);
-  transition: background 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
-  white-space: nowrap;
-}
-.slide-hire-btn:hover,
-.slide-hire-btn:focus {
-  background: #fff;
-  box-shadow: 0 0 15px var(--picked-color, #ff1f1f);
-  outline: none;
-}
-
-/* Accessibility focus styles */
-.service-slide:focus {
-  outline: 3px solid var(--picked-color, #ff1f1f);
-  outline-offset: 3px;
-}
