@@ -92,7 +92,7 @@ header {
 .page-section {
   display: none;
   padding: 50px 60px;
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 0 auto 100px auto;
 }
 .page-section.active {
@@ -117,17 +117,14 @@ header {
   box-shadow: 0 0 30px rgba(255, 31, 31, 0.3);
   transform-style: preserve-3d;
   cursor: default;
-  animation: pulse 2s infinite;
+  animation: pulse 2.5s ease-in-out infinite;
 }
 @keyframes pulse {
-  0% {
+  0%, 100% {
     transform: scale(1);
   }
   50% {
     transform: scale(1.05);
-  }
-  100% {
-    transform: scale(1);
   }
 }
 .profile-image {
@@ -202,10 +199,7 @@ header {
 }
 
 .services-section {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px 0;
-  background: transparent;
+  padding-top: 20px;
 }
 
 .section-title {
@@ -216,109 +210,108 @@ header {
   text-align: center;
 }
 
-/* existing styles kept unchanged */
-
-/* Additional styles for Services section */
+/* The grid container for 8 slides 4x2 */
 .services-carousel {
-  position: relative;
-  width: 400px; /* width of single slide when collapsed */
-  margin: 0 auto;
-  cursor: pointer;
-  transition: all 0.5s ease;
-}
-
-.single-slide {
-  transition: opacity 0.4s ease, transform 0.4s ease;
-  z-index: 2;
-}
-
-/* Hide expanded cards container by default */
-.expanded-cards {
-  display: none;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-
-/* Show expanded cards container on carousel expansion */
-.services-carousel.expanded {
-  width: 900px; /* accommodates grid 4x2 */
-}
-.services-carousel.expanded .single-slide {
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(-20px);
-}
-.services-carousel.expanded .expanded-cards {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(2, 320px);
-  gap: 1.5rem;
-  opacity: 1;
-  pointer-events: auto;
-  z-index: 3;
+  grid-template-rows: repeat(2, auto);
+  gap: 30px 20px;
+  justify-content: center;
+  max-width: 1280px;
+  margin: 0 auto;
+  transition: max-height 0.5s ease;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
 }
 
-/* Cards in expanded fan out */
-.service-slide.card {
+/* By default show only first slide */
+.services-carousel:not(.expanded) .service-slide:not(:first-child) {
+  display: none;
+}
+
+/* Show all on hover */
+.services-carousel:hover,
+.services-carousel.expanded {
+  max-height: 2000px; /* large enough */
+}
+.services-carousel:hover .service-slide,
+.services-carousel.expanded .service-slide {
   display: flex;
   flex-direction: column;
-  position: relative;
-  cursor: pointer;
-  user-select: none;
-  background: #111;
-  border-radius: 20px;
-  box-shadow: 0 16px 40px rgba(255, 31, 31, 0.25);
-  overflow: hidden;
   opacity: 1;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-/* Hover scale on cards */
-.service-slide.card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 24px 60px rgba(255, 31, 31, 0.45);
+  pointer-events: auto;
+  box-shadow: 0 16px 40px rgba(255, 31, 31, 0.25);
+  transition: transform 0.4s ease;
 }
 
-.service-slide.card img {
+/* Style each slide */
+.service-slide {
+  position: relative;
+  height: 300px;
+  border-radius: 20px;
+  background: #111;
+  box-shadow: 0 16px 40px rgba(255, 31, 31, 0.15);
+  overflow: hidden;
+  user-select: none;
+  flex-shrink: 0;
+  flex-direction: column;
+  transition: box-shadow 0.4s ease;
+}
+
+/* Image fills top */
+.service-slide img {
   width: 100%;
   height: 220px;
   object-fit: cover;
-  border-bottom: 1px solid var(--picked-color);
+  border-bottom: 1px solid var(--picked-color, #ff1f1f);
 }
 
-/* Transparent bottom text section */
-.slide-info.transparent-bg {
-  background: rgba(0, 0, 0, 0.5);
+/* Transparent overlay bottom bar for text and button */
+.slide-hire-btn-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,0.6);
+  padding: 12px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
   color: #eee;
-  font-weight: 700;
-  font-size: 1.3rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  gap: 20px;
+}
+
+/* Slide name */
+.slide-hire-btn-container h3 {
+  margin: 0;
   user-select: text;
 }
 
-.slide-info h3 {
-  margin: 0;
-  flex: 1;
-}
-
+/* Hire Now button */
 .slide-hire-btn {
-  background: var(--picked-color);
+  background: var(--picked-color, #ff1f1f);
   color: #000;
-  padding: 6px 16px;
+  padding: 8px 16px;
   border-radius: 30px;
   font-weight: 700;
   text-decoration: none;
-  box-shadow: 0 0 9px var(--picked-color);
-  white-space: nowrap;
-  font-size: 0.9rem;
-  flex-shrink: 0;
+  box-shadow: 0 0 9px var(--picked-color, #ff1f1f);
   transition: background 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  white-space: nowrap;
 }
 .slide-hire-btn:hover,
 .slide-hire-btn:focus {
   background: #fff;
-  box-shadow: 0 0 15px var(--picked-color);
+  box-shadow: 0 0 15px var(--picked-color, #ff1f1f);
   outline: none;
+}
+
+/* Accessibility focus styles */
+.service-slide:focus {
+  outline: 3px solid var(--picked-color, #ff1f1f);
+  outline-offset: 3px;
 }
