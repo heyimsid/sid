@@ -202,116 +202,67 @@ header {
 }
 
 /* Grid arrangement: 2 rows x 4 columns */
+/* Adjusting the service slides to fit 8 on the screen */
 .services-carousel {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(2, auto);
-  gap: 30px 20px;
+  grid-template-columns: repeat(4, 1fr); /* 4 columns */
+  grid-template-rows: repeat(2, auto); /* 2 rows */
+  gap: 20px; /* Adjust gap as needed */
   justify-content: center;
   max-width: 1280px;
   margin: 0 auto;
-  cursor: pointer;
+}
+
+/* Style for each service slide */
+.service-slide {
   position: relative;
-}
-
-/* Initially showing only first slide (intro-slide) */
-.services-carousel:not(.expanded) .service-slide:not(.intro-slide) {
-  opacity: 0;
-  pointer-events: none;
-  transform: scale(0.5);
-  transition: all 0.4s ease;
-  z-index: 1;
-}
-
-/* Showing only intro slide */
-/* First slide vanish on hover */
-.services-carousel:not(.expanded) .intro-slide {
-  transition: opacity 0.6s ease, transform 0.6s ease;
-  opacity: 1;
-  transform: translateX(0);
-  z-index: 10;
-}
-
-.services-carousel.expanded .intro-slide {
-  opacity: 0;
-  transform: translateX(-50px) scale(0.8);
-  pointer-events: none;
-}
-
-/* Show all slides on expanded */
-.services-carousel.expanded .service-slide {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-  transform: scale(1) translateX(0) !important;
-  transition: all 0.6s ease;
-}
-
-/* Popup size and no scroll */
-.popup {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.75);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: 40px 20px;
-}
-
-.popup[aria-hidden="false"] {
-  display: flex;
-}
-
-.popup-content {
+  height: 250px; /* Adjust height to fit 8 slides */
+  border-radius: 20px;
   background: #111;
-  padding: 30px 40px;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 600px; /* wider but not full screen */
-  max-height: 90vh;
-  overflow-y: hidden; /* no scroll */
-  color: #eee;
-  box-shadow: 0 0 25px var(--picked-color, #ff1f1f);
+  box-shadow: 0 16px 40px rgba(255, 31, 31, 0.15);
+  overflow: hidden;
+  user-select: none;
+  transition: box-shadow 0.4s ease;
 }
 
-/* Button container for Cancel and Submit */
-.popup-actions {
-  margin-top: 30px;
-  display: flex;
-  justify-content: space-between; /* cancel left, submit right */
-}
-
-/* Buttons styled like Hire me */
-.popup-actions button {
-  padding: 10px 25px;
+/* Style for the "Hire Me" button in slides */
+.slide-hire-btn {
+  padding: 10px 20px;
   font-weight: 700;
   font-size: 1rem;
   border-radius: 30px;
   border: 2px solid var(--picked-color, #ff1f1f);
   cursor: pointer;
   transition: all 0.3s ease;
-  min-width: 120px;
-}
-
-#popup-cancel-btn {
-  background: transparent;
-  color: #eee;
-}
-
-#popup-cancel-btn:hover {
   background: var(--picked-color, #ff1f1f);
   color: #000;
-  box-shadow: 0 0 15px var(--picked-color, #ff1f1f);
+  text-shadow: 0 0 6px var(--picked-color, #ff1f1f);
 }
 
-.popup-actions button[type="submit"] {
-  background: var(--picked-color, #ff1f1f);
-  color: #000;
-  box-shadow: 0 0 15px var(--picked-color, #ff1f1f);
-}
-
-.popup-actions button[type="submit"]:hover {
+.slide-hire-btn:hover {
   background: #fff;
   color: #000;
-  box-shadow: 0 0 20px var(--picked-color, #ff1f1f);
+  box-shadow: 0 0 15px var(--picked-color, #ff1f1f);
+}
+
+/* Popup textarea styling */
+#hire-desc {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background: #222; /* Dark background */
+  color: #eee;
+  resize: vertical; /* Allow vertical resizing */
+  min-height: 100px; /* Make it larger */
+}
+
+/* Optional fields styling */
+label[for="hire-company"],
+label[for="hire-attachment"] {
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 6px;
+  font-weight: 600;
 }
