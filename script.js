@@ -194,3 +194,17 @@
     });
   });
 })();
+function openPopup(serviceName) {
+  popupServiceName.textContent = serviceName;
+  popup.style.display = 'flex';
+  popup.setAttribute('aria-hidden', 'false');
+  form.elements['name'].focus();
+  document.body.style.overflow = 'hidden'; // Disable page scroll
+}
+
+function closePopup() {
+  popup.style.display = 'none';
+  popup.setAttribute('aria-hidden', 'true');
+  form.reset();
+  document.body.style.overflow = ''; // Re-enable scroll
+}
