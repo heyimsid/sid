@@ -3,7 +3,7 @@
   const sections = document.querySelectorAll('.page-section');
   const hireBtnHome = document.querySelector('.hire-btn');
   const servicesCarousel = document.querySelector('.services-carousel');
-  const slideHireButtons = document.querySelectorAll('.slide-hire-btn');
+  const slideHireButtons = document.querySelectorAll('.slide-hire-btn, .hire-btn');
   const highlightEls = [...document.querySelectorAll('.highlight')];
   const socialIcons = [...document.querySelectorAll('.social-icons i')];
   const logo = document.querySelector('.logo');
@@ -39,7 +39,7 @@
     }
   }
 
-  // Collapse services carousel to default state (show only intro slide)
+  // Collapse services: show only first slide, fade others out
   function collapseServices() {
     servicesCarousel.classList.remove('expanded');
     const introSlide = servicesCarousel.querySelector('.intro-slide');
@@ -49,7 +49,6 @@
       introSlide.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
       introSlide.style.transform = 'scale(1)';
     }
-    // Reset other slides
     servicesCarousel.querySelectorAll('.service-slide:not(.intro-slide)').forEach(slide => {
       slide.style.opacity = '0';
       slide.style.pointerEvents = 'none';
@@ -58,7 +57,7 @@
     });
   }
 
-  // Expand services carousel to show all slides
+  // Expand services: fade out first slide and show others rescaled
   function expandServices() {
     servicesCarousel.classList.add('expanded');
     const introSlide = servicesCarousel.querySelector('.intro-slide');
@@ -76,7 +75,7 @@
     });
   }
 
-  // Setup nav button click listeners
+  // Nav click handlers
   navButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       showSection(btn.dataset.target);
@@ -84,19 +83,19 @@
     });
   });
 
-  // Home Hire Me button navigates to services
+  // Home "Hire Me" button click goes to services
   hireBtnHome.addEventListener('click', () => {
     showSection('services');
     window.history.pushState(null, '', '#services');
   });
 
-  // Hover/focus events on services carousel to expand/collapse slides
+  // Expand / collapse services on hover or focus
   servicesCarousel.addEventListener('mouseenter', expandServices);
   servicesCarousel.addEventListener('mouseleave', collapseServices);
   servicesCarousel.addEventListener('focusin', expandServices);
   servicesCarousel.addEventListener('focusout', collapseServices);
 
-  // Show popup form on clicking "Hire Me" buttons inside slides
+  // Open popup on "Hire Now" button click
   slideHireButtons.forEach(btn => {
     btn.addEventListener('click', e => {
       e.preventDefault();
@@ -105,6 +104,7 @@
     });
   });
 
+  // Popup open function
   function openPopup(serviceName) {
     popupServiceName.textContent = serviceName;
     popup.style.display = 'flex';
@@ -112,15 +112,14 @@
     form.elements['name'].focus();
   }
 
+  // Popup close function
   function closePopup() {
     popup.style.display = 'none';
     popup.setAttribute('aria-hidden', 'true');
     form.reset();
   }
 
-  cancelBtn.addEventListener('click', () => {
-    closePopup();
-  });
+  cancelBtn.addEventListener('click', closePopup);
 
   popup.addEventListener('click', e => {
     if (e.target === popup) {
@@ -128,15 +127,14 @@
     }
   });
 
-  // Handle form submission (you need to configure email sending via EmailJS or backend)
+  // Form submission handler (customize with your email sending service)
   form.addEventListener('submit', e => {
     e.preventDefault();
-    // Replace the following with your email sending logic or integration:
     alert(`Thank you, your request for ${popupServiceName.textContent} has been submitted!`);
     closePopup();
   });
 
-  // Dynamic color syncing with color picker
+  // Dynamic color syncing for theme accent color
   function hexToRgba(hex, alpha = 1) {
     const hexClean = hex.replace('#', '');
     const bigint = parseInt(hexClean, 16);
@@ -181,7 +179,7 @@
 
   window.addEventListener('DOMContentLoaded', () => {
     updateColors(selectedColor);
-    let initialSection = 'home'; // Default to home
+    let initialSection = 'home';
     if (location.hash) {
       const hashSection = location.hash.substring(1);
       if (document.getElementById(hashSection)) {
@@ -202,12 +200,11 @@
     }, 1200);
   });
 
-  // Social icons ripple effect
+  // Social icons scale ripple effect on click
   document.querySelectorAll('.social-icons i').forEach(icon => {
     icon.addEventListener('click', () => {
       icon.style.transform = "scale(1.4)";
       setTimeout(() => icon.style.transform = "scale(1)", 300);
     });
   });
-
 })();
