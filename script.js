@@ -94,15 +94,25 @@ document.addEventListener('DOMContentLoaded', function() {
         root.style.setProperty('--picked-color-rgb', rgbColor);
         localStorage.setItem('highlightColor', color);
 
-        // Update graphics with direct style application for immediate effect
-        if (heroGraphicWrapper) {
-            heroGraphicWrapper.style.boxShadow = `0 0 30px rgba(${rgbColor}, 0.3)`;
-            heroGraphicWrapper.style.background = `rgba(${rgbColor}, 0.1)`;
-        }
-        if (contactGraphicWrapper) {
-            contactGraphicWrapper.style.boxShadow = `0 0 30px rgba(${rgbColor}, 0.3)`;
-            contactGraphicWrapper.style.background = `rgba(${rgbColor}, 0.1)`;
-        }
+        // **IMPORTANT FIX for Color Sync & Animations:**
+        // Force browser to re-evaluate styles for elements that use CSS variables
+        // in their transitions/animations. This is a common solution for subtle
+        // rendering issues where CSS variables aren't immediately picked up by
+        // existing animations or transitions.
+        const elementsToRefresh = document.querySelectorAll(
+            '.graphic-wrapper, .service-slide, .slide-hire-btn, .skill-card, ' +
+            '.education-dot, .education-content, .certificate-item, .contact-icon'
+        );
+
+        elementsToRefresh.forEach(el => {
+            // Read a computed style property to force recalculation (reflow)
+            const computedTransform = getComputedStyle(el).transform;
+            // Then immediately set it back (effectively a no-op that triggers re-render)
+            el.style.transform = computedTransform;
+        });
+
+        // Although CSS variables should handle these, direct applications ensure immediate visual update
+        // for elements like logo and highlight text that don't rely on complex CSS animations.
         document.querySelectorAll('.highlight').forEach(el => {
             el.style.color = color;
             el.style.textShadow = `0 0 8px ${color}`;
@@ -110,17 +120,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.logo, .nav-links li button.nav-btn:hover, .nav-links li button.nav-btn:focus').forEach(el => {
             el.style.color = color;
             el.style.textShadow = `0 0 8px ${color}`;
-        });
-
-        // Force browser to re-evaluate styles for elements that use CSS variables in their transitions/animations
-        // This is a common trick if color changes don't immediately affect CSS animations/transitions
-        document.querySelectorAll(
-            '.service-slide, .slide-hire-btn, .skill-card, .education-dot, .education-content, .certificate-item, .contact-icon'
-        ).forEach(el => {
-            // Read a computed style property to force recalculation
-            const computedTransform = getComputedStyle(el).transform;
-            // Then immediately set it back (effectively a no-op that forces re-render)
-            el.style.transform = computedTransform;
         });
     }
 
@@ -200,7 +199,7 @@ document.addEventListener('DOMContentLoaded', function() {
         hirePopup.setAttribute('aria-hidden', 'false');
         hirePopup.setAttribute('tabindex', '0');
         document.body.style.overflow = 'hidden';
-        // Removed document.body.setAttribute('inert', '');
+        // Removed document.body.setAttribute('inert', ''); - this caused the stuck popup!
         hirePopup.focus(); // Focus the popup for accessibility
     }
 
@@ -209,7 +208,7 @@ document.addEventListener('DOMContentLoaded', function() {
         hirePopup.setAttribute('aria-hidden', 'true');
         hirePopup.setAttribute('tabindex', '-1');
         document.body.style.overflow = ''; // Restore body scroll
-        // Removed document.body.removeAttribute('inert');
+        // Removed document.body.removeAttribute('inert'); - this caused the stuck popup!
         hireForm.reset(); // Clear the form
     }
 
@@ -261,7 +260,7 @@ document.addEventListener('DOMContentLoaded', function() {
         enquiryThankYouPopup.setAttribute('aria-hidden', 'false');
         enquiryThankYouPopup.setAttribute('tabindex', '0');
         document.body.style.overflow = 'hidden';
-        // Removed document.body.setAttribute('inert', '');
+        // Removed document.body.setAttribute('inert', ''); - this caused the stuck popup!
         enquiryThankYouPopup.focus();
     }
 
@@ -270,7 +269,7 @@ document.addEventListener('DOMContentLoaded', function() {
         enquiryThankYouPopup.setAttribute('aria-hidden', 'true');
         enquiryThankYouPopup.setAttribute('tabindex', '-1');
         document.body.style.overflow = '';
-        // Removed document.body.removeAttribute('inert');
+        // Removed document.body.removeAttribute('inert'); - this caused the stuck popup!
         enquiryForm.reset(); // Clear the enquiry form after successful submission
     }
 
@@ -317,6 +316,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initial graphic animation setup
     // These lines are crucial for setting the initial color for the graphic wrappers on load
+    // The setHighlightColor function already does this, but these ensure consistency.
     if (heroGraphicWrapper) {
         heroGraphicWrapper.style.setProperty('--picked-color-rgb', getComputedStyle(root).getPropertyValue('--picked-color-rgb'));
     }
