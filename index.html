@@ -16,6 +16,7 @@
       <li><button class="nav-btn" data-target="services" aria-controls="services" aria-expanded="false" aria-label="Services section">Services</button></li>
       <li><button class="nav-btn" data-target="skills" aria-controls="skills" aria-expanded="false" aria-label="Skills section">Skills</button></li>
       <li><button class="nav-btn" data-target="education" aria-controls="education" aria-expanded="false" aria-label="Education section">Education</button></li>
+      <li><button class="nav-btn" data-target="achievements" aria-controls="achievements" aria-expanded="false" aria-label="Achievements section">Achievements</button></li>
       <li><button class="nav-btn" data-target="enqueries" aria-controls="enqueries" aria-expanded="false" aria-label="Enqueries section">Enqueries</button></li>
       <li><button class="nav-btn" data-target="contact" aria-controls="contact" aria-expanded="false" aria-label="Contact section">Contact</button></li>
     </ul>
@@ -47,64 +48,57 @@
 
 <section id="services" class="page-section" tabindex="-1" aria-label="Services offerings with hire now calls to action">
   <h2 class="section-title">Services</h2>
-  <div class="services-carousel" tabindex="0" aria-roledescription="carousel">
-    <div class="service-slide intro-slide active" tabindex="0" role="group" aria-label="Services overview slide">
-      <img src="https://placehold.co/400x300/png?text=Overview" alt="Overview of services" />
-      <div class="slide-hire-btn-container center">
-        <h3>Services</h3>
-        <a href="#" class="slide-hire-btn" role="button" tabindex="0" data-service-name="Overview">Hire Me</a>
-      </div>
-    </div>
-    <div class="service-slide" tabindex="0" role="group" aria-label="Service 1: Cybersecurity">
+  <div class="services-carousel" tabindex="0" aria-roledescription="grid of services">
+    <div class="service-slide" tabindex="0" role="group" aria-label="Service: Cybersecurity">
       <img src="https://placehold.co/400x300/png?text=Cybersecurity" alt="Cybersecurity protection shield with digital technology concept" />
       <div class="slide-hire-btn-container left">
         <h3>Cybersecurity</h3>
         <a href="#" class="slide-hire-btn" role="button" tabindex="0" data-service-name="Cybersecurity">Hire Me</a>
       </div>
     </div>
-    <div class="service-slide" tabindex="0" role="group" aria-label="Service 2: Video Editing">
+    <div class="service-slide" tabindex="0" role="group" aria-label="Service: Video Editing">
       <img src="https://placehold.co/400x300/png?text=Video+Editing" alt="Video editing software interface" />
       <div class="slide-hire-btn-container left">
         <h3>Video Editing</h3>
         <a href="#" class="slide-hire-btn" role="button" tabindex="0" data-service-name="Video Editing">Hire Me</a>
       </div>
     </div>
-    <div class="service-slide" tabindex="0" role="group" aria-label="Service 3: Web Development">
+    <div class="service-slide" tabindex="0" role="group" aria-label="Service: Web Development">
       <img src="https://placehold.co/400x300/png?text=Web+Development" alt="Modern web development sample with code and laptop" />
       <div class="slide-hire-btn-container left">
         <h3>Web Development</h3>
         <a href="#" class="slide-hire-btn" role="button" tabindex="0" data-service-name="Web Development">Hire Me</a>
       </div>
     </div>
-    <div class="service-slide" tabindex="0" role="group" aria-label="Service 4: Artificial Intelligence">
+    <div class="service-slide" tabindex="0" role="group" aria-label="Service: Artificial Intelligence">
       <img src="https://placehold.co/400x300/png?text=Artificial+Intelligence" alt="Artificial intelligence concept illustration" />
       <div class="slide-hire-btn-container right">
         <h3>Artificial Intelligence</h3>
         <a href="#" class="slide-hire-btn" role="button" tabindex="0" data-service-name="Artificial Intelligence">Hire Me</a>
       </div>
     </div>
-    <div class="service-slide" tabindex="0" role="group" aria-label="Service 5: App Development">
+    <div class="service-slide" tabindex="0" role="group" aria-label="Service: App Development">
       <img src="https://placehold.co/400x300/png?text=App+Development" alt="Mobile app development on smartphone screen with wireframes" />
       <div class="slide-hire-btn-container right">
         <h3>App Development</h3>
         <a href="#" class="slide-hire-btn" role="button" tabindex="0" data-service-name="App Development">Hire Me</a>
       </div>
     </div>
-    <div class="service-slide" tabindex="0" role="group" aria-label="Service 6: Automotive">
+    <div class="service-slide" tabindex="0" role="group" aria-label="Service: Automotive">
       <img src="https://placehold.co/400x300/png?text=Automotive" alt="Automotive technology concept" />
       <div class="slide-hire-btn-container right">
         <h3>Automotive</h3>
         <a href="#" class="slide-hire-btn" role="button" tabindex="0" data-service-name="Automotive">Hire Me</a>
       </div>
     </div>
-    <div class="service-slide" tabindex="0" role="group" aria-label="Service 7: Useful AI Tools">
+    <div class="service-slide" tabindex="0" role="group" aria-label="Service: Useful AI Tools">
       <img src="https://placehold.co/400x300/png?text=Useful+AI+Tools" alt="Useful AI tools for productivity" />
       <div class="slide-hire-btn-container right">
         <h3>Useful AI Tools</h3>
         <a href="#" class="slide-hire-btn" role="button" tabindex="0" data-service-name="Useful AI Tools">Hire Me</a>
       </div>
     </div>
-    <div class="service-slide" tabindex="0" role="group" aria-label="Service 8: Technical Assistance">
+    <div class="service-slide" tabindex="0" role="group" aria-label="Service: Technical Assistance">
       <img src="https://placehold.co/400x300/png?text=Technical+Assistance" alt="Technical assistance and support" />
       <div class="slide-hire-btn-container right">
         <h3>Technical Assistance</h3>
@@ -248,11 +242,105 @@
     </div>
 </section>
 
-<section id="education" class="page-section" tabindex="-1" aria-label="Education section"></section>
+<section id="education" class="page-section" tabindex="-1" aria-label="Education section">
+    <h2 class="section-title">My Education</h2>
+    <div class="education-timeline">
+        <div class="education-item">
+            <div class="education-dot"></div>
+            <div class="education-content">
+                <h3>Primary School</h3>
+                <p>Completed LKG to 5th from Chinmaya Vidyalaya Kurumathur.</p>
+                <div class="education-image-container">
+                    <img src="https://placehold.co/400x250/0d0d0d/ff1f1f?text=Primary+School+Image" alt="Primary School building" />
+                </div>
+            </div>
+        </div>
+        <div class="education-item">
+            <div class="education-dot"></div>
+            <div class="education-content">
+                <h3>Secondary School</h3>
+                <p>Completed 6th to 10th from Moothedath Higher Secondary School Taliparamba.</p>
+                <div class="education-image-container">
+                    <img src="https://placehold.co/400x250/0d0d0d/ff1f1f?text=Secondary+School+Image" alt="Secondary School building" />
+                </div>
+            </div>
+        </div>
+        <div class="education-item">
+            <div class="education-dot"></div>
+            <div class="education-content">
+                <h3>Higher Secondary School</h3>
+                <p>Completed from Tagore Vidyapitiketan GVHSS Taliparamba.</p>
+                <div class="education-image-container">
+                    <img src="https://placehold.co/400x250/0d0d0d/ff1f1f?text=Higher+Secondary+Image" alt="Higher Secondary School building" />
+                </div>
+            </div>
+        </div>
+        <div class="education-item">
+            <div class="education-dot"></div>
+            <div class="education-content">
+                <h3>Engineering College</h3>
+                <p>Pursuing B.Tech Computer Science Engineering at College of Engineering Trikaripur.</p>
+                <div class="education-image-container">
+                    <img src="https://placehold.co/400x250/0d0d0d/ff1f1f?text=Engineering+College+Image" alt="Engineering College building" />
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="achievements" class="page-section" tabindex="-1" aria-label="Achievements section">
+    <h2 class="section-title">My Achievements & Certificates</h2>
+    <div class="certificates-grid">
+        <div class="certificate-item">
+            <img src="https://placehold.co/300x200/0d0d0d/ff1f1f?text=Certificate+1" alt="Placeholder certificate image 1" />
+            <div class="certificate-info">
+                <h3>Web Development Course Completion</h3>
+                <p>Certificate for completing an advanced Web Development course.</p>
+            </div>
+        </div>
+        <div class="certificate-item">
+            <img src="https://placehold.co/300x200/0d0d0d/ff1f1f?text=Certificate+2" alt="Placeholder certificate image 2" />
+            <div class="certificate-info">
+                <h3>Cybersecurity Workshop</h3>
+                <p>Participation certificate from a national cybersecurity workshop.</p>
+            </div>
+        </div>
+        <div class="certificate-item">
+            <img src="https://placehold.co/300x200/0d0d0d/ff1f1f?text=Certificate+3" alt="Placeholder certificate image 3" />
+            <div class="certificate-info">
+                <h3>AI/ML Project Award</h3>
+                <p>Awarded for innovation in an Artificial Intelligence project.</p>
+            </div>
+        </div>
+        <div class="certificate-item">
+            <img src="https://placehold.co/300x200/0d0d0d/ff1f1f?text=Certificate+4" alt="Placeholder certificate image 4" />
+            <div class="certificate-info">
+                <h3>Video Editing Proficiency</h3>
+                <p>Certification of proficiency in professional video editing software.</p>
+            </div>
+        </div>
+        <div class="certificate-item">
+            <img src="https://placehold.co/300x200/0d0d0d/ff1f1f?text=Certificate+5" alt="Placeholder certificate image 5" />
+            <div class="certificate-info">
+                <h3>Online Course Certificate</h3>
+                <p>Completion certificate for a specialized online technical course.</p>
+            </div>
+        </div>
+        </div>
+</section>
+
 <section id="enqueries" class="page-section" tabindex="-1" aria-label="Enqueries section"></section>
 <section id="contact" class="page-section" tabindex="-1" aria-label="Contact section"></section>
 
-
+<div id="preloader" aria-live="polite" aria-busy="true" role="alert">
+  <div class="loader-container">
+    <svg class="progress-ring" width="120" height="120" aria-hidden="true" role="img" aria-label="Loading progress">
+      <circle class="bg" cx="60" cy="60" r="54" />
+      <circle class="progress" cx="60" cy="60" r="54" />
+    </svg>
+    <p>Loading...</p>
+  </div>
+</div>
 
 <script src="script.js"></script>
 </body>
