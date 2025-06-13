@@ -83,7 +83,7 @@ header {
   display: none;
   padding: 50px 60px;
   max-width: 1280px;
-  margin: 0 auto 100px auto;
+  margin: 0 auto 100px auto; /* Added margin-bottom to make space for footer */
 }
 .page-section.active {
   display: block;
@@ -678,6 +678,16 @@ header {
 
 /* Popup styles (retained as is) */
 /* ... (your existing popup styles) ... */
+
+/* Footer Styles */
+footer {
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 50px; /* Add some space above the footer */
+    background-color: #0a0a0a; /* Slightly darker background for footer */
+    color: #888;
+    font-size: 0.9rem;
+}
 
 /* Responsive adjustments */
 @media (max-width: 992px) {
