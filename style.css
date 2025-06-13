@@ -188,10 +188,6 @@ header {
   outline: none;
 }
 
-.services-section {
-  padding-top: 20px;
-}
-
 .section-title {
   font-size: 2.5rem;
   color: var(--picked-color, #ff1f1f);
@@ -200,71 +196,20 @@ header {
   text-align: center;
 }
 
-/* --- Services Carousel Modifications --- */
+/* --- Services Section Modifications --- */
 .services-carousel {
   display: grid;
-  /* Default: 4 columns for intro slide to be central */
+  /* Always 4 columns, 2 rows for 8 items */
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(2, 300px); /* Fixed rows for intro slide span */
+  grid-template-rows: repeat(2, minmax(280px, auto)); /* Adjust row height based on content */
   gap: 20px 15px;
   max-width: 1280px;
   margin: 0 auto;
-  cursor: pointer;
-  position: relative;
-  /* Ensure smooth transitions for grid properties when expanded */
-  transition: grid-template-columns 0.6s ease, grid-template-rows 0.6s ease, opacity 0.6s ease;
+  /* Removed carousel-specific styling/transitions related to expansion */
+  cursor: default; /* No special hover behavior for the whole carousel */
 }
 
-/* Center first slide spanning 2 columns & rows in default state */
-.intro-slide {
-  grid-column: 2 / span 2;
-  grid-row: 1 / 3;
-  z-index: 10;
-  opacity: 1;
-  pointer-events: auto;
-  transform: scale(1);
-  display: flex; /* Ensure intro-slide is flex for content alignment */
-  transition: opacity 0.6s ease, transform 0.6s ease; /* Keep visual transition */
-}
-
-/* Hide other slides initially */
-.services-carousel .service-slide:not(.intro-slide) {
-  opacity: 0;
-  pointer-events: none;
-  transform: scale(0.8);
-  transition: opacity 0.4s ease, transform 0.4s ease;
-  z-index: 1;
-  display: flex; /* Keep flex during fade-in/out */
-}
-
-/* On expand, change grid to 2 columns and hide intro-slide */
-.services-carousel.expanded {
-  grid-template-columns: repeat(2, 1fr); /* Now 2 columns */
-  grid-template-rows: auto; /* Allow rows to auto-adjust for remaining items */
-  grid-auto-rows: minmax(300px, auto); /* Minimum row height for auto-placed items */
-}
-
-.services-carousel.expanded .intro-slide {
-  opacity: 0; /* Remains invisible during transition */
-  pointer-events: none; /* Remains non-interactive */
-  transform: scale(0.8); /* Remains scaled down */
-  /* display: none is handled by JS after transition for smoother effect */
-  /* Remove its grid position so other items can reflow */
-  grid-column: unset;
-  grid-row: unset;
-}
-
-/* Show all others when expanded */
-.services-carousel.expanded .service-slide:not(.intro-slide) {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-  transform: scale(1) !important;
-  transition: opacity 0.4s ease, transform 0.4s ease;
-  z-index: 10;
-  display: flex; /* Ensure these are visibly displayed */
-}
-
-/* Service slide base styles */
+/* Base style for all service slides - now always visible */
 .service-slide {
   background: #111;
   border-radius: 20px;
@@ -275,17 +220,26 @@ header {
   position: relative;
   cursor: pointer;
   user-select: none;
-  transition: box-shadow 0.4s ease;
+  transition: box-shadow 0.4s ease, transform 0.3s ease; /* Added transform for hover */
+  opacity: 1; /* Always visible */
+  pointer-events: auto; /* Always interactive */
+  transform: scale(1); /* Always normal size */
+  z-index: 1;
 }
+
+.service-slide:hover {
+    transform: translateY(-5px); /* Subtle lift on hover */
+    box-shadow: 0 0 30px var(--picked-color, #ff1f1f); /* Stronger glow on hover */
+}
+
 
 .service-slide img {
   width: 100%;
-  height: 220px;
+  height: 180px; /* Adjusted height for better 2x4 fit */
   object-fit: cover;
   border-bottom: 1px solid var(--picked-color, #ff1f1f);
 }
 
-/* Transparent overlay with name and Hire Me opposite */
 .slide-hire-btn-container {
   position: absolute;
   bottom: 0;
@@ -301,13 +255,11 @@ header {
   font-size: 1.1rem;
 }
 
-/* Slide title */
 .slide-hire-btn-container h3 {
   margin: 0;
   user-select: text;
 }
 
-/* Hire Me style button in slides */
 .slide-hire-btn {
   background: var(--picked-color, #ff1f1f);
   color: #000;
@@ -326,86 +278,6 @@ header {
   background: #fff;
   box-shadow: 0 0 15px var(--picked-color, #ff1f1f);
   outline: none;
-}
-
-/* --- Skills Section Styles --- */
-#skills {
-  padding-top: 20px;
-}
-
-.skills-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid for skill cards */
-  gap: 30px; /* Space between skill cards */
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 20px 0;
-}
-
-.skill-card {
-  background: #111;
-  border-radius: 15px;
-  box-shadow: 0 0 20px rgba(255, 31, 31, 0.15); /* Subtle glow */
-  padding: 30px;
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.skill-card:hover {
-  transform: translateY(-8px); /* More pronounced lift */
-  box-shadow: 0 0 30px var(--picked-color, #ff1f1f); /* Stronger glow on hover */
-}
-
-.skill-card h3 {
-  color: var(--picked-color, #ff1f1f);
-  font-size: 1.6rem;
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  text-shadow: 0 0 8px var(--picked-color, #ff1f1f);
-}
-
-.skill-card h3 i {
-  font-size: 1.8rem;
-  color: inherit;
-}
-
-.skill-details {
-  text-align: left;
-  padding-top: 15px;
-  border-top: 1px solid rgba(255, 31, 31, 0.3); /* Separator line */
-  max-height: 0; /* Initially hidden */
-  opacity: 0; /* Initially transparent */
-  overflow: hidden; /* Hide overflow content */
-  transition: max-height 0.5s ease-out, opacity 0.5s ease-out, padding-top 0.5s ease-out; /* Smooth transition */
-}
-
-.skill-card.active .skill-details { /* Class toggled by JS for click-to-expand */
-  max-height: 500px; /* Large enough to show content */
-  opacity: 1; /* Fully visible */
-  padding-top: 25px; /* More padding when active */
-}
-
-.skill-details ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.skill-details ul li {
-  padding: 8px 0;
-  color: #ccc;
-  font-size: 0.95rem;
-  border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
-}
-
-.skill-details ul li:last-child {
-  border-bottom: none;
 }
 
 /* Popup styles */
@@ -523,4 +395,386 @@ header {
   color: #000;
   box-shadow: 0 0 20px var(--picked-color, #ff1f1f);
   outline: none;
+}
+
+/* --- Skills Section Styles --- */
+#skills {
+  padding-top: 20px;
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid for skill cards */
+  gap: 30px; /* Space between skill cards */
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+.skill-card {
+  background: #111;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(255, 31, 31, 0.15); /* Subtle glow */
+  padding: 30px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.skill-card:hover {
+  transform: translateY(-8px); /* More pronounced lift */
+  box-shadow: 0 0 30px var(--picked-color, #ff1f1f); /* Stronger glow on hover */
+}
+
+.skill-card h3 {
+  color: var(--picked-color, #ff1f1f);
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-shadow: 0 0 8px var(--picked-color, #ff1f1f);
+}
+
+.skill-card h3 i {
+  font-size: 1.8rem;
+  color: inherit;
+}
+
+.skill-details {
+  text-align: left;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 31, 31, 0.3); /* Separator line */
+  max-height: 0; /* Initially hidden */
+  opacity: 0; /* Initially transparent */
+  overflow: hidden; /* Hide overflow content */
+  transition: max-height 0.5s ease-out, opacity 0.5s ease-out, padding-top 0.5s ease-out; /* Smooth transition */
+}
+
+.skill-card.active .skill-details { /* Class toggled by JS for click-to-expand */
+  max-height: 500px; /* Large enough to show content */
+  opacity: 1; /* Fully visible */
+  padding-top: 25px; /* More padding when active */
+}
+
+.skill-details ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.skill-details ul li {
+  padding: 8px 0;
+  color: #ccc;
+  font-size: 0.95rem;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.skill-details ul li:last-child {
+  border-bottom: none;
+}
+
+/* --- Education Section Styles --- */
+#education {
+    padding-top: 20px;
+}
+
+.education-timeline {
+    position: relative;
+    max-width: 800px; /* Adjust max-width as needed */
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+.education-timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%; /* Center the line */
+    width: 2px;
+    background-color: rgba(255, 255, 255, 0.2); /* Subtle line color */
+    transform: translateX(-50%);
+    z-index: 0;
+}
+
+.education-item {
+    position: relative;
+    padding: 20px 0;
+    display: flex;
+    align-items: flex-start; /* Align content to the top */
+    margin-bottom: 40px; /* Space between items */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Alternating sides for education items */
+.education-item:nth-child(odd) {
+    flex-direction: row-reverse; /* Content on right, dot on left */
+}
+
+.education-item:nth-child(even) {
+    flex-direction: row; /* Content on left, dot on right */
+}
+
+.education-dot {
+    position: absolute;
+    top: 30px; /* Adjust to align with content start */
+    width: 18px;
+    height: 18px;
+    background: var(--picked-color, #ff1f1f);
+    border-radius: 50%;
+    z-index: 1;
+    box-shadow: 0 0 10px var(--picked-color, #ff1f1f);
+    transform: translateX(-50%); /* For odd items, aligns with left edge of content */
+}
+
+.education-item:nth-child(odd) .education-dot {
+    left: 50%;
+    transform: translateX(calc(-50% + 1px)); /* Adjust for line thickness */
+}
+.education-item:nth-child(even) .education-dot {
+    left: 50%;
+    transform: translateX(calc(-50% - 1px)); /* Adjust for line thickness */
+}
+
+
+.education-content {
+    background: #111;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(255, 31, 31, 0.15);
+    padding: 25px;
+    flex-grow: 1;
+    max-width: calc(50% - 40px); /* Adjust to leave space for dot and line */
+    position: relative;
+    z-index: 1;
+}
+
+/* Pointer arrow for education content boxes */
+.education-content::before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    top: 30px;
+    z-index: 1;
+}
+
+.education-item:nth-child(odd) .education-content {
+    margin-left: 50px; /* Space for line and dot */
+}
+.education-item:nth-child(odd) .education-content::before {
+    border-width: 10px 10px 10px 0; /* Right pointing arrow */
+    border-color: transparent #111 transparent transparent;
+    left: -10px;
+}
+
+.education-item:nth-child(even) .education-content {
+    margin-right: 50px; /* Space for line and dot */
+}
+.education-item:nth-child(even) .education-content::before {
+    border-width: 10px 0 10px 10px; /* Left pointing arrow */
+    border-color: transparent transparent transparent #111;
+    right: -10px;
+}
+
+.education-content h3 {
+    color: var(--picked-color, #ff1f1f);
+    font-size: 1.4rem;
+    margin-top: 0;
+    margin-bottom: 10px;
+    text-shadow: 0 0 6px var(--picked-color, #ff1f1f);
+}
+
+.education-content p {
+    font-size: 0.95rem;
+    color: #ccc;
+    line-height: 1.5;
+}
+
+.education-image-container {
+    margin-top: 20px;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 15px;
+}
+
+.education-image-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(255, 31, 31, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.education-image-container img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 25px var(--picked-color, #ff1f1f);
+}
+
+/* --- Achievements Section Styles --- */
+#achievements {
+    padding-top: 20px;
+}
+
+.certificates-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid for certificates */
+    gap: 30px;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+.certificate-item {
+    background: #111;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(255, 31, 31, 0.15);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.certificate-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 0 30px var(--picked-color, #ff1f1f);
+}
+
+.certificate-item img {
+    width: 100%;
+    height: 200px; /* Fixed height for consistency */
+    object-fit: cover; /* Cover the area, may crop */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.certificate-info {
+    padding: 20px;
+    flex-grow: 1; /* Allows info to take remaining space */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.certificate-info h3 {
+    color: var(--picked-color, #ff1f1f);
+    font-size: 1.3rem;
+    margin-top: 0;
+    margin-bottom: 10px;
+    text-shadow: 0 0 6px var(--picked-color, #ff1f1f);
+}
+
+.certificate-info p {
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+
+/* Popup styles (retained as is) */
+/* ... (your existing popup styles) ... */
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .nav {
+        padding: 20px 30px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .nav-links {
+        flex-basis: 100%;
+        margin-top: 15px;
+    }
+    .color-picker {
+        order: -1; /* Move color picker to the start on smaller screens */
+    }
+    .page-section {
+        padding: 40px 30px;
+    }
+    .hero {
+        flex-direction: column;
+        text-align: center;
+    }
+    .hero-text {
+        max-width: 100%;
+    }
+    .social-icons {
+        justify-content: center;
+    }
+
+    .services-carousel {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on medium screens */
+        grid-template-rows: auto;
+    }
+    .service-slide img {
+        height: 150px;
+    }
+
+    .education-timeline::before {
+        left: 20px; /* Move timeline line to left */
+        transform: translateX(0);
+    }
+    .education-item {
+        flex-direction: column !important; /* Stack content vertically */
+        align-items: flex-start;
+        padding-left: 40px; /* Make space for the line */
+    }
+    .education-dot {
+        left: 20px !important;
+        transform: translateX(-50%) !important;
+    }
+    .education-content {
+        max-width: 100%;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+    .education-content::before {
+        display: none; /* Hide the arrow */
+    }
+
+    .skills-grid, .certificates-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adjust for smaller screens */
+        gap: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .nav {
+        padding: 15px 20px;
+    }
+    .nav-links {
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .page-section {
+        padding: 30px 20px;
+    }
+    .hero-text h2 {
+        font-size: 2rem;
+    }
+    .hero-text h3 {
+        font-size: 1.5rem;
+    }
+    .section-title {
+        font-size: 2rem;
+    }
+    .services-carousel {
+        grid-template-columns: 1fr; /* Single column on small screens */
+        grid-template-rows: auto;
+    }
+    .education-content {
+        padding: 15px;
+    }
+    .skill-card, .certificate-item {
+        padding: 20px;
+    }
+    .skill-card h3 {
+        font-size: 1.4rem;
+    }
 }
