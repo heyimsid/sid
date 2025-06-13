@@ -2,91 +2,30 @@
   const navButtons = document.querySelectorAll('.nav-btn');
   const sections = document.querySelectorAll('.page-section');
   const hireBtnHome = document.querySelector('.hire-btn');
-  const servicesCarousel = document.querySelector('.services-carousel'); // Still needed for color updates
-  const slideHireButtons = document.querySelectorAll('.slide-hire-btn'); // Only these should open popup
+  const slideHireButtons = document.querySelectorAll('.slide-hire-btn');
   const highlightEls = [...document.querySelectorAll('.highlight')];
   const socialIcons = [...document.querySelectorAll('.social-icons i')];
   const logo = document.querySelector('.logo');
 
   const popup = document.getElementById('hire-popup');
   const popupServiceName = document.getElementById('popup-service-name');
-  const form = document.getElementById('hire-form');
+  const hireForm = document.getElementById('hire-form');
   const cancelBtn = document.getElementById('popup-cancel-btn');
 
-  const colorPickerInput = document.querySelector('.color-picker');
-  let selectedColor = colorPickerInput.value || '#ff1f1f';
+  const colorPickerInput = document.getElementById('color-picker'); // Changed to ID
+  let selectedColor = colorPickerInput.value || '#87CEEB'; // Initial light blue
 
-  // --- FIX: Add event listeners for navigation buttons ---
-  navButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      const targetId = button.dataset.target;
-      showSection(targetId);
-    });
-  });
-  // --- END FIX ---
+  const servicesIntroSlide = document.querySelector('.services-intro-slide');
+  const servicesGrid = document.querySelector('.services-grid');
 
-  function showSection(targetId) {
-    sections.forEach(section => {
-      if (section.id === targetId) {
-        section.classList.add('active');
-        section.setAttribute('tabindex', '-1');
-        // section.focus(); // Removed focus to prevent unwanted scroll on section change
-      } else {
-        section.classList.remove('active');
-        section.setAttribute('tabindex', '-1');
-      }
-    });
-    navButtons.forEach(btn => {
-      btn.setAttribute('aria-expanded', btn.dataset.target === targetId ? 'true' : 'false');
-    });
-  }
+  // Education section animation
+  const educationItems = document.querySelectorAll('.education-item');
 
-  // Hire button on home page (needs to trigger section change AND popup)
-  hireBtnHome.addEventListener('click', e => {
-    e.preventDefault();
-    showSection('services'); // Go to services section first
-    // Optional: If you want to open popup directly from home hire button, pass a default service name
-    // openPopup('General Inquiry');
-  });
+  // Enquiry form
+  const enquiryForm = document.getElementById('enquiry-form');
 
 
-  slideHireButtons.forEach(btn => {
-    btn.addEventListener('click', e => {
-      e.preventDefault();
-      const serviceName = btn.getAttribute('data-service-name') || 'Service';
-      openPopup(serviceName);
-    });
-  });
-
-  function openPopup(serviceName) {
-    popupServiceName.textContent = serviceName;
-    popup.style.display = 'flex';
-    popup.setAttribute('aria-hidden', 'false');
-    form.elements['hire-name'].focus(); // Focus on the first form element
-    document.body.style.overflow = 'hidden'; // Disable page scroll
-  }
-
-  function closePopup() {
-    popup.style.display = 'none';
-    popup.setAttribute('aria-hidden', 'true');
-    form.reset();
-    document.body.style.overflow = ''; // Re-enable scroll
-  }
-
-  cancelBtn.addEventListener('click', closePopup);
-
-  popup.addEventListener('click', e => {
-    if (e.target === popup) {
-      closePopup();
-    }
-  });
-
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    alert(`Thank you, your request for ${popupServiceName.textContent} has been submitted!`);
-    closePopup();
-  });
-
+  // --- Helper Functions ---
   function hexToRgba(hex, alpha = 1) {
     const hexClean = hex.replace('#', '');
     const bigint = parseInt(hexClean, 16);
@@ -96,8 +35,19 @@
     return `rgba(${r},${g},${b},${alpha})`;
   }
 
+  function hexToRgbValues(hex) {
+    const hexClean = hex.replace('#', '');
+    const bigint = parseInt(hexClean, 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+    return `${r},${g},${b}`;
+  }
+
   function updateColors(newColor) {
     document.documentElement.style.setProperty('--picked-color', newColor);
+    document.documentElement.style.setProperty('--picked-color-rgb', hexToRgbValues(newColor));
+
 
     highlightEls.forEach(el => {
       el.style.color = newColor;
@@ -109,7 +59,6 @@
       icon.style.textShadow = `0 0 10px ${newColor}`;
     });
 
-    // Ensure home hire button updates color dynamically
     hireBtnHome.style.color = newColor;
     hireBtnHome.style.borderColor = newColor;
     hireBtnHome.style.textShadow = `0 0 6px ${newColor}`;
@@ -118,18 +67,10 @@
     logo.style.textShadow = `0 0 8px ${newColor}`;
 
     // Update box-shadow for service slides, skill cards, and certificate items
-    const allGlowingElements = document.querySelectorAll('.service-slide, .skill-card, .certificate-item');
+    const allGlowingElements = document.querySelectorAll('.service-slide, .skill-card, .certificate-item, .contact-link, .graphic-wrapper');
     allGlowingElements.forEach(el => {
-      el.style.boxShadow = `0 0 20px ${hexToRgba(newColor, 0.15)}`; // Default subtle glow
+      el.style.boxShadow = `0 0 20px ${hexToRgba(newColor, 0.15)}`;
     });
-
-    // Specific hover effects for glowing elements (ensure they pick up the new color)
-    document.querySelectorAll('.service-slide:hover, .skill-card:hover, .certificate-item:hover').forEach(el => {
-        el.style.boxShadow = `0 0 30px ${newColor}`; // Stronger glow on hover
-    });
-    // This part requires re-applying the box-shadow property on hover or transition
-    // A better approach would be to manage this purely in CSS using `var(--picked-color)`
-    // but the JS here will force an update.
 
     // Update specific colors for the skills section elements
     document.querySelectorAll('.skill-card h3, .skill-card h3 i').forEach(el => {
@@ -152,11 +93,6 @@
     document.querySelectorAll('.education-image-container img').forEach(el => {
         el.style.boxShadow = `0 0 15px ${hexToRgba(newColor, 0.2)}`;
     });
-    // Ensure the hover state also updates the specific color
-    document.querySelectorAll('.education-image-container img:hover').forEach(el => {
-      el.style.boxShadow = `0 0 25px ${newColor}`;
-    });
-
 
     // Update colors for Achievements section elements
     document.querySelectorAll('.certificate-info h3').forEach(el => {
@@ -164,16 +100,113 @@
         el.style.textShadow = `0 0 6px ${newColor}`;
     });
 
+    // Update enquiry form button
+    document.querySelectorAll('#enquiry-form .submit-btn').forEach(btn => {
+        btn.style.background = newColor;
+        btn.style.borderColor = newColor;
+        btn.style.boxShadow = `0 0 15px ${newColor}`;
+    });
+
+    // Update contact links icon color
+    document.querySelectorAll('.contact-link i').forEach(icon => {
+        icon.style.color = newColor;
+    });
+
+
+    // Update hover effects for all elements that use --picked-color
+    // This is handled via CSS `:hover` selectors using `var(--picked-color)` directly,
+    // so forcing style here is redundant unless the specific property is not using CSS variables.
+    // For direct JS manipulation for hover, you would need to add mouseover/mouseout listeners
+    // which is less efficient than pure CSS with variables.
+    // The current setup allows CSS to handle hover transitions using the updated --picked-color.
+
     selectedColor = newColor;
-    colorPickerInput.style.backgroundColor = newColor;
+    // The color picker input itself will visually update
   }
 
+  // --- Section Navigation ---
+  navButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const targetId = button.dataset.target;
+      showSection(targetId);
+      // Optional: Smooth scroll to the top of the new section if needed
+      // document.getElementById(targetId).scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  function showSection(targetId) {
+    sections.forEach(section => {
+      if (section.id === targetId) {
+        section.classList.add('active');
+        section.setAttribute('tabindex', '-1');
+        // Only trigger service animation if navigating to services
+        if (targetId === 'services') {
+            resetServicesAnimation();
+        }
+      } else {
+        section.classList.remove('active');
+        section.setAttribute('tabindex', '-1');
+      }
+    });
+    navButtons.forEach(btn => {
+      btn.setAttribute('aria-expanded', btn.dataset.target === targetId ? 'true' : 'false');
+    });
+  }
+
+  // --- Home Hire Button ---
+  hireBtnHome.addEventListener('click', e => {
+    e.preventDefault();
+    showSection('services');
+  });
+
+  // --- Popup Functionality (Hire Form) ---
+  slideHireButtons.forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      const serviceName = btn.getAttribute('data-service-name') || 'Service';
+      openPopup(serviceName);
+    });
+  });
+
+  function openPopup(serviceName) {
+    popupServiceName.textContent = serviceName;
+    popup.style.display = 'flex';
+    popup.setAttribute('aria-hidden', 'false');
+    hireForm.elements['hire-name'].focus();
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closePopup() {
+    popup.style.display = 'none';
+    popup.setAttribute('aria-hidden', 'true');
+    hireForm.reset();
+    document.body.style.overflow = '';
+  }
+
+  cancelBtn.addEventListener('click', closePopup);
+
+  popup.addEventListener('click', e => {
+    if (e.target === popup) {
+      closePopup();
+    }
+  });
+
+  hireForm.addEventListener('submit', e => {
+    e.preventDefault();
+    alert(`Thank you for your interest in ${popupServiceName.textContent}! Your message has been sent.`);
+    closePopup();
+  });
+
+  // --- Color Picker Functionality ---
   colorPickerInput.addEventListener('input', e => {
     updateColors(e.target.value);
   });
 
+  // --- Initial Load & Preloader ---
   window.addEventListener('DOMContentLoaded', () => {
+    // Set initial color using JS for consistency and to apply CSS variables
     updateColors(selectedColor);
+
     let initialSection = 'home';
     if (location.hash) {
       const hashSection = location.hash.substring(1);
@@ -197,13 +230,12 @@
       preloader.style.opacity = "0";
       preloader.style.visibility = "hidden";
       preloader.setAttribute('aria-busy', 'false');
-      // --- FIX: Remove preloader element from DOM after transition to ensure no hidden white box ---
-      preloader.remove(); // Removes the element completely
-      // --- END FIX ---
+      // Remove preloader element from DOM after transition to ensure no hidden white box
+      preloader.remove();
     }, 1200);
   });
 
-
+  // --- Social Icons Animation (Home Section) ---
   document.querySelectorAll('.social-icons i').forEach(icon => {
     icon.addEventListener('click', () => {
       icon.style.transform = "scale(1.4)";
@@ -213,11 +245,61 @@
 
   // --- Skills Section Interactive Details ---
   const skillCards = document.querySelectorAll('.skill-card');
-
   skillCards.forEach(card => {
     card.addEventListener('click', () => {
       card.classList.toggle('active');
     });
   });
+
+  // --- Services Section Animation Logic ---
+  function showServicesGrid() {
+    servicesIntroSlide.classList.add('hidden'); // Hide intro slide
+    servicesGrid.classList.add('visible'); // Show grid
+  }
+
+  function resetServicesAnimation() {
+      servicesIntroSlide.classList.remove('hidden'); // Show intro slide
+      servicesGrid.classList.remove('visible'); // Hide grid
+  }
+
+  servicesIntroSlide.addEventListener('click', showServicesGrid);
+  servicesIntroSlide.addEventListener('mouseenter', showServicesGrid); // Also trigger on hover
+
+  // --- Education Section Scroll Animation ---
+  const observerOptions = {
+    root: null, // viewport
+    rootMargin: '0px',
+    threshold: 0.2 // Trigger when 20% of the item is visible
+  };
+
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('fade-in');
+        observer.unobserve(entry.target); // Stop observing once animated
+      }
+    });
+  }, observerOptions);
+
+  educationItems.forEach(item => {
+    observer.observe(item);
+  });
+
+  // --- Enquiry Form Submission (Placeholder) ---
+  enquiryForm.addEventListener('submit', (e) => {
+      e.preventDefault(); // Prevent actual form submission
+
+      const name = document.getElementById('enquiry-name').value;
+      const email = document.getElementById('enquiry-email').value;
+      const subject = document.getElementById('enquiry-subject').value;
+      const message = document.getElementById('enquiry-message').value;
+
+      // In a real application, you would send this data to a server
+      console.log('Enquiry Details:', { name, email, subject, message });
+      alert(`Thank you, ${name}! Your enquiry about "${subject}" has been received. I will get back to you at ${email} soon.`);
+
+      enquiryForm.reset(); // Clear the form
+  });
+
 
 })(); // End of IIFE
