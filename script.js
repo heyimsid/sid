@@ -3,7 +3,7 @@
   const sections = document.querySelectorAll('.page-section');
   const hireBtnHome = document.querySelector('.hire-btn');
   const servicesCarousel = document.querySelector('.services-carousel'); // Still needed for color updates
-  const slideHireButtons = document.querySelectorAll('.slide-hire-btn, .hire-btn');
+  const slideHireButtons = document.querySelectorAll('.slide-hire-btn'); // Only these should open popup
   const highlightEls = [...document.querySelectorAll('.highlight')];
   const socialIcons = [...document.querySelectorAll('.social-icons i')];
   const logo = document.querySelector('.logo');
@@ -16,12 +16,21 @@
   const colorPickerInput = document.querySelector('.color-picker');
   let selectedColor = colorPickerInput.value || '#ff1f1f';
 
+  // --- FIX: Add event listeners for navigation buttons ---
+  navButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const targetId = button.dataset.target;
+      showSection(targetId);
+    });
+  });
+  // --- END FIX ---
+
   function showSection(targetId) {
     sections.forEach(section => {
       if (section.id === targetId) {
         section.classList.add('active');
         section.setAttribute('tabindex', '-1');
-        section.focus();
+        // section.focus(); // Removed focus to prevent unwanted scroll on section change
       } else {
         section.classList.remove('active');
         section.setAttribute('tabindex', '-1');
@@ -30,14 +39,16 @@
     navButtons.forEach(btn => {
       btn.setAttribute('aria-expanded', btn.dataset.target === targetId ? 'true' : 'false');
     });
-    // No specific expand/collapse logic needed for services anymore as it's always visible
   }
 
-  // Removed expandServices and collapseServices functions
-  // Removed servicesCarousel.addEventListener('mouseenter', expandServices);
-  // Removed servicesCarousel.addEventListener('mouseleave', collapseServices);
-  // Removed servicesCarousel.addEventListener('focusin', expandServices);
-  // Removed servicesCarousel.addEventListener('focusout', collapseServices);
+  // Hire button on home page (needs to trigger section change AND popup)
+  hireBtnHome.addEventListener('click', e => {
+    e.preventDefault();
+    showSection('services'); // Go to services section first
+    // Optional: If you want to open popup directly from home hire button, pass a default service name
+    // openPopup('General Inquiry');
+  });
+
 
   slideHireButtons.forEach(btn => {
     btn.addEventListener('click', e => {
@@ -51,7 +62,7 @@
     popupServiceName.textContent = serviceName;
     popup.style.display = 'flex';
     popup.setAttribute('aria-hidden', 'false');
-    form.elements['name'].focus();
+    form.elements['hire-name'].focus(); // Focus on the first form element
     document.body.style.overflow = 'hidden'; // Disable page scroll
   }
 
@@ -98,6 +109,7 @@
       icon.style.textShadow = `0 0 10px ${newColor}`;
     });
 
+    // Ensure home hire button updates color dynamically
     hireBtnHome.style.color = newColor;
     hireBtnHome.style.borderColor = newColor;
     hireBtnHome.style.textShadow = `0 0 6px ${newColor}`;
@@ -108,8 +120,16 @@
     // Update box-shadow for service slides, skill cards, and certificate items
     const allGlowingElements = document.querySelectorAll('.service-slide, .skill-card, .certificate-item');
     allGlowingElements.forEach(el => {
-      el.style.boxShadow = `0 16px 40px ${hexToRgba(newColor, 0.25)}`;
+      el.style.boxShadow = `0 0 20px ${hexToRgba(newColor, 0.15)}`; // Default subtle glow
     });
+
+    // Specific hover effects for glowing elements (ensure they pick up the new color)
+    document.querySelectorAll('.service-slide:hover, .skill-card:hover, .certificate-item:hover').forEach(el => {
+        el.style.boxShadow = `0 0 30px ${newColor}`; // Stronger glow on hover
+    });
+    // This part requires re-applying the box-shadow property on hover or transition
+    // A better approach would be to manage this purely in CSS using `var(--picked-color)`
+    // but the JS here will force an update.
 
     // Update specific colors for the skills section elements
     document.querySelectorAll('.skill-card h3, .skill-card h3 i').forEach(el => {
@@ -144,7 +164,6 @@
         el.style.textShadow = `0 0 6px ${newColor}`;
     });
 
-
     selectedColor = newColor;
     colorPickerInput.style.backgroundColor = newColor;
   }
@@ -163,6 +182,12 @@
       }
     }
     showSection(initialSection);
+
+    // Set current year for copyright
+    const currentYearSpan = document.getElementById('current-year');
+    if (currentYearSpan) {
+      currentYearSpan.textContent = new Date().getFullYear();
+    }
   });
 
   const preloader = document.getElementById("preloader");
@@ -172,8 +197,12 @@
       preloader.style.opacity = "0";
       preloader.style.visibility = "hidden";
       preloader.setAttribute('aria-busy', 'false');
+      // --- FIX: Remove preloader element from DOM after transition to ensure no hidden white box ---
+      preloader.remove(); // Removes the element completely
+      // --- END FIX ---
     }, 1200);
   });
+
 
   document.querySelectorAll('.social-icons i').forEach(icon => {
     icon.addEventListener('click', () => {
