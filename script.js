@@ -19,12 +19,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const skillCards = document.querySelectorAll('.skill-card');
     const educationItems = document.querySelectorAll('.education-item');
 
+    // Elements for services animation
+    const servicesIntro = document.querySelector('.services-intro-slide');
+    const servicesGrid = document.querySelector('.services-grid');
+
     // Preloader and Page Load
     window.addEventListener('load', () => {
         preloader.style.opacity = '0';
         setTimeout(() => {
             preloader.style.display = 'none';
-            // Ensure the active section is visible after preloader hides
             document.querySelector('.page-section.active').style.opacity = '1';
             document.querySelector('.page-section.active').style.transform = 'translateY(0)';
         }, 500); // Wait for fade out
@@ -37,14 +40,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const observerOptions = {
         root: null,
         rootMargin: '0px',
-        threshold: 0.1 // Trigger when 10% of the item is visible
+        threshold: 0.1
     };
 
     const educationObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('in-view');
-                observer.unobserve(entry.target); // Stop observing once animated
+                observer.unobserve(entry.target);
             }
         });
     }, observerOptions);
@@ -53,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
         educationObserver.observe(item);
     });
 
-    // Skill Card Hover Effect (using CSS, but JS for future dynamic content)
+    // Skill Card Hover Effect
     skillCards.forEach(card => {
         card.addEventListener('mouseenter', () => {
             card.classList.add('hovered');
@@ -61,7 +64,6 @@ document.addEventListener('DOMContentLoaded', function() {
         card.addEventListener('mouseleave', () => {
             card.classList.remove('hovered');
         });
-        // For accessibility with keyboard navigation
         card.addEventListener('focusin', () => {
             card.classList.add('hovered');
         });
@@ -70,49 +72,40 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Function to set highlight color
+    // Function to convert hex to rgb string
+    function hexToRgb(hex) {
+        let r = 0, g = 0, b = 0;
+        if (hex.length === 4) {
+            r = parseInt(hex[1] + hex[1], 16);
+            g = parseInt(hex[2] + hex[2], 16);
+            b = parseInt(hex[3] + hex[3], 16);
+        }
+        else if (hex.length === 7) {
+            r = parseInt(hex.substring(1, 3), 16);
+            g = parseInt(hex.substring(3, 5), 16);
+            b = parseInt(hex.substring(5, 7), 16);
+        }
+        return `${r}, ${g}, ${b}`;
+    }
+
+    // Function to set highlight color and sync profile backgrounds and colors
     function setHighlightColor(color) {
         root.style.setProperty('--picked-color', color);
-        const hexToRgb = (hex) => {
-            let r = 0, g = 0, b = 0;
-            // Handle #RGB format
-            if (hex.length === 4) {
-                r = parseInt(hex[1] + hex[1], 16);
-                g = parseInt(hex[2] + hex[2], 16);
-                b = parseInt(hex[3] + hex[3], 16);
-            }
-            // Handle #RRGGBB format
-            else if (hex.length === 7) {
-                r = parseInt(hex.substring(1, 3), 16);
-                g = parseInt(hex.substring(3, 5), 16);
-                b = parseInt(hex.substring(5, 7), 16);
-            }
-            return `${r}, ${g}, ${b}`;
-        };
         const rgbColor = hexToRgb(color);
-        // console.log(`Setting --picked-color to: ${color}, --picked-color-rgb to: ${rgbColor}`); // Diagnostic log
         root.style.setProperty('--picked-color-rgb', rgbColor);
         localStorage.setItem('highlightColor', color);
 
-        // **IMPORTANT FIX for Color Sync & Animations:**
-        // Force browser to re-evaluate styles for elements that use CSS variables
-        // in their transitions/animations. This is a common solution for subtle
-        // rendering issues where CSS variables aren't immediately picked up by
-        // existing animations or transitions.
+        // Refresh animations and styles for elements using theme color
         const elementsToRefresh = document.querySelectorAll(
             '.graphic-wrapper, .service-slide, .slide-hire-btn, .skill-card, ' +
-            '.education-dot, .education-content, .certificate-item, .contact-icon'
+            '.education-dot, .education-content, .certificate-item, .contact-icon, .profile-background'
         );
-
         elementsToRefresh.forEach(el => {
-            // Read a computed style property to force recalculation (reflow)
             const computedTransform = getComputedStyle(el).transform;
-            // Then immediately set it back (effectively a no-op that triggers re-render)
             el.style.transform = computedTransform;
         });
 
-        // Although CSS variables should handle these, direct applications ensure immediate visual update
-        // for elements like logo and highlight text that don't rely on complex CSS animations.
+        // Update highlight text color and shadow
         document.querySelectorAll('.highlight').forEach(el => {
             el.style.color = color;
             el.style.textShadow = `0 0 8px ${color}`;
@@ -123,21 +116,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Load saved color or set default
+    // Load saved color or default color
     const savedColor = localStorage.getItem('highlightColor');
     if (savedColor) {
         colorPicker.value = savedColor;
         setHighlightColor(savedColor);
     } else {
-        setHighlightColor(colorPicker.value); // Set default on first load
+        setHighlightColor(colorPicker.value);
     }
 
-    // Color picker change listener
+    // Color picker change handler
     colorPicker.addEventListener('input', (event) => {
         setHighlightColor(event.target.value);
     });
 
-    // Page navigation
+    // Page navigation handling
     navButtons.forEach(button => {
         button.addEventListener('click', (e) => {
             e.preventDefault();
@@ -157,19 +150,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 targetSection.setAttribute('tabindex', '0');
                 button.setAttribute('aria-expanded', 'true');
 
-                // Scroll to top of the new section (optional, depending on desired UX)
                 targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         });
     });
 
-    // Smooth scroll for internal links (e.g., "Hire Me" button)
+    // Smooth scroll for "Hire Me" button on home page
     hireMeButton.addEventListener('click', (e) => {
         e.preventDefault();
         const targetId = hireMeButton.dataset.target;
         const targetSection = document.getElementById(targetId);
         if (targetSection) {
-            // Update active section states
             pageSections.forEach(section => {
                 section.classList.remove('active');
                 section.setAttribute('aria-hidden', 'true');
@@ -181,7 +172,6 @@ document.addEventListener('DOMContentLoaded', function() {
             targetSection.setAttribute('aria-hidden', 'false');
             targetSection.setAttribute('tabindex', '0');
 
-            // Set the corresponding nav button to active state
             const targetNavButton = document.querySelector(`.nav-btn[data-target="${targetId}"]`);
             if (targetNavButton) {
                 targetNavButton.setAttribute('aria-expanded', 'true');
@@ -192,24 +182,22 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 
-    // Hire Me Pop-up functionality
+    // Hire Me popup handlers
     function openHirePopup(serviceName) {
         popupServiceName.textContent = serviceName;
         hirePopup.classList.add('active');
         hirePopup.setAttribute('aria-hidden', 'false');
         hirePopup.setAttribute('tabindex', '0');
         document.body.style.overflow = 'hidden';
-        // Removed document.body.setAttribute('inert', ''); - this caused the stuck popup!
-        hirePopup.focus(); // Focus the popup for accessibility
+        hirePopup.focus();
     }
 
     function closeHirePopup() {
         hirePopup.classList.remove('active');
         hirePopup.setAttribute('aria-hidden', 'true');
         hirePopup.setAttribute('tabindex', '-1');
-        document.body.style.overflow = ''; // Restore body scroll
-        // Removed document.body.removeAttribute('inert'); - this caused the stuck popup!
-        hireForm.reset(); // Clear the form
+        document.body.style.overflow = '';
+        hireForm.reset();
     }
 
     serviceHireButtons.forEach(button => {
@@ -221,25 +209,20 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     popupCancelBtn.addEventListener('click', closeHirePopup);
-
-    // Close popup on outside click
     hirePopup.addEventListener('click', (e) => {
         if (e.target === hirePopup) {
             closeHirePopup();
         }
     });
 
-    // Close popup on Escape key
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && hirePopup.classList.contains('active')) {
             closeHirePopup();
         }
     });
 
-    // Handle Hire Form Submission (placeholder)
     hireForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        // In a real application, you would send this data to a server
         console.log('Hire Form Submitted:', {
             service: popupServiceName.textContent,
             name: document.getElementById('hire-name').value,
@@ -254,13 +237,12 @@ document.addEventListener('DOMContentLoaded', function() {
         closeHirePopup();
     });
 
-    // NEW: Enquiry Form "Thank You" Popup
+    // Enquiry form "Thank You" popup
     function openEnquiryThankYouPopup() {
         enquiryThankYouPopup.classList.add('active');
         enquiryThankYouPopup.setAttribute('aria-hidden', 'false');
         enquiryThankYouPopup.setAttribute('tabindex', '0');
         document.body.style.overflow = 'hidden';
-        // Removed document.body.setAttribute('inert', ''); - this caused the stuck popup!
         enquiryThankYouPopup.focus();
     }
 
@@ -269,40 +251,35 @@ document.addEventListener('DOMContentLoaded', function() {
         enquiryThankYouPopup.setAttribute('aria-hidden', 'true');
         enquiryThankYouPopup.setAttribute('tabindex', '-1');
         document.body.style.overflow = '';
-        // Removed document.body.removeAttribute('inert'); - this caused the stuck popup!
-        enquiryForm.reset(); // Clear the enquiry form after successful submission
+        enquiryForm.reset();
     }
 
     enquiryForm.addEventListener('submit', (e) => {
-        e.preventDefault(); // Prevent default form submission
-        // Here you would typically send the form data to a server using fetch() or XMLHttpRequest
+        e.preventDefault();
         console.log('Enquiry Form Submitted:', {
             name: document.getElementById('enquiry-name').value,
             email: document.getElementById('enquiry-email').value,
             subject: document.getElementById('enquiry-subject').value,
             message: document.getElementById('enquiry-message').value,
         });
-
-        openEnquiryThankYouPopup(); // Show the thank you popup
+        openEnquiryThankYouPopup();
     });
 
     enquiryThankYouOkBtn.addEventListener('click', closeEnquiryThankYouPopup);
 
-    // Close enquiry thank you popup on outside click
     enquiryThankYouPopup.addEventListener('click', (e) => {
         if (e.target === enquiryThankYouPopup) {
             closeEnquiryThankYouPopup();
         }
     });
 
-    // Close enquiry thank you popup on Escape key
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && enquiryThankYouPopup.classList.contains('active')) {
             closeEnquiryThankYouPopup();
         }
     });
 
-    // Social icon animation (if any, current CSS handles it)
+    // Social icon hover effect
     socialIcons.forEach(icon => {
         icon.addEventListener('mouseenter', () => {
             icon.style.transform = 'translateY(-5px) scale(1.1)';
@@ -314,13 +291,50 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Initial graphic animation setup
-    // These lines are crucial for setting the initial color for the graphic wrappers on load
-    // The setHighlightColor function already does this, but these ensure consistency.
+    // Initial sync of profile background color variables
     if (heroGraphicWrapper) {
         heroGraphicWrapper.style.setProperty('--picked-color-rgb', getComputedStyle(root).getPropertyValue('--picked-color-rgb'));
     }
     if (contactGraphicWrapper) {
         contactGraphicWrapper.style.setProperty('--picked-color-rgb', getComputedStyle(root).getPropertyValue('--picked-color-rgb'));
     }
+
+    // Services intro slide animation logic
+    // Initially show only intro slide, hide grid
+    if (servicesIntro && servicesGrid) {
+        servicesGrid.classList.remove('visible');
+        servicesIntro.classList.remove('hidden');
+
+        // Hover events on intro slide
+        servicesIntro.addEventListener('mouseenter', () => {
+            servicesIntro.setAttribute('aria-pressed', 'true');
+            servicesIntro.classList.add('hidden');
+            servicesGrid.classList.add('visible');
+        });
+        // Mouse leave from grid: revert
+        servicesGrid.addEventListener('mouseleave', () => {
+            servicesIntro.classList.remove('hidden');
+            servicesIntro.setAttribute('aria-pressed', 'false');
+            servicesGrid.classList.remove('visible');
+        });
+
+        // Click on intro also toggles
+        servicesIntro.addEventListener('click', () => {
+            servicesIntro.classList.add('hidden');
+            servicesIntro.setAttribute('aria-pressed', 'true');
+            servicesGrid.classList.add('visible');
+        });
+
+        // Optional: click outside grid to revert back
+        document.addEventListener('click', (event) => {
+            if (!servicesIntro.contains(event.target) && !servicesGrid.contains(event.target)) {
+                if (servicesGrid.classList.contains('visible')) {
+                    servicesIntro.classList.remove('hidden');
+                    servicesIntro.setAttribute('aria-pressed', 'false');
+                    servicesGrid.classList.remove('visible');
+                }
+            }
+        });
+    }
 });
+
