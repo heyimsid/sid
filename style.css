@@ -855,26 +855,34 @@ header {
 }
 
 /* --- Pop-up Styles (wider popup) --- */
+/* ... (existing CSS code) ... */
+
+/* Services Section - No changes here, previous update should be fine */
+
+/* ... (existing CSS for services-container, services-main-content, services-intro-slide, services-grid, service-slide etc.) ... */
+
+
+/* --- Pop-up Styles (reused for hire and enquiry thank you) --- */
 .popup {
-    display: none;
+    display: none; /* Hidden by default */
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.8); /* Darker overlay */
     z-index: 1000;
     justify-content: center;
     align-items: center;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
-    overflow-y: auto;
-    padding: 20px;
+    overflow-y: auto; /* Allow scrolling for long forms */
+    padding: 20px; /* Padding for mobile view */
 }
 
 .popup.active {
-    display: flex;
+    display: flex; /* Show when active */
     opacity: 1;
     visibility: visible;
 }
@@ -884,19 +892,17 @@ header {
     padding: 40px;
     border-radius: 15px;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
-    max-width: 700px;
+    max-width: 550px;
     width: 90%; /* Responsive width */
-    max-height: 90vh;
-    overflow-y: auto;
     text-align: center;
     position: relative;
     border: 1px solid var(--border-color);
-    transform: translateY(-20px);
+    transform: translateY(-20px); /* Initial position for animation */
     transition: transform 0.3s ease;
 }
 
 .popup.active .popup-content {
-    transform: translateY(0);
+    transform: translateY(0); /* Animate into view */
 }
 
 .popup-content h2 {
@@ -912,8 +918,15 @@ header {
     margin-bottom: 25px;
 }
 
+/* --- Hire Form Specific Layout --- */
+.popup-content form {
+    display: flex; /* Use flexbox for vertical stacking */
+    flex-direction: column; /* Stack items vertically */
+    align-items: stretch; /* Stretch items to fill container width */
+}
+
 .popup-content form label {
-    display: block;
+    display: block; /* Ensure label is a block element */
     text-align: left;
     margin-bottom: 8px;
     font-weight: 600;
@@ -926,9 +939,9 @@ header {
 .popup-content form input[type="tel"],
 .popup-content form textarea,
 .popup-content form input[type="file"] {
-    width: calc(100% - 20px);
+    width: 100%; /* Make inputs take full width */
     padding: 12px 10px;
-    margin-bottom: 20px;
+    margin-bottom: 20px; /* Space between inputs */
     border: 1px solid var(--border-color);
     border-radius: 8px;
     background: #1a1a1a;
@@ -936,6 +949,7 @@ header {
     font-size: 1rem;
     outline: none;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box; /* Include padding in width */
 }
 
 .popup-content form input[type="text"]:focus,
@@ -949,7 +963,6 @@ header {
 .popup-content form textarea {
     resize: vertical;
     min-height: 80px;
-    max-height: 200px;
 }
 
 .popup-actions {
@@ -957,8 +970,9 @@ header {
     justify-content: center;
     gap: 20px;
     margin-top: 30px;
-    flex-wrap: wrap;
 }
+
+/* ... (rest of the popup-actions styles and other sections remain the same) ... */
 
 .popup-actions button {
     padding: 12px 25px;
