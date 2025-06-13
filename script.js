@@ -1,210 +1,526 @@
-(() => {
-  const navButtons = document.querySelectorAll('.nav-btn');
-  const sections = document.querySelectorAll('.page-section');
-  const hireBtnHome = document.querySelector('.hire-btn');
-  const servicesCarousel = document.querySelector('.services-carousel');
-  const slideHireButtons = document.querySelectorAll('.slide-hire-btn, .hire-btn');
-  const highlightEls = [...document.querySelectorAll('.highlight')];
-  const socialIcons = [...document.querySelectorAll('.social-icons i')];
-  const logo = document.querySelector('.logo');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
-  const popup = document.getElementById('hire-popup');
-  const popupServiceName = document.getElementById('popup-service-name');
-  const form = document.getElementById('hire-form');
-  const cancelBtn = document.getElementById('popup-cancel-btn');
-
-  const colorPickerInput = document.querySelector('.color-picker');
-  let selectedColor = colorPickerInput.value || '#ff1f1f';
-
-  function showSection(targetId) {
-    sections.forEach(section => {
-      if (section.id === targetId) {
-        section.classList.add('active');
-        section.setAttribute('tabindex', '-1');
-        section.focus();
-      } else {
-        section.classList.remove('active');
-        section.setAttribute('tabindex', '-1');
-      }
-    });
-    navButtons.forEach(btn => {
-      btn.setAttribute('aria-expanded', btn.dataset.target === targetId ? 'true' : 'false');
-    });
-    if (targetId !== 'services') {
-      collapseServices();
-    } else {
-      collapseServices();
-    }
-  }
-
-  function collapseServices() {
-    servicesCarousel.classList.remove('expanded');
-    const introSlide = servicesCarousel.querySelector('.intro-slide');
-    if (introSlide) {
-      introSlide.style.opacity = '1';
-      introSlide.style.pointerEvents = 'auto';
-      introSlide.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-      introSlide.style.transform = 'scale(1)';
-    }
-    servicesCarousel.querySelectorAll('.service-slide:not(.intro-slide)').forEach(slide => {
-      slide.style.opacity = '0';
-      slide.style.pointerEvents = 'none';
-      slide.style.transform = 'scale(0.8)';
-      slide.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-    });
-  }
-
-  function expandServices() {
-    servicesCarousel.classList.add('expanded');
-    const introSlide = servicesCarousel.querySelector('.intro-slide');
-    if (introSlide) {
-      introSlide.style.opacity = '0';
-      introSlide.style.pointerEvents = 'none';
-      introSlide.style.transform = 'scale(0.8)';
-      introSlide.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-    }
-    servicesCarousel.querySelectorAll('.service-slide:not(.intro-slide)').forEach(slide => {
-      slide.style.opacity = '1';
-      slide.style.pointerEvents = 'auto';
-      slide.style.transform = 'scale(1)';
-      slide.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-    });
-  }
-
-  navButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      showSection(btn.dataset.target);
-      window.history.pushState(null, '', `#${btn.dataset.target}`);
-    });
-  });
-
-  hireBtnHome.addEventListener('click', () => {
-    showSection('services');
-    window.history.pushState(null, '', '#services');
-  });
-
-  servicesCarousel.addEventListener('mouseenter', expandServices);
-  servicesCarousel.addEventListener('mouseleave', collapseServices);
-  servicesCarousel.addEventListener('focusin', expandServices);
-  servicesCarousel.addEventListener('focusout', collapseServices);
-
-  slideHireButtons.forEach(btn => {
-    btn.addEventListener('click', e => {
-      e.preventDefault();
-      const serviceName = btn.getAttribute('data-service-name') || 'Service';
-      openPopup(serviceName);
-    });
-  });
-
-  function openPopup(serviceName) {
-    popupServiceName.textContent = serviceName;
-    popup.style.display = 'flex';
-    popup.setAttribute('aria-hidden', 'false');
-    form.elements['name'].focus();
-  }
-
-  function closePopup() {
-    popup.style.display = 'none';
-    popup.setAttribute('aria-hidden', 'true');
-    form.reset();
-  }
-
-  cancelBtn.addEventListener('click', closePopup);
-
-  popup.addEventListener('click', e => {
-    if (e.target === popup) {
-      closePopup();
-    }
-  });
-
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    alert(`Thank you, your request for ${popupServiceName.textContent} has been submitted!`);
-    closePopup();
-  });
-
-  function hexToRgba(hex, alpha = 1) {
-    const hexClean = hex.replace('#', '');
-    const bigint = parseInt(hexClean, 16);
-    const r = (bigint >> 16) & 255;
-    const g = (bigint >> 8) & 255;
-    const b = bigint & 255;
-    return `rgba(${r},${g},${b},${alpha})`;
-  }
-
-  function updateColors(newColor) {
-    document.documentElement.style.setProperty('--picked-color', newColor);
-
-    highlightEls.forEach(el => {
-      el.style.color = newColor;
-      el.style.textShadow = `0 0 6px ${newColor}`;
-    });
-
-    socialIcons.forEach(icon => {
-      icon.style.color = newColor;
-      icon.style.textShadow = `0 0 10px ${newColor}`;
-    });
-
-    hireBtnHome.style.color = newColor;
-    hireBtnHome.style.borderColor = newColor;
-    hireBtnHome.style.textShadow = `0 0 6px ${newColor}`;
-
-    logo.style.color = newColor;
-    logo.style.textShadow = `0 0 8px ${newColor}`;
-
-    const allServiceSlides = document.querySelectorAll('.service-slide');
-    allServiceSlides.forEach(slide => {
-      slide.style.boxShadow = `0 16px 40px ${hexToRgba(newColor, 0.25)}`;
-    });
-
-    selectedColor = newColor;
-    colorPickerInput.style.backgroundColor = newColor;
-  }
-
-  colorPickerInput.addEventListener('input', e => {
-    updateColors(e.target.value);
-  });
-
-  window.addEventListener('DOMContentLoaded', () => {
-    updateColors(selectedColor);
-    let initialSection = 'home';
-    if (location.hash) {
-      const hashSection = location.hash.substring(1);
-      if (document.getElementById(hashSection)) {
-        initialSection = hashSection;
-      }
-    }
-    showSection(initialSection);
-  });
-
-  const preloader = document.getElementById("preloader");
-  window.addEventListener("load", () => {
-    setTimeout(() => {
-      preloader.style.transition = "opacity 0.5s ease, visibility 0.5s ease";
-      preloader.style.opacity = "0";
-      preloader.style.visibility = "hidden";
-      preloader.setAttribute('aria-busy', 'false');
-    }, 1200);
-  });
-
-  document.querySelectorAll('.social-icons i').forEach(icon => {
-    icon.addEventListener('click', () => {
-      icon.style.transform = "scale(1.4)";
-      setTimeout(() => icon.style.transform = "scale(1)", 300);
-    });
-  });
-})();
-function openPopup(serviceName) {
-  popupServiceName.textContent = serviceName;
-  popup.style.display = 'flex';
-  popup.setAttribute('aria-hidden', 'false');
-  form.elements['name'].focus();
-  document.body.style.overflow = 'hidden'; // Disable page scroll
+body {
+  margin: 0;
+  padding: 0;
+  background: #000;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
-function closePopup() {
-  popup.style.display = 'none';
-  popup.setAttribute('aria-hidden', 'true');
-  form.reset();
-  document.body.style.overflow = ''; // Re-enable scroll
+header {
+  background: #000;
+}
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px 60px;
+  gap: 16px;
+  flex-wrap: nowrap;
+  position: relative;
+  z-index: 10;
+}
+.logo {
+  color: var(--picked-color, #ff1f1f);
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-shadow: 0 0 8px var(--picked-color, #ff1f1f);
+  flex-shrink: 0;
+  user-select: none;
+  transition: color 1s ease, text-shadow 1s ease;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  flex-grow: 1;
+  justify-content: center;
+}
+.nav-links li {
+  user-select: none;
+}
+.nav-links li button.nav-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+  padding: 4px 8px;
+  border-radius: 8px;
+}
+.nav-links li button.nav-btn:hover,
+.nav-links li button.nav-btn:focus {
+  color: var(--picked-color, #ff1f1f);
+  text-shadow: 0 0 8px var(--picked-color, #ff1f1f);
+}
+.color-picker {
+  width: 40px;
+  height: 40px;
+  border: none;
+  padding: 0;
+  border-radius: 50%;
+  background-color: #111;
+  cursor: pointer;
+  box-shadow: 0 0 10px var(--picked-color, #ff1f1f);
+  transition: box-shadow 0.3s ease;
+}
+.color-picker:focus {
+  outline: none;
+  box-shadow: 0 0 20px 3px var(--picked-color, #ff1f1f);
+}
+
+.page-section {
+  display: none;
+  padding: 50px 60px;
+  max-width: 1280px;
+  margin: 0 auto 100px auto;
+}
+.page-section.active {
+  display: block;
+}
+
+.hero {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 60px;
+  align-items: center;
+  justify-content: center;
+}
+
+.graphic-wrapper {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  margin: 0 auto;
+  border-radius: 30px;
+  background: rgba(255, 31, 31, 0.1);
+  box-shadow: 0 0 30px rgba(255, 31, 31, 0.3);
+  transform-style: preserve-3d;
+  cursor: default;
+  animation: pulse 2.5s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+.profile-image {
+  width: 280px;
+  border-radius: 24px;
+  box-shadow: 0 0 40px 4px var(--picked-color, #ff1f1f);
+  backface-visibility: hidden;
+  transition: box-shadow 1s ease;
+}
+
+.hero-text {
+  max-width: 500px;
+  color: #ccc;
+  transition: color 1s ease, text-shadow 1s ease;
+}
+.hero-text h2,
+.hero-text h3 {
+  font-size: 2.5rem;
+  margin: 0;
+  line-height: 1.2;
+}
+.hero-text h3 {
+  margin-top: 10px;
+  font-size: 2rem;
+}
+.highlight {
+  color: var(--picked-color, #ff1f1f);
+  text-shadow: 0 0 6px var(--picked-color, #ff1f1f);
+  transition: color 1s ease, text-shadow 1s ease;
+  user-select: text;
+}
+.hero-text p {
+  margin-top: 20px;
+  line-height: 1.6;
+}
+
+.social-icons {
+  margin-top: 20px;
+  display: flex;
+  gap: 20px;
+  font-size: 1.5rem;
+}
+.social-icons i {
+  color: var(--picked-color, #ff1f1f);
+  cursor: pointer;
+  transition: transform 0.3s, text-shadow 0.3s, color 1s ease;
+}
+.social-icons i:hover {
+  transform: scale(1.2);
+  text-shadow: 0 0 10px currentColor;
+}
+
+.hire-btn {
+  margin-top: 30px;
+  padding: 10px 25px;
+  font-size: 1rem;
+  color: var(--picked-color, #ff1f1f);
+  background: transparent;
+  border: 2px solid var(--picked-color, #ff1f1f);
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 1s ease;
+  text-shadow: 0 0 6px var(--picked-color, #ff1f1f);
+}
+.hire-btn:hover,
+.hire-btn:focus {
+  background: var(--picked-color, #ff1f1f);
+  color: #000;
+  box-shadow: 0 0 15px var(--picked-color, #ff1f1f);
+  border-color: var(--picked-color, #ff1f1f);
+  outline: none;
+}
+
+.services-section {
+  padding-top: 20px;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  color: var(--picked-color, #ff1f1f);
+  font-weight: 700;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+/* --- Services Carousel Modifications --- */
+.services-carousel {
+  display: grid;
+  /* Default: 4 columns for intro slide to be central */
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 300px); /* Fixed rows for intro slide span */
+  gap: 20px 15px;
+  max-width: 1280px;
+  margin: 0 auto;
+  cursor: pointer;
+  position: relative;
+  /* Ensure smooth transitions for grid properties when expanded */
+  transition: grid-template-columns 0.6s ease, grid-template-rows 0.6s ease, opacity 0.6s ease;
+}
+
+/* Center first slide spanning 2 columns & rows in default state */
+.intro-slide {
+  grid-column: 2 / span 2;
+  grid-row: 1 / 3;
+  z-index: 10;
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+  display: flex; /* Ensure intro-slide is flex for content alignment */
+  transition: opacity 0.6s ease, transform 0.6s ease; /* Keep visual transition */
+}
+
+/* Hide other slides initially */
+.services-carousel .service-slide:not(.intro-slide) {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.8);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  z-index: 1;
+  display: flex; /* Keep flex during fade-in/out */
+}
+
+/* On expand, change grid to 2 columns and hide intro-slide */
+.services-carousel.expanded {
+  grid-template-columns: repeat(2, 1fr); /* Now 2 columns */
+  grid-template-rows: auto; /* Allow rows to auto-adjust for remaining items */
+  grid-auto-rows: minmax(300px, auto); /* Minimum row height for auto-placed items */
+}
+
+.services-carousel.expanded .intro-slide {
+  opacity: 0; /* Remains invisible during transition */
+  pointer-events: none; /* Remains non-interactive */
+  transform: scale(0.8); /* Remains scaled down */
+  /* display: none is handled by JS after transition for smoother effect */
+  /* Remove its grid position so other items can reflow */
+  grid-column: unset;
+  grid-row: unset;
+}
+
+/* Show all others when expanded */
+.services-carousel.expanded .service-slide:not(.intro-slide) {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  transform: scale(1) !important;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  z-index: 10;
+  display: flex; /* Ensure these are visibly displayed */
+}
+
+/* Service slide base styles */
+.service-slide {
+  background: #111;
+  border-radius: 20px;
+  box-shadow: 0 16px 40px rgba(255,31,31,0.25);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  transition: box-shadow 0.4s ease;
+}
+
+.service-slide img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-bottom: 1px solid var(--picked-color, #ff1f1f);
+}
+
+/* Transparent overlay with name and Hire Me opposite */
+.slide-hire-btn-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,0.7);
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #eee;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+/* Slide title */
+.slide-hire-btn-container h3 {
+  margin: 0;
+  user-select: text;
+}
+
+/* Hire Me style button in slides */
+.slide-hire-btn {
+  background: var(--picked-color, #ff1f1f);
+  color: #000;
+  padding: 8px 20px;
+  border-radius: 30px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 0 9px var(--picked-color, #ff1f1f);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.slide-hire-btn:hover,
+.slide-hire-btn:focus {
+  background: #fff;
+  box-shadow: 0 0 15px var(--picked-color, #ff1f1f);
+  outline: none;
+}
+
+/* --- Skills Section Styles --- */
+#skills {
+  padding-top: 20px;
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid for skill cards */
+  gap: 30px; /* Space between skill cards */
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+.skill-card {
+  background: #111;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(255, 31, 31, 0.15); /* Subtle glow */
+  padding: 30px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.skill-card:hover {
+  transform: translateY(-8px); /* More pronounced lift */
+  box-shadow: 0 0 30px var(--picked-color, #ff1f1f); /* Stronger glow on hover */
+}
+
+.skill-card h3 {
+  color: var(--picked-color, #ff1f1f);
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-shadow: 0 0 8px var(--picked-color, #ff1f1f);
+}
+
+.skill-card h3 i {
+  font-size: 1.8rem;
+  color: inherit;
+}
+
+.skill-details {
+  text-align: left;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 31, 31, 0.3); /* Separator line */
+  max-height: 0; /* Initially hidden */
+  opacity: 0; /* Initially transparent */
+  overflow: hidden; /* Hide overflow content */
+  transition: max-height 0.5s ease-out, opacity 0.5s ease-out, padding-top 0.5s ease-out; /* Smooth transition */
+}
+
+.skill-card.active .skill-details { /* Class toggled by JS for click-to-expand */
+  max-height: 500px; /* Large enough to show content */
+  opacity: 1; /* Fully visible */
+  padding-top: 25px; /* More padding when active */
+}
+
+.skill-details ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.skill-details ul li {
+  padding: 8px 0;
+  color: #ccc;
+  font-size: 0.95rem;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.skill-details ul li:last-child {
+  border-bottom: none;
+}
+
+/* Popup styles */
+.popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 40px 20px;
+}
+
+.popup[aria-hidden="false"] {
+  display: flex;
+}
+
+.popup-content {
+  background: #111;
+  padding: 30px 40px;
+  border-radius: 12px;
+  width: 95%;
+  max-width: 700px;
+  max-height: 90vh;
+  overflow-y: auto;
+  color: #eee;
+  box-shadow: 0 0 25px var(--picked-color, #ff1f1f);
+}
+
+.popup-content h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: var(--picked-color, #ff1f1f);
+}
+
+.popup-content label {
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.popup-content input[type="text"],
+.popup-content input[type="email"],
+.popup-content input[type="tel"],
+.popup-content textarea,
+.popup-content input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background: #222;
+  color: #eee;
+  transition: border-color 0.3s ease;
+}
+
+.popup-content input[type="text"]:focus,
+.popup-content input[type="email"]:focus,
+.popup-content input[type="tel"]:focus,
+.popup-content textarea:focus,
+.popup-content input[type="file"]:focus {
+  outline: none;
+  border-color: var(--picked-color, #ff1f1f);
+  box-shadow: 0 0 6px var(--picked-color, #ff1f1f);
+}
+
+.popup-content textarea {
+  resize: vertical;
+  min-height: 140px;
+}
+
+.popup-actions {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.popup-actions button {
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 10px 25px;
+  border-radius: 30px;
+  border: 2px solid var(--picked-color, #ff1f1f);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 120px;
+}
+
+#popup-cancel-btn {
+  background: transparent;
+  color: #eee;
+}
+
+#popup-cancel-btn:hover,
+#popup-cancel-btn:focus {
+  background: var(--picked-color, #ff1f1f);
+  color: #000;
+  box-shadow: 0 0 15px var(--picked-color, #ff1f1f);
+  outline: none;
+}
+
+.popup-actions button[type="submit"] {
+  background: var(--picked-color, #ff1f1f);
+  color: #000;
+  box-shadow: 0 0 15px var(--picked-color, #ff1f1f);
+}
+
+.popup-actions button[type="submit"]:hover,
+.popup-actions button[type="submit"]:focus {
+  background: #fff;
+  color: #000;
+  box-shadow: 0 0 20px var(--picked-color, #ff1f1f);
+  outline: none;
 }
