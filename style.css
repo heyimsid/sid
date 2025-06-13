@@ -3,7 +3,7 @@
 /* --- CSS Variables --- */
 :root {
   --picked-color: #87CEEB; /* Initial light blue color */
-  --picked-color-rgb: 135, 206, 235; /* RGB for #87CEEB */
+  --picked-color-rgb: 135, 206, 235; /* Initial RGB for the default color */
   --bg-color: #000;
   --card-bg: #111;
   --text-color: #fff;
@@ -61,7 +61,7 @@ header {
 .nav-links li button.nav-btn {
   background: transparent;
   border: none;
-  color: var(--text-color);
+  color: var(--text-color); /* Default text color */
   cursor: pointer;
   font-weight: 700;
   font-size: 1rem;
@@ -71,8 +71,8 @@ header {
 }
 .nav-links li button.nav-btn:hover,
 .nav-links li button.nav-btn:focus {
-  color: var(--picked-color);
-  text-shadow: 0 0 8px var(--picked-color);
+  color: var(--picked-color); /* This will now work correctly */
+  text-shadow: 0 0 8px var(--picked-color); /* This will now work correctly */
 }
 
 /* --- Color Picker Redesign --- */
@@ -130,14 +130,13 @@ header {
 }
 
 
-/* --- Page Sections --- */
 .page-section {
   display: none;
   padding: 50px 60px;
   max-width: 1280px;
-  margin: 0 auto 100px auto; /* Added margin-bottom to make space for footer */
-  opacity: 0; /* Initial state for animation */
-  transform: translateY(20px); /* Initial state for animation */
+  margin: 0 auto 100px auto;
+  opacity: 0;
+  transform: translateY(20px);
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
 .page-section.active {
@@ -166,37 +165,44 @@ header {
     transition: background 1s ease, box-shadow 1s ease;
 }
 
-/* --- Profile Background Fix for Home and Contact Page --- */
-.profile-background {
+/* --- Hero Section --- */
+.hero {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 60px;
+  align-items: center;
+  justify-content: center;
+}
+
+.graphic-wrapper {
   position: relative;
   width: 280px;
   height: 280px;
   margin: 0 auto;
   border-radius: 30px;
   background: rgba(var(--picked-color-rgb), 0.1);
-  box-shadow: 0 0 30px rgba(var(--picked-color-rgb), 0.4);
+  filter: drop-shadow(0 0 30px rgba(var(--picked-color-rgb), 0.3));
   transform-style: preserve-3d;
   cursor: default;
   animation: pulse 2.5s ease-in-out infinite;
   flex-shrink: 0;
-  transition: background 0.8s ease, box-shadow 0.8s ease;
+  transition: background 0.5s ease, filter 0.5s ease, transform 0.3s ease;
 }
 @keyframes pulse {
   0%, 100% {
-    box-shadow: 0 0 30px rgba(var(--picked-color-rgb), 0.3);
+    filter: drop-shadow(0 0 30px rgba(var(--picked-color-rgb), 0.3));
     transform: scale(1);
   }
   50% {
-    box-shadow: 0 0 50px rgba(var(--picked-color-rgb), 0.6);
+    filter: drop-shadow(0 0 50px rgba(var(--picked-color-rgb), 0.6));
     transform: scale(1.02);
   }
 }
 
-.profile-background:hover {
+.graphic-wrapper:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 60px rgba(var(--picked-color-rgb), 0.7);
+  filter: drop-shadow(0 0 60px rgba(var(--picked-color-rgb), 0.7));
   animation-play-state: paused;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.4s ease;
 }
 
 .profile-image {
@@ -207,15 +213,6 @@ header {
   display: block;
   position: relative;
   z-index: 2;
-}
-
-/* --- Hero Section --- */
-.hero {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 60px;
-  align-items: center;
-  justify-content: center;
 }
 
 .hero-text {
@@ -251,8 +248,8 @@ header {
   justify-content: center;
   gap: 25px;
   margin-bottom: 40px;
-  list-style: none; /* Ensure no bullet points */
-  padding: 0; /* Remove default padding */
+  list-style: none;
+  padding: 0;
 }
 .social-icons i {
   font-size: 2.2rem;
@@ -285,26 +282,42 @@ header {
   box-shadow: 0 5px 20px rgba(var(--picked-color-rgb), 0.7);
 }
 
-/* --- Services Section with Animation --- */
+/* --- Services Section --- */
 .services-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 40px; /* Space between intro slide and grid */
-    position: relative;
+    gap: 40px;
 }
 
+.services-main-content {
+    position: relative; /* Keep relative to position children */
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Center the intro slide initially */
+    align-items: flex-start; /* Align intro slide at top */
+    min-height: 400px; /* Base height for intro slide */
+    transition: min-height 0.8s ease-in-out; /* Allow container to grow smoothly */
+}
+
+/* Intro slide styling */
 .services-intro-slide {
-    position: relative;
+    position: absolute; /* Keep it absolute initially to overlay and move independently */
+    top: 0;
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust for absolute centering */
     width: 100%;
     max-width: 800px;
-    height: 350px; /* Adjust height as needed */
+    height: 350px;
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     cursor: pointer;
-    transition: transform 0.5s ease, box-shadow 0.5s ease, opacity 0.5s ease;
-    will-change: transform, opacity;
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+    z-index: 2; /* Ensure it's above the grid when active */
+    transform-origin: center center;
+    opacity: 1; /* Ensure visible initially */
+    pointer-events: auto; /* Ensure clickable initially */
 }
 
 .services-intro-slide img {
@@ -320,7 +333,7 @@ header {
 }
 
 .services-intro-slide:hover {
-    transform: translateY(-5px);
+    transform: translateX(-50%) translateY(-5px); /* Keep centered, just lift */
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
 }
 
@@ -338,7 +351,6 @@ header {
     color: var(--text-color);
     text-align: center;
     padding: 20px;
-    transition: opacity 0.3s ease;
 }
 
 .intro-overlay h3 {
@@ -353,34 +365,79 @@ header {
     color: var(--secondary-text-color);
 }
 
+/* Animation for intro slide to hide */
+.services-intro-slide.intro-slide-expanded {
+    transform: translateX(-50%) translateY(-100%) scale(0.8); /* Moves up and scales */
+    opacity: 0;
+    pointer-events: none; /* Make it unclickable when hidden */
+}
+
+
+/* Services grid styling */
 .services-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 40px; /* Increased gap for more spacing */
-    width: 100%;
+    gap: 40px;
     justify-content: center;
+    width: 100%; /* Take full width of services-main-content */
 
+    /* Animation properties for sliding in/out */
     opacity: 0;
-    pointer-events: none;
-    transform: translateY(20px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-    user-select: none;
+    max-height: 0; /* Initially hidden */
+    overflow: hidden; /* Hide overflow when max-height is 0 */
+    pointer-events: none; /* Not interactive when hidden */
+    transform: translateY(20px); /* Initial state for grid */
+    transition: opacity 0.8s ease-in-out 0.3s, max-height 0.8s ease-in-out 0.3s, transform 0.8s ease-in-out 0.3s;
 }
 
-.services-grid.visible {
+.services-grid.service-grid-visible {
     opacity: 1;
-    pointer-events: auto;
+    max-height: 2000px; /* Sufficiently large to show all content (adjust if your grid is taller) */
+    overflow: visible; /* Allow content to be seen */
+    pointer-events: auto; /* Interactive when visible */
     transform: translateY(0);
+    transition-delay: 0.5s; /* Delay for grid itself to fade in after intro slide moves */
 }
 
-.services-intro-slide.hidden {
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(-20px);
-    user-select: none;
+/* Animations for individual service slides */
+@keyframes slideInFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-100%) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) translateY(0);
+    }
 }
 
-/* Service slides cards */
+@keyframes slideInFromRight {
+    from {
+        opacity: 0;
+        transform: translateX(100%) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Class applied by JS to trigger animation */
+.service-slide.animate-in {
+    animation: fadeInUp 0.6s ease-out forwards; /* Default animation */
+}
+
 .service-slide {
     position: relative;
     background: var(--card-bg);
@@ -392,11 +449,15 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    /* Initial state for individual slide animation (overridden by animate-in) */
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
 }
 
 .service-slide img {
     width: 100%;
-    height: 200px; /* Fixed height for consistency, adjust as needed */
+    height: 200px;
     object-fit: cover;
     display: block;
     border-bottom: 1px solid var(--border-color);
@@ -450,7 +511,7 @@ header {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 30px;
     justify-content: center;
-    align-items: stretch; /* Ensures cards are same height */
+    align-items: stretch;
 }
 
 .skill-card {
@@ -496,7 +557,7 @@ header {
 }
 
 .skill-card.hovered .skill-details {
-    max-height: 200px; /* Adjust based on content */
+    max-height: 200px;
     opacity: 1;
 }
 
@@ -524,7 +585,7 @@ header {
 }
 
 .skill-card:hover,
-.skill-card:focus-within { /* Added focus-within for keyboard navigation */
+.skill-card:focus-within {
     transform: translateY(-15px);
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), 0 0 25px rgba(var(--picked-color-rgb), 0.6);
     border-color: var(--picked-color);
@@ -565,8 +626,9 @@ header {
     transform: translateY(0);
 }
 
+
 .education-item:nth-child(even) {
-    flex-direction: row-reverse; /* Alternate sides */
+    flex-direction: row-reverse;
 }
 
 .education-dot {
@@ -588,18 +650,18 @@ header {
     padding: 30px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
     flex: 1;
-    max-width: 45%; /* Adjust width to make space for the line */
+    max-width: 45%;
     position: relative;
     border: 1px solid var(--border-color);
     transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .education-item:nth-child(odd) .education-content {
-    margin-right: 50px; /* Space for the line and dot */
+    margin-right: 50px;
 }
 
 .education-item:nth-child(even) .education-content {
-    margin-left: 50px; /* Space for the line and dot */
+    margin-left: 50px;
 }
 
 .education-content h3 {
@@ -618,7 +680,7 @@ header {
 
 .education-image-container {
     width: 100%;
-    height: 200px; /* Fixed height for images */
+    height: 200px;
     overflow: hidden;
     border-radius: 10px;
     margin-top: 15px;
@@ -721,7 +783,7 @@ header {
 .enquiry-form-container input[type="text"],
 .enquiry-form-container input[type="email"],
 .enquiry-form-container textarea {
-    width: calc(100% - 20px); /* Adjust for padding */
+    width: calc(100% - 20px);
     padding: 12px 10px;
     border: 1px solid var(--border-color);
     border-radius: 8px;
@@ -757,8 +819,8 @@ header {
     box-shadow: 0 0 15px rgba(var(--picked-color-rgb), 0.5);
     display: block;
     width: 100%;
-    max-width: 250px; /* Limit button width */
-    margin: 30px auto 0 auto; /* Center the button */
+    max-width: 250px;
+    margin: 30px auto 0 auto;
 }
 
 .enquiry-form-container .submit-btn:hover {
@@ -791,6 +853,9 @@ header {
 .contact-left .graphic-wrapper {
     width: 280px;
     height: 280px;
+    background: rgba(var(--picked-color-rgb), 0.1);
+    filter: drop-shadow(0 0 30px rgba(var(--picked-color-rgb), 0.3));
+    transition: background 0.5s ease, filter 0.5s ease, transform 0.3s ease;
 }
 
 .contact-right {
@@ -829,7 +894,7 @@ header {
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 15px rgba(var(--picked-color-rgb), 0.2);
+    filter: drop-shadow(0 0 15px rgba(var(--picked-color-rgb), 0.2));
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     transition: all 0.3s ease;
@@ -845,7 +910,7 @@ header {
 .contact-icon:hover {
     background: rgba(var(--picked-color-rgb), 0.2);
     border-color: var(--picked-color);
-    box-shadow: 0 0 25px rgba(var(--picked-color-rgb), 0.6);
+    filter: drop-shadow(0 0 25px rgba(var(--picked-color-rgb), 0.6));
     transform: translateY(-5px) scale(1.05);
 }
 
@@ -854,35 +919,28 @@ header {
     text-shadow: 0 0 8px var(--picked-color);
 }
 
-/* --- Pop-up Styles (wider popup) --- */
-/* ... (existing CSS code) ... */
-
-/* Services Section - No changes here, previous update should be fine */
-
-/* ... (existing CSS for services-container, services-main-content, services-intro-slide, services-grid, service-slide etc.) ... */
-
 
 /* --- Pop-up Styles (reused for hire and enquiry thank you) --- */
 .popup {
-    display: none; /* Hidden by default */
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8); /* Darker overlay */
+    background: rgba(0, 0, 0, 0.8);
     z-index: 1000;
     justify-content: center;
     align-items: center;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
-    overflow-y: auto; /* Allow scrolling for long forms */
-    padding: 20px; /* Padding for mobile view */
+    overflow-y: auto;
+    padding: 20px;
 }
 
 .popup.active {
-    display: flex; /* Show when active */
+    display: flex;
     opacity: 1;
     visibility: visible;
 }
@@ -893,16 +951,16 @@ header {
     border-radius: 15px;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
     max-width: 550px;
-    width: 90%; /* Responsive width */
+    width: 90%;
     text-align: center;
     position: relative;
     border: 1px solid var(--border-color);
-    transform: translateY(-20px); /* Initial position for animation */
+    transform: translateY(-20px);
     transition: transform 0.3s ease;
 }
 
 .popup.active .popup-content {
-    transform: translateY(0); /* Animate into view */
+    transform: translateY(0);
 }
 
 .popup-content h2 {
@@ -918,15 +976,14 @@ header {
     margin-bottom: 25px;
 }
 
-/* --- Hire Form Specific Layout --- */
 .popup-content form {
-    display: flex; /* Use flexbox for vertical stacking */
-    flex-direction: column; /* Stack items vertically */
-    align-items: stretch; /* Stretch items to fill container width */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
 }
 
 .popup-content form label {
-    display: block; /* Ensure label is a block element */
+    display: block;
     text-align: left;
     margin-bottom: 8px;
     font-weight: 600;
@@ -939,9 +996,9 @@ header {
 .popup-content form input[type="tel"],
 .popup-content form textarea,
 .popup-content form input[type="file"] {
-    width: 100%; /* Make inputs take full width */
+    width: 100%;
     padding: 12px 10px;
-    margin-bottom: 20px; /* Space between inputs */
+    margin-bottom: 20px;
     border: 1px solid var(--border-color);
     border-radius: 8px;
     background: #1a1a1a;
@@ -949,7 +1006,7 @@ header {
     font-size: 1rem;
     outline: none;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    box-sizing: border-box; /* Include padding in width */
+    box-sizing: border-box;
 }
 
 .popup-content form input[type="text"]:focus,
@@ -972,8 +1029,6 @@ header {
     margin-top: 30px;
 }
 
-/* ... (rest of the popup-actions styles and other sections remain the same) ... */
-
 .popup-actions button {
     padding: 12px 25px;
     border: none;
@@ -982,7 +1037,6 @@ header {
     font-weight: 600;
     cursor: pointer;
     transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-    min-width: 120px;
 }
 
 #popup-cancel-btn, #enquiry-thankyou-ok-btn {
@@ -1073,9 +1127,10 @@ header {
 footer {
     text-align: center;
     padding: 30px 60px;
-    background: var(--card-bg);
+    background: transparent; /* This is correctly set to transparent */
     color: var(--secondary-text-color);
     font-size: 0.9rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05); /* Lighter border for transparency */
 }
 
 
@@ -1089,7 +1144,7 @@ footer {
     .nav-links {
         gap: 15px;
         margin-top: 15px;
-        flex-basis: 100%; /* Take full width */
+        flex-basis: 100%;
         justify-content: center;
     }
     .logo {
@@ -1102,6 +1157,11 @@ footer {
 
     .page-section {
         padding: 40px 30px;
+    }
+
+    .section-title {
+        font-size: 2.5rem;
+        margin-bottom: 40px;
     }
 
     .hero {
@@ -1154,6 +1214,44 @@ footer {
     .contact-left .graphic-wrapper {
         width: 250px;
         height: 250px;
+    }
+    .contact-right h3 {
+        font-size: 2rem;
+    }
+    .contact-right p {
+        font-size: 1.1rem;
+    }
+    .contact-icons-grid {
+        gap: 15px;
+    }
+    .contact-icon {
+        width: 50px;
+        height: 50px;
+    }
+    .contact-icon i {
+        font-size: 1.8rem;
+    }
+
+    .popup-content {
+        padding: 30px;
+    }
+    .popup-content h2 {
+        font-size: 1.8rem;
+    }
+    .popup-content p {
+        font-size: 1rem;
+    }
+    .popup-actions button {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+
+    /* Services responsive adjustments */
+    .services-main-content {
+        min-height: 350px;
+    }
+    .services-intro-slide.intro-slide-expanded {
+        transform: translateX(-50%) translateY(-100%) scale(0.6);
     }
 }
 
@@ -1348,7 +1446,7 @@ footer {
     }
 
     .services-grid, .skills-grid, .certificates-grid {
-        grid-template-columns: 1fr; /* Single column layout */
+        grid-template-columns: 1fr;
         gap: 20px;
     }
     .service-slide img {
@@ -1411,14 +1509,6 @@ footer {
         font-size: 1rem;
     }
 
-    .contact-container {
-        padding: 20px;
-        gap: 30px;
-    }
-    .contact-left .graphic-wrapper {
-        width: 200px;
-        height: 200px;
-    }
     .contact-right h3 {
         font-size: 1.8rem;
     }
@@ -1450,4 +1540,3 @@ footer {
         font-size: 0.85rem;
     }
 }
-
