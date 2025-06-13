@@ -29,7 +29,7 @@
 
     <section id="home" class="page-section active" tabindex="-1">
         <div class="hero">
-            <div class="graphic-wrapper" tabindex="0" aria-label="Profile image container with interactive animation">
+            <div class="graphic-wrapper profile-background" tabindex="0" aria-label="Profile image container with interactive animation">
                 <img src="fn.jpg" class="profile-image" alt="Profile image of Sidharth with black background and red glow" />
             </div>
             <div class="hero-text">
@@ -52,11 +52,11 @@
     <section id="services" class="page-section" tabindex="-1" aria-label="Services offerings with hire now calls to action">
         <h2 class="section-title">Services</h2>
         <div class="services-container">
-            <div class="services-intro-slide">
-                <img src="service.jpg" />
+            <div class="services-intro-slide" tabindex="0" role="button" aria-pressed="false" aria-label="Explore My Services - Click or Hover to view all services">
+                <img src="service.jpg" alt="Services intro background image with subtle dark overlay" />
                 <div class="intro-overlay">
                     <h3>Explore My Services</h3>
-                    <p>Click to see how I can help you!</p>
+                    <p>Click or hover to see how I can help you!</p>
                 </div>
             </div>
             <div class="services-grid" aria-roledescription="grid of services">
@@ -103,7 +103,7 @@
                     </div>
                 </div>
                 <div class="service-slide" tabindex="0" role="group" aria-label="Service: Useful AI Tools">
-                    <img src="tool.jpg" alt="Useful AI tools for productivity" />
+                    <img src="tool.png" alt="Useful AI tools for productivity" />
                     <div class="slide-hire-btn-container right">
                         <h3>Useful AI Tools</h3>
                         <a href="#" class="slide-hire-btn" role="button" tabindex="0" data-service-name="Useful AI Tools">Hire Me</a>
@@ -303,35 +303,35 @@
         <h2 class="section-title">My Achievements & Certificates</h2>
         <div class="certificates-grid">
             <div class="certificate-item">
-                <img src="https://placehold.co/300x200/0d0d0d/87CEEB?text=Certificate+1" alt="Placeholder certificate image 1" />
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d273f945-fc87-4fbe-8a62-848766f3d2ec.png" alt="Placeholder certificate image 1" />
                 <div class="certificate-info">
                     <h3>Web Development Course Completion</h3>
                     <p>Certificate for completing an advanced Web Development course.</p>
                 </div>
             </div>
             <div class="certificate-item">
-                <img src="https://placehold.co/300x200/0d0d0d/87CEEB?text=Certificate+2" alt="Placeholder certificate image 2" />
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/075550a2-cbe1-4eda-a46e-de42f9c89b93.png" alt="Placeholder certificate image 2" />
                 <div class="certificate-info">
                     <h3>Cybersecurity Workshop</h3>
                     <p>Participation certificate from a national cybersecurity workshop.</p>
                 </div>
             </div>
             <div class="certificate-item">
-                <img src="https://placehold.co/300x200/0d0d0d/87CEEB?text=Certificate+3" alt="Placeholder certificate image 3" />
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/8c66b5e9-a365-4a9d-8c9b-6ac48ffb0d0a.png" alt="Placeholder certificate image 3" />
                 <div class="certificate-info">
                     <h3>AI/ML Project Award</h3>
                     <p>Awarded for innovation in an Artificial Intelligence project.</p>
                 </div>
             </div>
             <div class="certificate-item">
-                <img src="https://placehold.co/300x200/0d0d0d/87CEEB?text=Certificate+4" alt="Placeholder certificate image 4" />
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/ef1dcb18-df3e-4883-bdc2-e7ba2b850718.png" alt="Placeholder certificate image 4" />
                 <div class="certificate-info">
                     <h3>Video Editing Proficiency</h3>
                     <p>Certification of proficiency in professional video editing software.</p>
                 </div>
             </div>
             <div class="certificate-item">
-                <img src="https://placehold.co/300x200/0d0d0d/87CEEB?text=Certificate+5" alt="Placeholder certificate image 5" />
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/766e7ee6-90eb-42ed-bff4-41bfa5965e1b.png" alt="Placeholder certificate image 5" />
                 <div class="certificate-info">
                     <h3>Online Course Certificate</h3>
                     <p>Completion certificate for a specialized online technical course.</p>
@@ -369,7 +369,7 @@
         <h2 class="section-title">Contact Me</h2>
         <div class="contact-container">
             <div class="contact-left">
-                <div class="graphic-wrapper" tabindex="0" aria-label="Profile image container for contact section">
+                <div class="graphic-wrapper profile-background" tabindex="0" aria-label="Profile image container for contact section">
                     <img src="fn.jpg" class="profile-image" alt="Profile image of Sidharth" />
                 </div>
             </div>
@@ -404,7 +404,7 @@
 
     <div id="hire-popup" class="popup" aria-hidden="true" role="dialog" aria-modal="true" tabindex="-1">
         <div class="popup-content" role="document">
-            <h2>You are hired for <span id="popup-service-name"></span></h2>
+            <h2>You are hiring for <span id="popup-service-name"></span></h2>
             <form id="hire-form">
                 <label for="hire-name">Name:</label>
                 <input type="text" id="hire-name" name="name" required autocomplete="name" />
@@ -455,3 +455,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+
