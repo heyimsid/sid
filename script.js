@@ -96,18 +96,14 @@ document.addEventListener('DOMContentLoaded', function() {
         root.style.setProperty('--picked-color-rgb', rgbColor);
         localStorage.setItem('highlightColor', color);
 
-        // Fix for Live Color Sync on Graphic Wrappers: Force restart animation
         allGraphicWrappers.forEach(wrapper => {
             wrapper.style.animation = 'none';
-            void wrapper.offsetWidth; // Force reflow
+            void wrapper.offsetWidth;
             wrapper.style.animation = 'pulse 2.5s ease-in-out infinite';
-
-            // Explicitly update background and filter if needed (redundant if animation restart works)
             wrapper.style.background = `rgba(${rgbColor}, 0.1)`;
             wrapper.style.filter = `drop-shadow(0 0 30px rgba(${rgbColor}, 0.3))`;
         });
 
-        // Other elements that use --picked-color or --picked-color-rgb
         document.querySelectorAll('.highlight').forEach(el => {
             el.style.color = color;
             el.style.textShadow = `0 0 8px ${color}`;
@@ -116,11 +112,6 @@ document.addEventListener('DOMContentLoaded', function() {
             el.style.color = color;
             el.style.textShadow = `0 0 8px ${color}`;
         });
-
-        // **FIX for Navbar Hover Effect:**
-        // Removed the problematic lines that were setting inline styles on .nav-btn.
-        // The CSS rules will now correctly handle the :hover and :focus states using --picked-color.
-        // No JavaScript needed here for the navbar buttons' dynamic color on hover/focus.
     }
 
     // Load saved color or set default
@@ -142,6 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', (e) => {
             e.preventDefault();
             const targetId = button.dataset.target;
+            const targetSection = document.getElementById(targetId);
 
             pageSections.forEach(section => {
                 section.classList.remove('active');
@@ -150,7 +142,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             navButtons.forEach(btn => btn.setAttribute('aria-expanded', 'false'));
 
-            const targetSection = document.getElementById(targetId);
             if (targetSection) {
                 targetSection.classList.add('active');
                 targetSection.setAttribute('aria-hidden', 'false');
@@ -158,10 +149,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 button.setAttribute('aria-expanded', 'true');
 
                 if (targetId === 'services') {
-                    // Slight delay to ensure section is active before animating services
-                    setTimeout(resetServicesAnimation, 50);
+                    resetServicesAnimation(); // Ensure services is reset *before* activating it
+                } else {
+                    // If navigating away from services, ensure it's reset
+                    resetServicesAnimation(); // Call unconditionally, CSS handles initial state
                 }
 
+                // Scroll to top of the new section with offset
                 targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         });
@@ -190,7 +184,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             if (targetId === 'services') {
-                setTimeout(resetServicesAnimation, 50);
+                resetServicesAnimation();
+            } else {
+                resetServicesAnimation();
             }
 
             targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -199,54 +195,56 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Services Section Animation Logic
     function animateServiceGrid() {
-        // Ensure the main content container expands to fit the grid
-        // Get the actual height of the grid content if it were visible
-        servicesGrid.style.transition = 'none'; // Temporarily disable transition for height measurement
-        servicesGrid.style.maxHeight = '2000px'; // Set to max to measure
-        servicesGrid.style.opacity = '1';
-        servicesGrid.style.overflow = 'visible';
-        servicesGrid.style.pointerEvents = 'auto';
-        servicesGrid.style.transform = 'translateY(0)';
-        const gridHeight = servicesGrid.scrollHeight + 100; // Get actual scroll height + some padding
-        servicesGrid.style.transition = ''; // Re-enable transition
-
-        servicesMainContent.style.minHeight = `${gridHeight}px`; // Expand container
-        
+        // First, ensure intro slide moves out and grid transitions properties
         servicesIntroSlide.classList.add('intro-slide-expanded');
         servicesGrid.classList.add('service-grid-visible');
 
+        // Calculate and set min-height for servicesMainContent to fit the grid
+        // This needs to happen after servicesGrid.classList.add('service-grid-visible')
+        // to allow its max-height to apply for scrollHeight calculation.
+        // Temporarily set max-height to a large value to measure true scrollHeight
+        const originalMaxHeight = servicesGrid.style.maxHeight;
+        servicesGrid.style.maxHeight = '2000px'; // Temporarily expand
+        const gridHeight = servicesGrid.scrollHeight + 100; // Get actual scroll height + some padding
+        servicesGrid.style.maxHeight = originalMaxHeight; // Revert to original (CSS controlled)
+        
+        servicesMainContent.style.minHeight = `${gridHeight}px`; // Expand container
+
+        // Stagger individual service slide animations after the grid container starts appearing
         individualServiceSlides.forEach((slide, index) => {
             slide.classList.remove('animate-in');
             void slide.offsetWidth; // Force reflow
             setTimeout(() => {
                 slide.classList.add('animate-in');
-            }, 100 * index + 600); // Stagger by 100ms, start after grid container animates
+            }, 600 + (100 * index)); // Start after grid becomes visible (0.5s CSS delay + 0.1s buffer)
         });
     }
 
     function resetServiceGridSlides() {
         individualServiceSlides.forEach(slide => {
             slide.classList.remove('animate-in');
-            slide.style.opacity = '0';
-            slide.style.transform = 'translateY(20px) scale(0.95)';
+            slide.style.opacity = '0'; // Explicitly set initial state
+            slide.style.transform = 'translateY(20px) scale(0.95)'; // Explicitly set initial state
         });
     }
 
     function resetServicesAnimation() {
-        // Reset the main content height first or simultaneously
+        // Reset the main content height first
         servicesMainContent.style.minHeight = '400px'; // Revert to initial intro slide height
 
+        // This will trigger the CSS transition to hide the grid
+        servicesGrid.classList.remove('service-grid-visible'); 
+        
+        // This will trigger the CSS transition to show the intro slide
         servicesIntroSlide.classList.remove('intro-slide-expanded');
-        servicesGrid.classList.remove('service-grid-visible'); // This will trigger CSS transition to hide grid
 
-        // Reset individual slides immediately or after a slight delay
+        // Reset individual slides after grid has visually hidden
         setTimeout(() => {
             resetServiceGridSlides();
             // Ensure the intro slide is fully visible and interactive again
-            servicesIntroSlide.style.opacity = '1';
-            servicesIntroSlide.style.pointerEvents = 'auto';
-            servicesIntroSlide.style.transform = 'translateX(-50%)'; // Reset to initial centered position
-        }, 800); // Adjust delay to match CSS transition of services-grid hiding
+            // CSS transitions should handle opacity/pointer-events on removing intro-slide-expanded
+            // No need to explicitly set style properties here unless CSS fails.
+        }, 800); // Delay matches CSS transition duration for grid hiding
     }
 
     servicesIntroSlide.addEventListener('click', animateServiceGrid);
@@ -257,7 +255,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Hire Me Pop-up functionality
+    // Hire Me Pop-up functionality (no changes needed, should be working vertically)
     function openHirePopup(serviceName) {
         popupServiceName.textContent = serviceName;
         hirePopup.classList.add('active');
@@ -313,7 +311,7 @@ document.addEventListener('DOMContentLoaded', function() {
         closeHirePopup();
     });
 
-    // Enquiry Form "Thank You" Popup
+    // Enquiry Form "Thank You" Popup (no changes needed)
     function openEnquiryThankYouPopup() {
         enquiryThankYouPopup.classList.add('active');
         enquiryThankYouPopup.setAttribute('aria-hidden', 'false');
@@ -356,18 +354,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Social icon animation (CSS handles most, but ensuring JS doesn't interfere)
-    socialIcons.forEach(icon => {
-        icon.addEventListener('mouseenter', () => {
-            // CSS handles this now via :hover and --picked-color
-        });
-        icon.addEventListener('mouseleave', () => {
-            // CSS handles this now
-        });
-    });
-
     // Initialize services section state on first load
-    // Using setTimeout to ensure all DOM elements are rendered and CSS applied
-    // before attempting to reset styles that are managed by JS/CSS interaction.
     setTimeout(resetServicesAnimation, 100);
 });
