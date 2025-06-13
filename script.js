@@ -2,7 +2,7 @@
   const navButtons = document.querySelectorAll('.nav-btn');
   const sections = document.querySelectorAll('.page-section');
   const hireBtnHome = document.querySelector('.hire-btn');
-  const servicesCarousel = document.querySelector('.services-carousel');
+  const servicesCarousel = document.querySelector('.services-carousel'); // Still needed for color updates
   const slideHireButtons = document.querySelectorAll('.slide-hire-btn, .hire-btn');
   const highlightEls = [...document.querySelectorAll('.highlight')];
   const socialIcons = [...document.querySelectorAll('.social-icons i')];
@@ -30,79 +30,14 @@
     navButtons.forEach(btn => {
       btn.setAttribute('aria-expanded', btn.dataset.target === targetId ? 'true' : 'false');
     });
-    // This logic ensures that if you navigate away from services, it collapses.
-    // And if you navigate to services, it expands.
-    if (targetId === 'services') {
-      expandServices();
-    } else {
-      collapseServices(); // Collapse services if leaving the section
-    }
+    // No specific expand/collapse logic needed for services anymore as it's always visible
   }
 
-  function expandServices() {
-    servicesCarousel.classList.add('expanded');
-    const introSlide = servicesCarousel.querySelector('.intro-slide');
-    if (introSlide) {
-      introSlide.style.opacity = '0'; // Start fade out
-      introSlide.style.pointerEvents = 'none'; // Disable interaction
-      introSlide.style.transform = 'scale(0.8)'; // Shrink a bit
-      introSlide.style.transition = 'opacity 0.6s ease, transform 0.6s ease'; // Ensure transition
-
-      // After the transition, set display to none to remove from flow
-      setTimeout(() => {
-        introSlide.style.display = 'none';
-      }, 600); // Match CSS transition duration
-    }
-    servicesCarousel.querySelectorAll('.service-slide:not(.intro-slide)').forEach(slide => {
-      slide.style.opacity = '1';
-      slide.style.pointerEvents = 'auto';
-      slide.style.transform = 'scale(1)';
-      slide.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-      slide.style.display = 'flex'; // Ensure it's rendered as flex to take its height
-    });
-  }
-
-  function collapseServices() {
-    servicesCarousel.classList.remove('expanded');
-    const introSlide = servicesCarousel.querySelector('.intro-slide');
-    if (introSlide) {
-      introSlide.style.display = 'flex'; // Show it immediately for transition back
-      // Use requestAnimationFrame to ensure display applies before transition starts
-      requestAnimationFrame(() => {
-        introSlide.style.opacity = '1';
-        introSlide.style.pointerEvents = 'auto';
-        introSlide.style.transform = 'scale(1)';
-        introSlide.style.transition = 'opacity 0.6s ease, transform 0.6s ease'; // Ensure transition
-      });
-    }
-    servicesCarousel.querySelectorAll('.service-slide:not(.intro-slide)').forEach(slide => {
-      slide.style.opacity = '0';
-      slide.style.pointerEvents = 'none';
-      slide.style.transform = 'scale(0.8)';
-      slide.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-      // No need to hide display here for these slides as they will be out of flow anyway by the grid change
-      // or simply hidden.
-    });
-  }
-
-  navButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      showSection(btn.dataset.target);
-      window.history.pushState(null, '', `#${btn.dataset.target}`);
-    });
-  });
-
-  hireBtnHome.addEventListener('click', () => {
-    showSection('services');
-    window.history.pushState(null, '', '#services');
-  });
-
-  // Services carousel hover/focus listeners
-  servicesCarousel.addEventListener('mouseenter', expandServices);
-  servicesCarousel.addEventListener('mouseleave', collapseServices);
-  servicesCarousel.addEventListener('focusin', expandServices);
-  servicesCarousel.addEventListener('focusout', collapseServices);
-
+  // Removed expandServices and collapseServices functions
+  // Removed servicesCarousel.addEventListener('mouseenter', expandServices);
+  // Removed servicesCarousel.addEventListener('mouseleave', collapseServices);
+  // Removed servicesCarousel.addEventListener('focusin', expandServices);
+  // Removed servicesCarousel.addEventListener('focusout', collapseServices);
 
   slideHireButtons.forEach(btn => {
     btn.addEventListener('click', e => {
@@ -170,8 +105,9 @@
     logo.style.color = newColor;
     logo.style.textShadow = `0 0 8px ${newColor}`;
 
-    const allServiceSlides = document.querySelectorAll('.service-slide, .skill-card'); // Include skill-card
-    allServiceSlides.forEach(el => {
+    // Update box-shadow for service slides, skill cards, and certificate items
+    const allGlowingElements = document.querySelectorAll('.service-slide, .skill-card, .certificate-item');
+    allGlowingElements.forEach(el => {
       el.style.boxShadow = `0 16px 40px ${hexToRgba(newColor, 0.25)}`;
     });
 
@@ -183,6 +119,31 @@
     document.querySelectorAll('.skill-details').forEach(el => {
         el.style.borderTopColor = hexToRgba(newColor, 0.3);
     });
+
+    // Update colors for Education section elements
+    document.querySelectorAll('.education-dot').forEach(el => {
+        el.style.background = newColor;
+        el.style.boxShadow = `0 0 10px ${newColor}`;
+    });
+    document.querySelectorAll('.education-content h3').forEach(el => {
+        el.style.color = newColor;
+        el.style.textShadow = `0 0 6px ${newColor}`;
+    });
+    document.querySelectorAll('.education-image-container img').forEach(el => {
+        el.style.boxShadow = `0 0 15px ${hexToRgba(newColor, 0.2)}`;
+    });
+    // Ensure the hover state also updates the specific color
+    document.querySelectorAll('.education-image-container img:hover').forEach(el => {
+      el.style.boxShadow = `0 0 25px ${newColor}`;
+    });
+
+
+    // Update colors for Achievements section elements
+    document.querySelectorAll('.certificate-info h3').forEach(el => {
+        el.style.color = newColor;
+        el.style.textShadow = `0 0 6px ${newColor}`;
+    });
+
 
     selectedColor = newColor;
     colorPickerInput.style.backgroundColor = newColor;
@@ -221,21 +182,12 @@
     });
   });
 
-  // --- Skills Section Interactive Details (NEW) ---
+  // --- Skills Section Interactive Details ---
   const skillCards = document.querySelectorAll('.skill-card');
 
   skillCards.forEach(card => {
     card.addEventListener('click', () => {
-      // Toggle active class on clicked card
       card.classList.toggle('active');
-
-      // Optional: Close other open skill details when one is clicked
-      // Uncomment if you want only one skill detail open at a time
-      // skillCards.forEach(otherCard => {
-      //     if (otherCard !== card && otherCard.classList.contains('active')) {
-      //         otherCard.classList.remove('active');
-      //     }
-      // });
     });
   });
 
