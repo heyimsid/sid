@@ -1,17 +1,27 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
+/* --- CSS Variables --- */
+:root {
+  --picked-color: #87CEEB; /* Initial light blue color */
+  --bg-color: #000;
+  --card-bg: #111;
+  --text-color: #fff;
+  --secondary-text-color: #ccc;
+  --border-color: rgba(255, 255, 255, 0.1);
+}
+
 body {
   margin: 0;
   padding: 0;
-  background: #000;
-  color: #fff;
+  background: var(--bg-color);
+  color: var(--text-color);
   font-family: 'Montserrat', sans-serif;
   overflow-x: hidden;
   scroll-behavior: smooth;
 }
 
 header {
-  background: #000;
+  background: var(--bg-color);
 }
 .nav {
   display: flex;
@@ -24,10 +34,10 @@ header {
   z-index: 10;
 }
 .logo {
-  color: var(--picked-color, #ff1f1f);
+  color: var(--picked-color);
   font-size: 1.8rem;
   font-weight: 700;
-  text-shadow: 0 0 8px var(--picked-color, #ff1f1f);
+  text-shadow: 0 0 8px var(--picked-color);
   flex-shrink: 0;
   user-select: none;
   transition: color 1s ease, text-shadow 1s ease;
@@ -50,7 +60,7 @@ header {
 .nav-links li button.nav-btn {
   background: transparent;
   border: none;
-  color: white;
+  color: var(--text-color);
   cursor: pointer;
   font-weight: 700;
   font-size: 1rem;
@@ -60,33 +70,78 @@ header {
 }
 .nav-links li button.nav-btn:hover,
 .nav-links li button.nav-btn:focus {
-  color: var(--picked-color, #ff1f1f);
-  text-shadow: 0 0 8px var(--picked-color, #ff1f1f);
+  color: var(--picked-color);
+  text-shadow: 0 0 8px var(--picked-color);
 }
+
+/* --- Color Picker Redesign --- */
+.color-picker-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: var(--picked-color);
+    text-shadow: 0 0 5px var(--picked-color);
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+}
+
+.color-picker-label:hover {
+    color: var(--text-color);
+    text-shadow: none;
+    border-color: var(--picked-color);
+}
+
 .color-picker {
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   border: none;
   padding: 0;
   border-radius: 50%;
-  background-color: #111;
+  background-color: var(--card-bg);
   cursor: pointer;
-  box-shadow: 0 0 10px var(--picked-color, #ff1f1f);
+  box-shadow: 0 0 10px var(--picked-color);
   transition: box-shadow 0.3s ease;
+  -webkit-appearance: none; /* Hide default picker style */
+  appearance: none;
+  overflow: hidden; /* Hide the inner square */
 }
+
+.color-picker::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+.color-picker::-webkit-color-swatch {
+  border: none;
+  border-radius: 50%; /* Make the actual color swatch round */
+}
+.color-picker::-moz-color-swatch,
+.color-picker::-moz-focus-inner {
+  border: none;
+  border-radius: 50%; /* Make the actual color swatch round */
+}
+
 .color-picker:focus {
   outline: none;
-  box-shadow: 0 0 20px 3px var(--picked-color, #ff1f1f);
+  box-shadow: 0 0 20px 3px var(--picked-color);
 }
+
 
 .page-section {
   display: none;
   padding: 50px 60px;
   max-width: 1280px;
   margin: 0 auto 100px auto; /* Added margin-bottom to make space for footer */
+  opacity: 0; /* Initial state for animation */
+  transform: translateY(20px); /* Initial state for animation */
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 .page-section.active {
   display: block;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .hero {
@@ -103,8 +158,8 @@ header {
   height: 280px;
   margin: 0 auto;
   border-radius: 30px;
-  background: rgba(255, 31, 31, 0.1);
-  box-shadow: 0 0 30px rgba(255, 31, 31, 0.3);
+  background: rgba(var(--picked-color-rgb), 0.1);
+  box-shadow: 0 0 30px rgba(var(--picked-color-rgb), 0.3);
   transform-style: preserve-3d;
   cursor: default;
   animation: pulse 2.5s ease-in-out infinite;
@@ -120,14 +175,14 @@ header {
 .profile-image {
   width: 280px;
   border-radius: 24px;
-  box-shadow: 0 0 40px 4px var(--picked-color, #ff1f1f);
+  box-shadow: 0 0 40px 4px var(--picked-color);
   backface-visibility: hidden;
   transition: box-shadow 1s ease;
 }
 
 .hero-text {
   max-width: 500px;
-  color: #ccc;
+  color: var(--secondary-text-color);
   transition: color 1s ease, text-shadow 1s ease;
 }
 .hero-text h2,
@@ -141,8 +196,8 @@ header {
   font-size: 2rem;
 }
 .highlight {
-  color: var(--picked-color, #ff1f1f);
-  text-shadow: 0 0 6px var(--picked-color, #ff1f1f);
+  color: var(--picked-color);
+  text-shadow: 0 0 6px var(--picked-color);
   transition: color 1s ease, text-shadow 1s ease;
   user-select: text;
 }
@@ -158,7 +213,7 @@ header {
   font-size: 1.5rem;
 }
 .social-icons i {
-  color: var(--picked-color, #ff1f1f);
+  color: var(--picked-color);
   cursor: pointer;
   transition: transform 0.3s, text-shadow 0.3s, color 1s ease;
 }
@@ -171,73 +226,142 @@ header {
   margin-top: 30px;
   padding: 10px 25px;
   font-size: 1rem;
-  color: var(--picked-color, #ff1f1f);
+  color: var(--picked-color);
   background: transparent;
-  border: 2px solid var(--picked-color, #ff1f1f);
+  border: 2px solid var(--picked-color);
   border-radius: 30px;
   cursor: pointer;
   transition: all 1s ease;
-  text-shadow: 0 0 6px var(--picked-color, #ff1f1f);
+  text-shadow: 0 0 6px var(--picked-color);
 }
 .hire-btn:hover,
 .hire-btn:focus {
-  background: var(--picked-color, #ff1f1f);
-  color: #000;
-  box-shadow: 0 0 15px var(--picked-color, #ff1f1f);
-  border-color: var(--picked-color, #ff1f1f);
+  background: var(--picked-color);
+  color: var(--bg-color);
+  box-shadow: 0 0 15px var(--picked-color);
+  border-color: var(--picked-color);
   outline: none;
 }
 
 .section-title {
   font-size: 2.5rem;
-  color: var(--picked-color, #ff1f1f);
+  color: var(--picked-color);
   font-weight: 700;
   margin-bottom: 40px;
   text-align: center;
 }
 
 /* --- Services Section Modifications --- */
-.services-carousel {
+.services-container {
+    position: relative;
+    max-width: 1280px;
+    margin: 0 auto;
+    min-height: 500px; /* Ensure enough space for content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.services-intro-slide {
+    position: absolute; /* Allows grid to be under it */
+    width: 100%;
+    height: 100%; /* Take full height of container */
+    background: var(--card-bg);
+    border-radius: 20px;
+    box-shadow: 0 0 40px rgba(var(--picked-color-rgb), 0.3);
+    overflow: hidden;
+    cursor: pointer;
+    transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 5; /* Above the grid initially */
+    top: 0;
+    left: 0;
+}
+
+.services-intro-slide.hidden {
+    opacity: 0;
+    transform: scale(0.9);
+    pointer-events: none; /* Make it unclickable when hidden */
+}
+
+.services-intro-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.4); /* Darken image */
+    transition: filter 0.5s ease;
+}
+
+.services-intro-slide:hover img {
+    filter: brightness(0.2); /* Darken more on hover */
+}
+
+.intro-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: var(--text-color);
+    z-index: 6;
+}
+
+.intro-overlay h3 {
+    font-size: 2.5rem;
+    color: var(--picked-color);
+    text-shadow: 0 0 10px var(--picked-color);
+    margin-bottom: 10px;
+}
+
+.intro-overlay p {
+    font-size: 1.2rem;
+    color: var(--secondary-text-color);
+}
+
+
+.services-grid {
   display: grid;
-  /* Always 4 columns, 2 rows for 8 items */
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(2, minmax(280px, auto)); /* Adjust row height based on content */
+  grid-template-rows: repeat(2, minmax(280px, auto));
   gap: 20px 15px;
   max-width: 1280px;
   margin: 0 auto;
-  /* Removed carousel-specific styling/transitions related to expansion */
-  cursor: default; /* No special hover behavior for the whole carousel */
+  opacity: 0; /* Initially hidden for animation */
+  transform: translateY(20px); /* Initially offset for animation */
+  transition: opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s; /* Delay appearance */
 }
 
-/* Base style for all service slides - now always visible */
+.services-grid.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 .service-slide {
-  background: #111;
+  background: var(--card-bg);
   border-radius: 20px;
-  box-shadow: 0 16px 40px rgba(255,31,31,0.25);
+  box-shadow: 0 0 20px rgba(var(--picked-color-rgb), 0.15);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   position: relative;
   cursor: pointer;
   user-select: none;
-  transition: box-shadow 0.4s ease, transform 0.3s ease; /* Added transform for hover */
-  opacity: 1; /* Always visible */
-  pointer-events: auto; /* Always interactive */
-  transform: scale(1); /* Always normal size */
-  z-index: 1;
+  transition: box-shadow 0.4s ease, transform 0.3s ease;
 }
 
 .service-slide:hover {
-    transform: translateY(-5px); /* Subtle lift on hover */
-    box-shadow: 0 0 30px var(--picked-color, #ff1f1f); /* Stronger glow on hover */
+    transform: translateY(-5px);
+    box-shadow: 0 0 30px var(--picked-color);
 }
-
 
 .service-slide img {
   width: 100%;
-  height: 180px; /* Adjusted height for better 2x4 fit */
+  height: 180px;
   object-fit: cover;
-  border-bottom: 1px solid var(--picked-color, #ff1f1f);
+  border-bottom: 1px solid rgba(var(--picked-color-rgb), 0.5);
 }
 
 .slide-hire-btn-container {
@@ -250,7 +374,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #eee;
+  color: var(--secondary-text-color);
   font-weight: 600;
   font-size: 1.1rem;
 }
@@ -261,13 +385,13 @@ header {
 }
 
 .slide-hire-btn {
-  background: var(--picked-color, #ff1f1f);
-  color: #000;
+  background: var(--picked-color);
+  color: var(--bg-color);
   padding: 8px 20px;
   border-radius: 30px;
   font-weight: 700;
   text-decoration: none;
-  box-shadow: 0 0 9px var(--picked-color, #ff1f1f);
+  box-shadow: 0 0 9px var(--picked-color);
   transition: background 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
   white-space: nowrap;
@@ -275,12 +399,12 @@ header {
 
 .slide-hire-btn:hover,
 .slide-hire-btn:focus {
-  background: #fff;
-  box-shadow: 0 0 15px var(--picked-color, #ff1f1f);
+  background: var(--text-color);
+  box-shadow: 0 0 15px var(--picked-color);
   outline: none;
 }
 
-/* Popup styles */
+/* --- Popup styles --- */
 .popup {
   position: fixed;
   inset: 0;
@@ -289,7 +413,7 @@ header {
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  padding: 40px 20px;
+  padding: 20px; /* Reduced padding for smaller screens */
 }
 
 .popup[aria-hidden="false"] {
@@ -297,15 +421,35 @@ header {
 }
 
 .popup-content {
-  background: #111;
+  background: var(--card-bg);
   padding: 30px 40px;
   border-radius: 12px;
-  width: 95%;
-  max-width: 700px;
+  width: 95%; /* Make it wider */
+  max-width: 800px; /* Increased max-width */
   max-height: 90vh;
   overflow-y: auto;
-  color: #eee;
-  box-shadow: 0 0 25px var(--picked-color, #ff1f1f);
+  color: var(--secondary-text-color);
+  box-shadow: 0 0 25px var(--picked-color);
+}
+
+/* Custom Scrollbar */
+.popup-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.popup-content::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3); /* Transparent track */
+  border-radius: 10px;
+}
+
+.popup-content::-webkit-scrollbar-thumb {
+  background-color: var(--picked-color);
+  border-radius: 10px;
+  border: 2px solid var(--card-bg); /* Padding around thumb */
+}
+
+.popup-content::-webkit-scrollbar-thumb:hover {
+  background-color: var(--text-color);
 }
 
 .popup-content h2 {
@@ -313,7 +457,7 @@ header {
   margin-bottom: 20px;
   font-weight: 700;
   font-size: 1.8rem;
-  color: var(--picked-color, #ff1f1f);
+  color: var(--picked-color);
 }
 
 .popup-content label {
@@ -334,7 +478,7 @@ header {
   border-radius: 6px;
   border: 1px solid #444;
   background: #222;
-  color: #eee;
+  color: var(--text-color);
   transition: border-color 0.3s ease;
 }
 
@@ -344,8 +488,8 @@ header {
 .popup-content textarea:focus,
 .popup-content input[type="file"]:focus {
   outline: none;
-  border-color: var(--picked-color, #ff1f1f);
-  box-shadow: 0 0 6px var(--picked-color, #ff1f1f);
+  border-color: var(--picked-color);
+  box-shadow: 0 0 6px var(--picked-color);
 }
 
 .popup-content textarea {
@@ -364,7 +508,7 @@ header {
   font-weight: 700;
   padding: 10px 25px;
   border-radius: 30px;
-  border: 2px solid var(--picked-color, #ff1f1f);
+  border: 2px solid var(--picked-color);
   cursor: pointer;
   transition: all 0.3s ease;
   min-width: 120px;
@@ -372,28 +516,28 @@ header {
 
 #popup-cancel-btn {
   background: transparent;
-  color: #eee;
+  color: var(--secondary-text-color);
 }
 
 #popup-cancel-btn:hover,
 #popup-cancel-btn:focus {
-  background: var(--picked-color, #ff1f1f);
-  color: #000;
-  box-shadow: 0 0 15px var(--picked-color, #ff1f1f);
+  background: var(--picked-color);
+  color: var(--bg-color);
+  box-shadow: 0 0 15px var(--picked-color);
   outline: none;
 }
 
 .popup-actions button[type="submit"] {
-  background: var(--picked-color, #ff1f1f);
-  color: #000;
-  box-shadow: 0 0 15px var(--picked-color, #ff1f1f);
+  background: var(--picked-color);
+  color: var(--bg-color);
+  box-shadow: 0 0 15px var(--picked-color);
 }
 
 .popup-actions button[type="submit"]:hover,
 .popup-actions button[type="submit"]:focus {
-  background: #fff;
-  color: #000;
-  box-shadow: 0 0 20px var(--picked-color, #ff1f1f);
+  background: var(--text-color);
+  color: var(--bg-color);
+  box-shadow: 0 0 20px var(--picked-color);
   outline: none;
 }
 
@@ -404,17 +548,17 @@ header {
 
 .skills-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid for skill cards */
-  gap: 30px; /* Space between skill cards */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
   max-width: 1280px;
   margin: 0 auto;
   padding: 20px 0;
 }
 
 .skill-card {
-  background: #111;
+  background: var(--card-bg);
   border-radius: 15px;
-  box-shadow: 0 0 20px rgba(255, 31, 31, 0.15); /* Subtle glow */
+  box-shadow: 0 0 20px rgba(var(--picked-color-rgb), 0.15);
   padding: 30px;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -424,19 +568,19 @@ header {
 }
 
 .skill-card:hover {
-  transform: translateY(-8px); /* More pronounced lift */
-  box-shadow: 0 0 30px var(--picked-color, #ff1f1f); /* Stronger glow on hover */
+  transform: translateY(-8px);
+  box-shadow: 0 0 30px var(--picked-color);
 }
 
 .skill-card h3 {
-  color: var(--picked-color, #ff1f1f);
+  color: var(--picked-color);
   font-size: 1.6rem;
   margin-bottom: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  text-shadow: 0 0 8px var(--picked-color, #ff1f1f);
+  text-shadow: 0 0 8px var(--picked-color);
 }
 
 .skill-card h3 i {
@@ -447,17 +591,17 @@ header {
 .skill-details {
   text-align: left;
   padding-top: 15px;
-  border-top: 1px solid rgba(255, 31, 31, 0.3); /* Separator line */
-  max-height: 0; /* Initially hidden */
-  opacity: 0; /* Initially transparent */
-  overflow: hidden; /* Hide overflow content */
-  transition: max-height 0.5s ease-out, opacity 0.5s ease-out, padding-top 0.5s ease-out; /* Smooth transition */
+  border-top: 1px solid rgba(var(--picked-color-rgb), 0.3);
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease-out, opacity 0.5s ease-out, padding-top 0.5s ease-out;
 }
 
-.skill-card.active .skill-details { /* Class toggled by JS for click-to-expand */
-  max-height: 500px; /* Large enough to show content */
-  opacity: 1; /* Fully visible */
-  padding-top: 25px; /* More padding when active */
+.skill-card.active .skill-details {
+  max-height: 500px;
+  opacity: 1;
+  padding-top: 25px;
 }
 
 .skill-details ul {
@@ -468,7 +612,7 @@ header {
 
 .skill-details ul li {
   padding: 8px 0;
-  color: #ccc;
+  color: var(--secondary-text-color);
   font-size: 0.95rem;
   border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
 }
@@ -484,7 +628,7 @@ header {
 
 .education-timeline {
     position: relative;
-    max-width: 800px; /* Adjust max-width as needed */
+    max-width: 800px;
     margin: 0 auto;
     padding: 20px 0;
 }
@@ -494,9 +638,9 @@ header {
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 50%; /* Center the line */
+    left: 50%;
     width: 2px;
-    background-color: rgba(255, 255, 255, 0.2); /* Subtle line color */
+    background-color: rgba(var(--picked-color-rgb), 0.2);
     transform: translateX(-50%);
     z-index: 0;
 }
@@ -505,49 +649,65 @@ header {
     position: relative;
     padding: 20px 0;
     display: flex;
-    align-items: flex-start; /* Align content to the top */
-    margin-bottom: 40px; /* Space between items */
+    align-items: flex-start;
+    margin-bottom: 40px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0; /* Initial state for animation */
+}
+
+/* Animation for education items */
+.education-item.fade-in {
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.education-item:nth-child(odd).fade-in {
+    transform: translateX(0); /* Comes from right */
+}
+.education-item:nth-child(even).fade-in {
+    transform: translateX(0); /* Comes from left */
 }
 
 /* Alternating sides for education items */
 .education-item:nth-child(odd) {
-    flex-direction: row-reverse; /* Content on right, dot on left */
+    flex-direction: row-reverse;
+    transform: translateX(50px); /* Initial state for animation */
 }
 
 .education-item:nth-child(even) {
-    flex-direction: row; /* Content on left, dot on right */
+    flex-direction: row;
+    transform: translateX(-50px); /* Initial state for animation */
 }
 
 .education-dot {
     position: absolute;
-    top: 30px; /* Adjust to align with content start */
+    top: 30px;
     width: 18px;
     height: 18px;
-    background: var(--picked-color, #ff1f1f);
+    background: var(--picked-color);
     border-radius: 50%;
     z-index: 1;
-    box-shadow: 0 0 10px var(--picked-color, #ff1f1f);
-    transform: translateX(-50%); /* For odd items, aligns with left edge of content */
+    box-shadow: 0 0 10px var(--picked-color);
+    transform: translateX(-50%);
 }
 
 .education-item:nth-child(odd) .education-dot {
     left: 50%;
-    transform: translateX(calc(-50% + 1px)); /* Adjust for line thickness */
+    transform: translateX(calc(-50% + 1px));
 }
 .education-item:nth-child(even) .education-dot {
     left: 50%;
-    transform: translateX(calc(-50% - 1px)); /* Adjust for line thickness */
+    transform: translateX(calc(-50% - 1px));
 }
 
-
 .education-content {
-    background: #111;
+    background: var(--card-bg);
     border-radius: 15px;
-    box-shadow: 0 0 20px rgba(255, 31, 31, 0.15);
+    box-shadow: 0 0 20px rgba(var(--picked-color-rgb), 0.15);
     padding: 25px;
     flex-grow: 1;
-    max-width: calc(50% - 40px); /* Adjust to leave space for dot and line */
+    max-width: calc(50% - 40px);
     position: relative;
     z-index: 1;
 }
@@ -564,34 +724,34 @@ header {
 }
 
 .education-item:nth-child(odd) .education-content {
-    margin-left: 50px; /* Space for line and dot */
+    margin-left: 50px;
 }
 .education-item:nth-child(odd) .education-content::before {
-    border-width: 10px 10px 10px 0; /* Right pointing arrow */
-    border-color: transparent #111 transparent transparent;
+    border-width: 10px 10px 10px 0;
+    border-color: transparent var(--card-bg) transparent transparent;
     left: -10px;
 }
 
 .education-item:nth-child(even) .education-content {
-    margin-right: 50px; /* Space for line and dot */
+    margin-right: 50px;
 }
 .education-item:nth-child(even) .education-content::before {
-    border-width: 10px 0 10px 10px; /* Left pointing arrow */
-    border-color: transparent transparent transparent #111;
+    border-width: 10px 0 10px 10px;
+    border-color: transparent transparent transparent var(--card-bg);
     right: -10px;
 }
 
 .education-content h3 {
-    color: var(--picked-color, #ff1f1f);
+    color: var(--picked-color);
     font-size: 1.4rem;
     margin-top: 0;
     margin-bottom: 10px;
-    text-shadow: 0 0 6px var(--picked-color, #ff1f1f);
+    text-shadow: 0 0 6px var(--picked-color);
 }
 
 .education-content p {
     font-size: 0.95rem;
-    color: #ccc;
+    color: var(--secondary-text-color);
     line-height: 1.5;
 }
 
@@ -606,13 +766,13 @@ header {
     max-width: 100%;
     height: auto;
     border-radius: 8px;
-    box-shadow: 0 0 15px rgba(255, 31, 31, 0.2);
+    box-shadow: 0 0 15px rgba(var(--picked-color-rgb), 0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .education-image-container img:hover {
     transform: scale(1.02);
-    box-shadow: 0 0 25px var(--picked-color, #ff1f1f);
+    box-shadow: 0 0 25px var(--picked-color);
 }
 
 /* --- Achievements Section Styles --- */
@@ -622,7 +782,7 @@ header {
 
 .certificates-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid for certificates */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 30px;
     max-width: 1280px;
     margin: 0 auto;
@@ -630,9 +790,9 @@ header {
 }
 
 .certificate-item {
-    background: #111;
+    background: var(--card-bg);
     border-radius: 15px;
-    box-shadow: 0 0 20px rgba(255, 31, 31, 0.15);
+    box-shadow: 0 0 20px rgba(var(--picked-color-rgb), 0.15);
     overflow: hidden;
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -644,49 +804,219 @@ header {
 
 .certificate-item:hover {
     transform: translateY(-8px);
-    box-shadow: 0 0 30px var(--picked-color, #ff1f1f);
+    box-shadow: 0 0 30px var(--picked-color);
 }
 
 .certificate-item img {
     width: 100%;
-    height: 200px; /* Fixed height for consistency */
-    object-fit: cover; /* Cover the area, may crop */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .certificate-info {
     padding: 20px;
-    flex-grow: 1; /* Allows info to take remaining space */
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
 .certificate-info h3 {
-    color: var(--picked-color, #ff1f1f);
+    color: var(--picked-color);
     font-size: 1.3rem;
     margin-top: 0;
     margin-bottom: 10px;
-    text-shadow: 0 0 6px var(--picked-color, #ff1f1f);
+    text-shadow: 0 0 6px var(--picked-color);
 }
 
 .certificate-info p {
     font-size: 0.9rem;
-    color: #ccc;
+    color: var(--secondary-text-color);
 }
 
+/* --- Enquiries Section Styles --- */
+#enqueries {
+    padding-top: 20px;
+}
 
-/* Popup styles (retained as is) */
-/* ... (your existing popup styles) ... */
+.enquiry-form-container {
+    background: var(--card-bg);
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(var(--picked-color-rgb), 0.15);
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 40px;
+}
 
-/* Footer Styles */
+#enquiry-form .form-group {
+    margin-bottom: 20px;
+}
+
+#enquiry-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+#enquiry-form input[type="text"],
+#enquiry-form input[type="email"],
+#enquiry-form textarea {
+    width: calc(100% - 20px); /* Adjust for padding */
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background: #222;
+    color: var(--text-color);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#enquiry-form input[type="text"]:focus,
+#enquiry-form input[type="email"]:focus,
+#enquiry-form textarea:focus {
+    outline: none;
+    border-color: var(--picked-color);
+    box-shadow: 0 0 8px var(--picked-color);
+}
+
+#enquiry-form textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+#enquiry-form .submit-btn {
+    display: block;
+    width: auto;
+    margin: 30px auto 0 auto;
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--bg-color);
+    background: var(--picked-color);
+    border: 2px solid var(--picked-color);
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px var(--picked-color);
+}
+
+#enquiry-form .submit-btn:hover,
+#enquiry-form .submit-btn:focus {
+    background: var(--text-color);
+    color: var(--bg-color);
+    box-shadow: 0 0 20px var(--picked-color);
+}
+
+/* --- Contact Section Styles --- */
+#contact {
+    padding-top: 20px;
+}
+
+.contact-links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 25px;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+.contact-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 25px;
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 600;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    box-shadow: 0 0 20px rgba(var(--picked-color-rgb), 0.15);
+}
+
+.contact-link:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 0 30px var(--picked-color);
+    background-color: #1a1a1a; /* Slightly lighter on hover */
+}
+
+.contact-link i {
+    font-size: 3rem;
+    color: var(--picked-color);
+    margin-bottom: 15px;
+    transition: color 0.3s ease;
+}
+
+.contact-link:hover i {
+    color: var(--text-color); /* Icon becomes white on hover */
+}
+
+/* Preloader Styles (Kept as is, removed from DOM by JS) */
+#preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.progress-ring {
+  transform: rotate(-90deg);
+}
+.progress-ring .bg {
+  stroke-width: 8;
+  stroke: rgba(var(--picked-color-rgb), 0.2);
+  fill: none;
+}
+.progress-ring .progress {
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke: var(--picked-color);
+  fill: none;
+  stroke-dasharray: 339.292; /* 2 * PI * 54 */
+  stroke-dashoffset: 339.292;
+  animation: progress-load 1.5s ease-out forwards;
+}
+
+@keyframes progress-load {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.loader-container p {
+  color: var(--picked-color);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+/* Footer Styles (Transparent) */
 footer {
     text-align: center;
     padding: 20px 0;
-    margin-top: 50px; /* Add some space above the footer */
-    background-color: #0a0a0a; /* Slightly darker background for footer */
+    margin-top: 80px; /* More space above the footer */
+    background-color: rgba(0, 0, 0, 0.7); /* Transparent background */
     color: #888;
     font-size: 0.9rem;
+    backdrop-filter: blur(5px); /* Optional: Frosted glass effect */
+    border-top: 1px solid rgba(var(--picked-color-rgb), 0.1);
 }
 
 /* Responsive adjustments */
@@ -700,7 +1030,7 @@ footer {
         flex-basis: 100%;
         margin-top: 15px;
     }
-    .color-picker {
+    .color-picker-label {
         order: -1; /* Move color picker to the start on smaller screens */
     }
     .page-section {
@@ -717,14 +1047,21 @@ footer {
         justify-content: center;
     }
 
-    .services-carousel {
+    /* Services responsiveness */
+    .services-grid {
         grid-template-columns: repeat(2, 1fr); /* 2 columns on medium screens */
         grid-template-rows: auto;
     }
     .service-slide img {
         height: 150px;
     }
+    .services-intro-slide {
+        max-width: 100%;
+        height: auto; /* Allow height to adjust */
+        min-height: 300px;
+    }
 
+    /* Education responsiveness */
     .education-timeline::before {
         left: 20px; /* Move timeline line to left */
         transform: translateX(0);
@@ -747,9 +1084,12 @@ footer {
         display: none; /* Hide the arrow */
     }
 
-    .skills-grid, .certificates-grid {
+    .skills-grid, .certificates-grid, .contact-links-grid {
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adjust for smaller screens */
         gap: 20px;
+    }
+    .enquiry-form-container {
+        padding: 30px;
     }
 }
 
@@ -774,17 +1114,28 @@ footer {
     .section-title {
         font-size: 2rem;
     }
-    .services-carousel {
+    .services-grid {
         grid-template-columns: 1fr; /* Single column on small screens */
         grid-template-rows: auto;
     }
     .education-content {
         padding: 15px;
     }
-    .skill-card, .certificate-item {
+    .skill-card, .certificate-item, .contact-link {
         padding: 20px;
     }
     .skill-card h3 {
         font-size: 1.4rem;
+    }
+    .contact-link i {
+        font-size: 2.5rem;
+    }
+    .enquiry-form-container {
+        padding: 20px;
+    }
+    #enquiry-form input[type="text"],
+    #enquiry-form input[type="email"],
+    #enquiry-form textarea {
+        width: 100%; /* No padding adjustment needed as padding is inside */
     }
 }
