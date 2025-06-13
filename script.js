@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const colorPicker = document.getElementById('color-picker');
     const root = document.documentElement;
     const heroGraphicWrapper = document.querySelector('#home .graphic-wrapper');
-    const contactGraphicWrapper = document.querySelector('#contact .graphic-wrapper'); // For contact section image
+    const contactGraphicWrapper = document.querySelector('#contact .graphic-wrapper');
     const hireMeButton = document.querySelector('.hire-btn');
     const serviceHireButtons = document.querySelectorAll('.slide-hire-btn');
     const hirePopup = document.getElementById('hire-popup');
@@ -89,17 +89,19 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             return `${r}, ${g}, ${b}`;
         };
-        root.style.setProperty('--picked-color-rgb', hexToRgb(color));
+        const rgbColor = hexToRgb(color);
+        // console.log(`Setting --picked-color to: ${color}, --picked-color-rgb to: ${rgbColor}`); // Diagnostic log
+        root.style.setProperty('--picked-color-rgb', rgbColor);
         localStorage.setItem('highlightColor', color);
 
-        // Update graphics
+        // Update graphics with direct style application for immediate effect
         if (heroGraphicWrapper) {
-            heroGraphicWrapper.style.boxShadow = `0 0 30px rgba(${hexToRgb(color)}, 0.3)`;
-            heroGraphicWrapper.style.background = `rgba(${hexToRgb(color)}, 0.1)`;
+            heroGraphicWrapper.style.boxShadow = `0 0 30px rgba(${rgbColor}, 0.3)`;
+            heroGraphicWrapper.style.background = `rgba(${rgbColor}, 0.1)`;
         }
-        if (contactGraphicWrapper) { // Update contact graphic wrapper
-            contactGraphicWrapper.style.boxShadow = `0 0 30px rgba(${hexToRgb(color)}, 0.3)`;
-            contactGraphicWrapper.style.background = `rgba(${hexToRgb(color)}, 0.1)`;
+        if (contactGraphicWrapper) {
+            contactGraphicWrapper.style.boxShadow = `0 0 30px rgba(${rgbColor}, 0.3)`;
+            contactGraphicWrapper.style.background = `rgba(${rgbColor}, 0.1)`;
         }
         document.querySelectorAll('.highlight').forEach(el => {
             el.style.color = color;
@@ -108,6 +110,17 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.logo, .nav-links li button.nav-btn:hover, .nav-links li button.nav-btn:focus').forEach(el => {
             el.style.color = color;
             el.style.textShadow = `0 0 8px ${color}`;
+        });
+
+        // Force browser to re-evaluate styles for elements that use CSS variables in their transitions/animations
+        // This is a common trick if color changes don't immediately affect CSS animations/transitions
+        document.querySelectorAll(
+            '.service-slide, .slide-hire-btn, .skill-card, .education-dot, .education-content, .certificate-item, .contact-icon'
+        ).forEach(el => {
+            // Read a computed style property to force recalculation
+            const computedTransform = getComputedStyle(el).transform;
+            // Then immediately set it back (effectively a no-op that forces re-render)
+            el.style.transform = computedTransform;
         });
     }
 
@@ -186,9 +199,8 @@ document.addEventListener('DOMContentLoaded', function() {
         hirePopup.classList.add('active');
         hirePopup.setAttribute('aria-hidden', 'false');
         hirePopup.setAttribute('tabindex', '0');
-        // Add inert to body to prevent interaction with background
         document.body.style.overflow = 'hidden';
-        document.body.setAttribute('inert', '');
+        // Removed document.body.setAttribute('inert', '');
         hirePopup.focus(); // Focus the popup for accessibility
     }
 
@@ -197,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function() {
         hirePopup.setAttribute('aria-hidden', 'true');
         hirePopup.setAttribute('tabindex', '-1');
         document.body.style.overflow = ''; // Restore body scroll
-        document.body.removeAttribute('inert');
+        // Removed document.body.removeAttribute('inert');
         hireForm.reset(); // Clear the form
     }
 
@@ -249,7 +261,7 @@ document.addEventListener('DOMContentLoaded', function() {
         enquiryThankYouPopup.setAttribute('aria-hidden', 'false');
         enquiryThankYouPopup.setAttribute('tabindex', '0');
         document.body.style.overflow = 'hidden';
-        document.body.setAttribute('inert', '');
+        // Removed document.body.setAttribute('inert', '');
         enquiryThankYouPopup.focus();
     }
 
@@ -258,7 +270,7 @@ document.addEventListener('DOMContentLoaded', function() {
         enquiryThankYouPopup.setAttribute('aria-hidden', 'true');
         enquiryThankYouPopup.setAttribute('tabindex', '-1');
         document.body.style.overflow = '';
-        document.body.removeAttribute('inert');
+        // Removed document.body.removeAttribute('inert');
         enquiryForm.reset(); // Clear the enquiry form after successful submission
     }
 
@@ -304,10 +316,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Initial graphic animation setup
+    // These lines are crucial for setting the initial color for the graphic wrappers on load
     if (heroGraphicWrapper) {
         heroGraphicWrapper.style.setProperty('--picked-color-rgb', getComputedStyle(root).getPropertyValue('--picked-color-rgb'));
     }
-    if (contactGraphicWrapper) { // Initial setup for contact graphic wrapper
+    if (contactGraphicWrapper) {
         contactGraphicWrapper.style.setProperty('--picked-color-rgb', getComputedStyle(root).getPropertyValue('--picked-color-rgb'));
     }
 });
