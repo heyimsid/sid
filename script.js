@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const servicesIntroSlide = document.querySelector('.services-intro-slide');
     const servicesGrid = document.querySelector('.services-grid');
     const individualServiceSlides = document.querySelectorAll('.service-slide');
-
+    let serviceGridAnimated = false;
     // Preloader and Page Load
     window.addEventListener('load', () => {
         preloader.style.opacity = '0';
@@ -195,6 +195,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Services Section Animation Logic
     function animateServiceGrid() {
+        if(serviceGridAnimated) return;
+        serviceGridAnimated = true;
+        
         // First, ensure intro slide moves out and grid transitions properties
         servicesIntroSlide.classList.add('intro-slide-expanded');
         servicesGrid.classList.add('service-grid-visible');
@@ -241,7 +244,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Reset individual slides after grid has visually hidden
         setTimeout(() => {
             resetServiceGridSlides();
-            // Ensure the intro slide is fully visible and interactive again
+            serviceGridAnimated = false;// Ensure the intro slide is fully visible and interactive again
             // CSS transitions should handle opacity/pointer-events on removing intro-slide-expanded
             // No need to explicitly set style properties here unless CSS fails.
         }, 800); // Delay matches CSS transition duration for grid hiding
