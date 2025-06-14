@@ -18,6 +18,7 @@
 
 html {
     scroll-behavior: smooth; /* Essential for smooth scrolling to sections */
+    scroll-padding-top: 80px;
 }
 
 body {
