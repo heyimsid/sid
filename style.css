@@ -546,7 +546,7 @@ header {
 
 /* Services grid styling */
 .services-grid {
-   .services-grid {
+   
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
@@ -560,7 +560,7 @@ header {
     overflow-y: visible; /* Change from auto to visible to avoid internal scroll */
     scroll-behavior: smooth;
     transition: all 0.3s ease;
-} /* Allow scrolling if content exceeds height */
+ /* Allow scrolling if content exceeds height */
 }
 
 .services-grid.visible-grid {
