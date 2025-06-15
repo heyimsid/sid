@@ -33,7 +33,7 @@ body {
 
 /* Scrollbar Styles */
 ::-webkit-scrollbar {
-    width: 12px;
+    width: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -119,17 +119,30 @@ header {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* Added subtle shadow */
 }
 
-.nav {
+
+/* --- Navigation Bar Improvements (.nav is your actual nav bar element) --- */
+.nav { /* This now directly targets your .nav element */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 25px 60px;
+    padding: 15px 60px; /* Reduced vertical padding from 25px to 15px */
     gap: 16px;
     flex-wrap: nowrap;
-    position: relative;
-    z-index: 10;
-    max-width: 1280px; /* Constrain width for larger screens */
-    margin: 0 auto; /* Center the nav */
+
+    /* IMPORTANT: Added these for fixed header behavior */
+    position: fixed; /* Essential for it to stay on top */
+    top: 0;
+    left: 0;
+    width: 100%; /* Make it span full width */
+    background-color: var(--bg-color); /* Use your theme's background color */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+    z-index: 1000; /* Ensure it stays above other content */
+    /* End IMPORTANT changes */
+
+    max-width: 1280px; /* Constrain width for larger screens (from your provided .nav) */
+    margin: 0 auto; /* Center the nav (from your provided .nav) */
+    transition: padding 0.3s ease; /* Smooth transition for potential size changes */
+    height: auto; /* Allow content to dictate height, but control padding */
 }
 
 .logo {
@@ -168,7 +181,7 @@ header {
     font-weight: 700;
     font-size: 1rem;
     transition: color 0.3s ease, text-shadow 0.3s ease;
-    padding: 4px 8px;
+    padding: 4px 8px; /* Already reasonable padding for buttons */
     border-radius: 8px;
     position: relative; /* For the active/hover underline */
 }
@@ -194,6 +207,34 @@ header {
 .nav-links li button.nav-btn.active::after {
     width: 100%;
 }
+
+/* Example for smaller screen sizes if nav is still too big */
+@media (max-width: 768px) {
+    .nav { /* Targets your .nav element */
+        padding: 10px 20px; /* Even smaller vertical padding for mobile */
+    }
+    html, body { /* Adjusted body padding for smaller nav on mobile */
+        padding-top: 50px;
+    }
+}
+
+/* --- Section Management (for `page-section` and `services-main-content`) --- */
+
+/* Ensure page sections take up available height and scroll if needed */
+.page-section {
+    /* Adjusted: Full height minus fixed nav height (assuming 60px nav height on desktop) */
+    min-height: calc(100vh - 60px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically if it fits */
+    align-items: center;
+    padding-top: 80px; /* Add internal padding to sections to prevent content from touching the top */
+    padding-bottom: 80px; /* Ensure space at the bottom of sections */
+    box-sizing: border-box; /* Include padding in height */
+    width: 100%; /* Ensure sections use full width */
+    overflow-y: auto; /* Allow vertical scrolling within sections if content is long */
+}
+
 
 /* --- Color Picker Redesign --- */
 .color-picker-label {
