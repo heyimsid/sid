@@ -666,12 +666,14 @@ header {
 }
 
 body {
+    font-family: 'Poppins', sans-serif;
     margin: 0;
-    font-family: 'Inter', sans-serif;
-    background-color: var(--bg-color);
+    background-color: var(--primary-background);
     color: var(--text-color);
     line-height: 1.6;
+    scroll-behavior: smooth;
     overflow-x: hidden; /* Prevent horizontal scroll */
+    padding-bottom: 70px; /* Added to make space for the fixed bottom nav bar */
 }
 
 .page-section {
