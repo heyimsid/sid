@@ -406,26 +406,22 @@ header {
     box-shadow: 0 5px 20px rgba(var(--picked-color-rgb), 0.7);
 }
 
-/* --- Services Section --- */
-.services-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 40px;
-}
-
+/* Ensure the parent container for absolute positioning is relative */
 .services-main-content {
-    position: relative;
+    position: relative; /* Crucial for absolute positioning of children */
     width: 100%;
-    display: flex;
-    flex-direction: column; /* Changed to column to stack intro and grid */
+    /* display: flex; Removed, as absolute positioning makes flex less relevant here */
+    /* flex-direction: column; */
     align-items: center;
     overflow: hidden; /* Important for containing children that animate */
+    min-height: 350px; /* Ensure it has enough height to contain the intro slide */
+    display: flex; /* Keeping this to center the intro slide initially */
+    justify-content: center;
 }
 
 /* Intro slide styling */
 .services-intro-slide {
-    position: relative;
+    position: relative; /* Keep relative to contain its image/overlay */
     width: 100%;
     max-width: 800px;
     height: 350px;
@@ -433,12 +429,18 @@ header {
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     cursor: pointer;
-    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out, height 0.5s ease-in-out, margin-bottom 0.5s ease-in-out, z-index 0s linear 0.5s;
+    /* Combine transitions for cleaner code and better control */
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out,
+                height 0.5s ease-in-out 0.2s, margin-bottom 0.5s ease-in-out 0.2s,
+                z-index 0s linear 0.5s;
     z-index: 2; /* Ensure it's above the grid when active */
     transform-origin: center center;
     opacity: 1;
     pointer-events: auto;
     margin-bottom: 40px; /* Space between intro and potential grid beneath */
+
+    /* Centering the intro slide within services-main-content if it's the only element */
+    /* This will be managed by the parent .services-main-content's flex properties */
 }
 
 .services-intro-slide img {
@@ -494,7 +496,10 @@ header {
     margin-bottom: 0; /* Remove margin space */
     pointer-events: none; /* Make it unclickable when hidden */
     z-index: 0; /* Move it below the grid once hidden */
-    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out, height 0.5s ease-in-out 0.2s, margin-bottom 0.5s ease-in-out 0.2s, z-index 0s linear 0.5s;
+    /* Transitions for hidden state */
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out,
+                height 0.5s ease-in-out 0.2s, margin-bottom 0.5s ease-in-out 0.2s,
+                z-index 0s linear 0.5s;
 }
 
 
@@ -505,6 +510,9 @@ header {
     gap: 40px; /* Original gap */
     justify-content: center;
     width: 100%;
+    height: 100%; /* Make grid fill its parent height */
+    padding: 0 20px; /* Add some horizontal padding to the grid itself */
+    box-sizing: border-box; /* Include padding in width/height calculation */
 
     /* Animation properties for sliding in/out */
     opacity: 0;
@@ -517,6 +525,7 @@ header {
     left: 0;
     width: 100%;
     z-index: 1; /* Below intro slide initially */
+    overflow: auto; /* Allow scrolling if content exceeds height */
 }
 
 .services-grid.visible-grid {
@@ -526,7 +535,7 @@ header {
     z-index: 2; /* Bring it to front when visible */
 }
 
-/* Individual service slides (no change needed here, just for context) */
+/* Individual service slides */
 .service-slide {
     position: relative;
     background: var(--card-bg);
@@ -541,12 +550,15 @@ header {
     min-height: 320px;
     opacity: 0; /* Start hidden for staggered animation */
     transform: translateY(20px); /* Start slightly below */
+    /* IMPORTANT: Add a transition for the .animate-in properties if not already on base class */
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out,
+                transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; /* Combined */
 }
 
 .service-slide.animate-in {
     opacity: 1;
     transform: translateY(0);
-    transition: opacity 0.5s ease-out, transform 0.5s ease-out; /* Apply individual slide animation */
+    /* No need to re-declare transition here, it's on the base .service-slide */
 }
 
 .service-slide img {
@@ -570,8 +582,8 @@ header {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    flex-grow: 1; /* Allow content to push button down */
-    justify-content: space-between; /* Space out title and button */
+    flex-grow: 1;
+    justify-content: space-between;
 }
 
 .slide-hire-btn-container h3 {
@@ -593,13 +605,60 @@ header {
     text-decoration: none;
     transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 5px 15px rgba(var(--picked-color-rgb), 0.4);
-    margin-top: auto; /* Push button to the bottom */
+    margin-top: auto;
 }
 
 .slide-hire-btn:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(var(--picked-color-rgb), 0.6);
 }
+
+/* You likely have these global styles or similar from your 1560 lines of CSS */
+:root {
+    --text-color: #f0f0f0;
+    --secondary-text-color: #cccccc;
+    --bg-color: #1a1a1a;
+    --card-bg: #2a2a2a;
+    --border-color: #444;
+    --picked-color: #00bcd4; /* Example primary color, replace with yours */
+    --picked-color-rgb: 0, 188, 212; /* RGB equivalent for box-shadow, replace with yours */
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+.page-section {
+    padding: 80px 0;
+    text-align: center;
+    position: relative; /* Good practice for sections */
+}
+
+.section-title {
+    font-size: 3rem;
+    margin-bottom: 60px;
+    color: var(--picked-color);
+    text-shadow: 0 0 15px rgba(var(--picked-color-rgb), 0.5);
+}
+
+.services-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px; /* This gap might become less relevant if intro and grid overlay */
+    width: 100%; /* Ensure container fills width */
+    max-width: 1200px; /* Limit overall width */
+    margin: 0 auto; /* Center the container */
+    padding: 0 20px; /* Add some padding to the container */
+    box-sizing: border-box;
+}
+
+
 
 
 /* --- Skills Section --- */
