@@ -24,7 +24,7 @@ html {
 body {
     margin: 0;
     padding: 0;
-    background: #000;
+    background: var(--bg-color);
     color: var(--text-color);
     font-family: 'Montserrat', sans-serif;
     overflow-x: hidden;
@@ -662,7 +662,7 @@ header {
 body {
     margin: 0;
     font-family: 'Inter', sans-serif;
-    background-color: var(--bg-color);
+    background-color: #000;
     color: var(--text-color);
     line-height: 1.6;
     overflow-x: hidden; /* Prevent horizontal scroll */
