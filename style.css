@@ -558,6 +558,9 @@ header {
     overflow-y: visible; /* Make sure this is set to visible */
     scroll-behavior: smooth;
     transition: all 0.3s ease;
+
+    justify-content: center;   /* Horizontally centers the grid */
+    align-items: start;        /* Prevents items from shifting down */
 }
 
 .services-grid.visible-grid {
