@@ -18,13 +18,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const skillCards = document.querySelectorAll('.skill-card');
     const educationItems = document.querySelectorAll('.education-item');
 
-    // Services section specific elements
+    // Services section specific elements (already correctly selected)
     const servicesMainContent = document.querySelector('.services-main-content');
     const servicesIntroSlide = document.querySelector('.services-intro-slide');
     const servicesGrid = document.querySelector('.services-grid');
     const individualServiceSlides = document.querySelectorAll('.service-slide');
-    let serviceGridAnimated = false;
-    // Preloader and Page Load
+    let serviceGridAnimated = false; // Flag to control service grid animation
+
+    // === Preloader and Page Load ===
     window.addEventListener('load', () => {
         preloader.style.opacity = '0';
         setTimeout(() => {
@@ -37,10 +38,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 500);
     });
 
-    // Set current year in footer
+    // === Set current year in footer ===
     document.getElementById('current-year').textContent = new Date().getFullYear();
 
-    // Intersection Observer for Education Timeline (Animate on Scroll)
+    // === Intersection Observer for Education Timeline (Animate on Scroll) ===
     const observerOptions = {
         root: null,
         rootMargin: '0px',
@@ -60,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
         educationObserver.observe(item);
     });
 
-    // Skill Card Hover Effect
+    // === Skill Card Hover Effect ===
     skillCards.forEach(card => {
         card.addEventListener('mouseenter', () => {
             card.classList.add('hovered');
@@ -76,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Function to set highlight color and ensure sync
+    // === Function to set highlight color and ensure sync ===
     function setHighlightColor(color) {
         root.style.setProperty('--picked-color', color);
         const hexToRgb = (hex) => {
@@ -128,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function() {
         setHighlightColor(event.target.value);
     });
 
-    // Page navigation
+    // === Page navigation ===
     navButtons.forEach(button => {
         button.addEventListener('click', (e) => {
             e.preventDefault();
@@ -148,14 +149,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 targetSection.setAttribute('tabindex', '0');
                 button.setAttribute('aria-expanded', 'true');
 
-                if (targetId === 'services') {
-                    resetServicesAnimation(); // Ensure services is reset *before* activating it
-                } else {
-                    // If navigating away from services, ensure it's reset
-                    resetServicesAnimation(); // Call unconditionally, CSS handles initial state
-                }
+                // Always reset services animation when navigating to/from the services section
+                // This ensures it's in its initial state (intro slide visible)
+                // before interaction, or resets it when leaving the section.
+                resetServicesAnimation();
 
-                // Scroll to top of the new section with offset
                 targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         });
@@ -183,82 +181,81 @@ document.addEventListener('DOMContentLoaded', function() {
                 targetNavButton.setAttribute('aria-expanded', 'true');
             }
 
-            if (targetId === 'services') {
-                resetServicesAnimation();
-            } else {
-                resetServicesAnimation();
-            }
+            // Always reset services animation when navigating to the services section
+            resetServicesAnimation();
 
             targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     });
 
-    // Services Section Animation Logic
-    function animateServiceGrid() {
-        if(serviceGridAnimated) return;
-        serviceGridAnimated = true;
-        
-        // First, ensure intro slide moves out and grid transitions properties
-        servicesIntroSlide.classList.add('intro-slide-expanded');
-        servicesGrid.classList.add('service-grid-visible');
+    // === Services Section Animation Logic (Modified) ===
 
-        // Calculate and set min-height for servicesMainContent to fit the grid
-        // This needs to happen after servicesGrid.classList.add('service-grid-visible')
-        // to allow its max-height to apply for scrollHeight calculation.
-        // Temporarily set max-height to a large value to measure true scrollHeight
-        const originalMaxHeight = servicesGrid.style.maxHeight;
-        servicesGrid.style.maxHeight = '2000px'; // Temporarily expand
-        const gridHeight = servicesGrid.scrollHeight + 100; // Get actual scroll height + some padding
-        servicesGrid.style.maxHeight = originalMaxHeight; // Revert to original (CSS controlled)
-        
-        servicesMainContent.style.minHeight = `${gridHeight}px`; // Expand container
+    /**
+     * Resets the services section to its initial state (intro slide visible, grid hidden).
+     */
+    function resetServicesAnimation() {
+        // Ensure intro slide is visible and interactive
+        servicesIntroSlide.classList.remove('hidden-intro');
+        servicesIntroSlide.style.display = ''; // Revert display: none if set
 
-        // Stagger individual service slide animations after the grid container starts appearing
-        individualServiceSlides.forEach((slide, index) => {
-            slide.classList.remove('animate-in');
-            void slide.offsetWidth; // Force reflow
-            setTimeout(() => {
-                slide.classList.add('animate-in');
-            }, 600 + (100 * index)); // Start after grid becomes visible (0.5s CSS delay + 0.1s buffer)
-        });
-    }
+        // Ensure grid is hidden
+        servicesGrid.classList.remove('visible-grid');
 
-    function resetServiceGridSlides() {
+        // Reset individual service slides to their initial hidden state
         individualServiceSlides.forEach(slide => {
             slide.classList.remove('animate-in');
-            slide.style.opacity = '0'; // Explicitly set initial state
-            slide.style.transform = 'translateY(20px) scale(0.95)'; // Explicitly set initial state
         });
+
+        // Reset the flag
+        serviceGridAnimated = false;
     }
 
-    function resetServicesAnimation() {
-        // Reset the main content height first
-        servicesMainContent.style.minHeight = '400px'; // Revert to initial intro slide height
 
-        // This will trigger the CSS transition to hide the grid
-        servicesGrid.classList.remove('service-grid-visible'); 
-        
-        // This will trigger the CSS transition to show the intro slide
-        servicesIntroSlide.classList.remove('intro-slide-expanded');
+    /**
+     * Handles the animation sequence when the intro slide is clicked or hovered.
+     */
+    const activateServiceGridAnimation = () => {
+        if (serviceGridAnimated) return; // Prevent multiple activations
+        serviceGridAnimated = true; // Set flag to true
 
-        // Reset individual slides after grid has visually hidden
+        // 1. Animate Intro Slide Disappearance
+        servicesIntroSlide.classList.add('hidden-intro');
+
+        // Wait for the intro slide's opacity/transform transition to complete.
+        // This is crucial to synchronize with the CSS `transition` on `.services-intro-slide.hidden-intro`.
+        // The longest primary transition is 0.5s for transform/opacity.
+        const introFadeDuration = 500; // ms, from CSS transition: transform 0.5s, opacity 0.5s
+
         setTimeout(() => {
-            resetServiceGridSlides();
-            serviceGridAnimated = false;// Ensure the intro slide is fully visible and interactive again
-            // CSS transitions should handle opacity/pointer-events on removing intro-slide-expanded
-            // No need to explicitly set style properties here unless CSS fails.
-        }, 800); // Delay matches CSS transition duration for grid hiding
-    }
+            // After intro fades, hide it completely. This also removes it from document flow.
+            servicesIntroSlide.style.display = 'none';
 
-    servicesIntroSlide.addEventListener('click', animateServiceGrid);
+            // 2. Animate Services Grid Appearance
+            // The servicesGrid is already positioned absolute over the area.
+            servicesGrid.classList.add('visible-grid');
+
+            // 3. Stagger individual service slides animation
+            const staggerDelay = 100; // ms, delay between each service slide appearing
+            individualServiceSlides.forEach((slide, index) => {
+                setTimeout(() => {
+                    slide.classList.add('animate-in');
+                }, index * staggerDelay); // Staggered delay for each slide
+            });
+
+        }, introFadeDuration); // Start grid animation after intro slide finishes fading
+    };
+
+    // Attach event listeners to the intro slide
+    servicesIntroSlide.addEventListener('click', activateServiceGridAnimation);
+    servicesIntroSlide.addEventListener('mouseenter', activateServiceGridAnimation); // For hover effect
     servicesIntroSlide.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            animateServiceGrid();
+            activateServiceGridAnimation();
         }
     });
 
-    // Hire Me Pop-up functionality (no changes needed, should be working vertically)
+    // === Hire Me Pop-up functionality (No changes needed here for core logic) ===
     function openHirePopup(serviceName) {
         popupServiceName.textContent = serviceName;
         hirePopup.classList.add('active');
@@ -294,10 +291,46 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && hirePopup.classList.contains('active')) {
+            e.preventDefault(); // Prevent default escape behavior if needed
             closeHirePopup();
         }
     });
 
+    // New Hire Form "Thank You" Popup elements (You need to add this HTML)
+    // Assuming a similar structure to enquiry-thankyou-popup exists for this new popup.
+    // If not, you'll need to create:
+    // <div id="hire-thankyou-popup" class="modal-popup" role="dialog" aria-modal="true" aria-hidden="true" tabindex="-1">
+    //   <div class="modal-content">
+    //     <h3>Thank You!</h3>
+    //     <p>Your inquiry has been received. I will get back to you soon.</p>
+    //     <button id="hire-thankyou-ok-btn" class="btn">OK</button>
+    //   </div>
+    // </div>
+    const hireThankYouPopup = document.getElementById('hire-thankyou-popup');
+    const hireThankYouOkBtn = document.getElementById('hire-thankyou-ok-btn');
+
+    // Functions for new Hire Form Thank You popup
+    function openHireThankYouPopup() {
+        if (!hireThankYouPopup) {
+            console.error("Hire Thank You Popup HTML not found. Please add it to your page.");
+            return;
+        }
+        hireThankYouPopup.classList.add('active');
+        hireThankYouPopup.setAttribute('aria-hidden', 'false');
+        hireThankYouPopup.setAttribute('tabindex', '0');
+        document.body.style.overflow = 'hidden';
+        hireThankYouPopup.focus();
+    }
+
+    function closeHireThankYouPopup() {
+        if (!hireThankYouPopup) return;
+        hireThankYouPopup.classList.remove('active');
+        hireThankYouPopup.setAttribute('aria-hidden', 'true');
+        hireThankYouPopup.setAttribute('tabindex', '-1');
+        document.body.style.overflow = '';
+    }
+
+    // Modify hireForm submission to use custom popup
     hireForm.addEventListener('submit', (e) => {
         e.preventDefault();
         console.log('Hire Form Submitted:', {
@@ -310,11 +343,31 @@ document.addEventListener('DOMContentLoaded', function() {
             company: document.getElementById('hire-company').value,
             attachment: document.getElementById('hire-attachment').files[0] ? document.getElementById('hire-attachment').files[0].name : 'No attachment'
         });
-        alert('Thank you for your inquiry! I will get back to you soon.');
-        closeHirePopup();
+
+        closeHirePopup(); // Close the hire form popup
+        openHireThankYouPopup(); // Open the new "Thank You" popup
     });
 
-    // Enquiry Form "Thank You" Popup (no changes needed)
+    // Add listener for the new "OK" button in the hire thank you popup
+    if (hireThankYouOkBtn) {
+        hireThankYouOkBtn.addEventListener('click', closeHireThankYouPopup);
+    }
+    // Also allow clicking outside to close
+    if (hireThankYouPopup) {
+        hireThankYouPopup.addEventListener('click', (e) => {
+            if (e.target === hireThankYouPopup) {
+                closeHireThankYouPopup();
+            }
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && hireThankYouPopup.classList.contains('active')) {
+                e.preventDefault();
+                closeHireThankYouPopup();
+            }
+        });
+    }
+
+    // === Enquiry Form "Thank You" Popup (No changes needed) ===
     function openEnquiryThankYouPopup() {
         enquiryThankYouPopup.classList.add('active');
         enquiryThankYouPopup.setAttribute('aria-hidden', 'false');
@@ -353,10 +406,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && enquiryThankYouPopup.classList.contains('active')) {
+            e.preventDefault();
             closeEnquiryThankYouPopup();
         }
     });
 
-    // Initialize services section state on first load
-    setTimeout(resetServicesAnimation, 100);
+    // === Initialize services section state on first load ===
+    // This ensures the services section starts with the intro slide visible
+    // and the grid hidden, ready for interaction.
+    resetServicesAnimation();
 });
