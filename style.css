@@ -662,7 +662,7 @@ header {
 body {
     margin: 0;
     font-family: 'Inter', sans-serif;
-    background-color: #000;
+    background-color: #454545;
     color: var(--text-color);
     line-height: 1.6;
     overflow-x: hidden; /* Prevent horizontal scroll */
