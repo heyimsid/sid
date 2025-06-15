@@ -546,7 +546,6 @@ header {
 
 /* Services grid styling */
 .services-grid {
-   
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
@@ -555,12 +554,10 @@ header {
     margin: 0 auto;
     background-color: var(--card-background);
     border-radius: var(--border-radius);
-    /* REMOVE or comment out the height: calc(100vh - 100px); */
-    /* height: calc(100vh - 100px); */ /* This was likely causing the internal scroll */
-    overflow-y: visible; /* Change from auto to visible to avoid internal scroll */
+    /* height: calc(100vh - 100px); */ /* Ensure this line is removed or commented out */
+    overflow-y: visible; /* Make sure this is set to visible */
     scroll-behavior: smooth;
     transition: all 0.3s ease;
- /* Allow scrolling if content exceeds height */
 }
 
 .services-grid.visible-grid {
