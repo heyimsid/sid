@@ -134,7 +134,7 @@ header {
     top: 0;
     left: 0;
     width: 100%; /* Make it span full width */
-    background-color: var(--bg-color); /* Use your theme's background color */
+    background-color: #000; /* Use your theme's background color */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
     z-index: 1000; /* Ensure it stays above other content */
     /* End IMPORTANT changes */
