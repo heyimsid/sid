@@ -419,3 +419,16 @@ document.addEventListener('DOMContentLoaded', function() {
 window.onbeforeunload = function () {
     window.scrollTo(0, 0);
   };
+window.addEventListener('DOMContentLoaded', function () {
+  window.botpressWebChat.init({
+    botId: "IATAEBZ3",
+    hostUrl: "https://cdn.botpress.cloud/webchat/v3",
+    messagingUrl: "https://messaging.botpress.cloud",
+    composerPlaceholder: "Ask me anything about Sid’s portfolio!",
+    botName: "Sid's Assistant",
+    showPoweredBy: false,
+    theme: "default",
+    themeName: "prism"
+    // openByDefault: true // Uncomment to auto-open the chat
+  });
+});
