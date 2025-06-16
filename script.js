@@ -416,3 +416,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // and the grid hidden, ready for interaction.
     resetServicesAnimation();
 });
+window.onbeforeunload = function () {
+    window.scrollTo(0, 0);
+  };
