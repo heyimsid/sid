@@ -22,13 +22,16 @@
                 <li><button class="nav-btn" data-target="contact" aria-controls="contact" aria-expanded="false" aria-label="Contact section">Contact</button></li>
             </ul>
             
-          <label for="color-picker" class="color-picker-label">
+         <!-- Spinning Wheel -->
+<label for="color-picker" class="color-picker-label" id="openColorPicker">
   <span class="color-picker-icon" aria-hidden="true"></span>
   <div class="color-picker-wrapper">
-    <img src="w.png" alt="Color Wheel" class="color-picker-image">
-    <input type="color" id="color-picker" class="color-picker" aria-label="Select highlight color" value="#87CEEB" />
+    <img src="w.png" alt="Color Wheel" class="color-picker-image" />
   </div>
 </label>
+
+<!-- Modern Color Picker Container -->
+<div id="colorPickerContainer" style="display: none; margin-top: 20px;"></div>
         </div>
     </header>
 
