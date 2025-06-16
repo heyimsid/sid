@@ -430,7 +430,7 @@ document.addEventListener("DOMContentLoaded", function () {
       { component: iro.ui.Wheel },
       { component: iro.ui.Slider, options: { sliderType: 'hue' }},
       { component: iro.ui.Slider, options: { sliderType: 'value' }},
-      { component: iro.ui.Box }
+      
     ]
   });
 
