@@ -264,7 +264,6 @@ header {
   padding: 0;
   border: none;
   cursor: pointer;
-  background-image: url('https://github.com/heyimsid/sid/blob/main/w.png'); /* Your image */
   background-size: cover;
   background-position: center;
   appearance: none;
@@ -273,7 +272,18 @@ header {
   box-shadow: 0 0 10px var(--picked-color);
   transition: box-shadow 0.3s ease;
 }
+.color-picker-image {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  animation: spin 2s linear infinite;
+  object-fit: cover;
+}
 
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
 .color-picker::-webkit-color-swatch-wrapper,
 .color-picker::-webkit-color-swatch,
 .color-picker::-moz-color-swatch {
