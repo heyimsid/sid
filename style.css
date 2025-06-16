@@ -703,7 +703,7 @@ body {
 }
 
 .skill-card {
-    height: 280px;
+    
     background: var(--card-bg);
     border-radius: 15px;
     padding: 30px;
