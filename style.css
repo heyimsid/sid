@@ -699,7 +699,7 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 30px;
     justify-content: center;
-    align-items: stretch;
+    align-items: start;
 }
 
 .skill-card {
