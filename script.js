@@ -419,3 +419,19 @@ document.addEventListener('DOMContentLoaded', function() {
 window.onbeforeunload = function () {
     window.scrollTo(0, 0);
   };
+document.addEventListener("DOMContentLoaded", function () {
+  const colorPicker = new iro.ColorPicker("#colorPickerContainer", {
+    width: 260,
+    color: "#87CEEB",
+    layout: [
+      { component: iro.ui.Wheel },
+      { component: iro.ui.Slider, options: { sliderType: 'hue' }},
+      { component: iro.ui.Slider, options: { sliderType: 'value' }},
+      { component: iro.ui.Box }
+    ]
+  });
+
+  colorPicker.on("color:change", function (color) {
+    document.documentElement.style.setProperty('--picked-color', color.hexString);
+  });
+});
