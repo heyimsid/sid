@@ -1689,31 +1689,3 @@ footer a:hover {
         font-size: 0.85rem;
     }
 }
-#colorPickerPopup {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 9999;
-  background: #111;
-  padding: 16px;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
-  display: none; /* default hidden */
-  pointer-events: auto;
-}
-
-/* Optional overlay that doesn't block nav */
-#colorPickerOverlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.3);
-  z-index: 9998;
-  display: none;
-  pointer-events: none; /* So clicks go through */
-}
-.color-picker-popup:not(.hidden) {
-  display: block;
-}
-nav, .navbar, .nav-links {
-  pointer-events: auto !important;
-}
