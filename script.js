@@ -345,7 +345,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         closeHirePopup(); // Close the hire form popup
-        openHireThankYouPopup(); // Open the new "Thank You" popup
+        openEnquiryThankYouPopup(); // Open the new "Thank You" popup
     });
 
     // Add listener for the new "OK" button in the hire thank you popup
