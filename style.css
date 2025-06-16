@@ -1226,25 +1226,27 @@ footer a:hover {
     transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-#popup-cancel-btn, #enquiry-thankyou-ok-btn {
+#popup-cancel-btn {
     background: #444;
     color: var(--text-color);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
-#popup-cancel-btn:hover, #enquiry-thankyou-ok-btn:hover {
+#popup-cancel-btn:hover {
     background: #555;
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
 }
 
-#popup-submit-btn {
+
+
+#popup-submit-btn,#enquiry-thankyou-ok-btn  {
     background: var(--picked-color);
     color: var(--bg-color);
     box-shadow: 0 5px 15px rgba(var(--picked-color-rgb), 0.5);
 }
 
-#popup-submit-btn:hover {
+#popup-submit-btn:hover,#enquiry-thankyou-ok-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(var(--picked-color-rgb), 0.7);
 }
