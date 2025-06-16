@@ -1692,21 +1692,18 @@ footer a:hover {
 .color-picker-popup {
   position: fixed;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  right: 30px;
+  transform: translateY(-50%);
   background: #1c1c1c;
   padding: 20px;
   border-radius: 15px;
-  z-index: 9999;
+  z-index: 9999; /* High but not infinite */
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+  width: 280px;
   display: none;
-  pointer-events: auto; /* allow pointer events inside popup */
+  pointer-events: auto; /* This allows it to be clicked */
 }
 
-.color-picker-popup.hidden {
-  display: none;
-}
-
-#colorPickerPopup:not(.hidden) {
+.color-picker-popup:not(.hidden) {
   display: block;
 }
