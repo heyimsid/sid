@@ -462,7 +462,7 @@ header {
 
 /* Intro slide styling */
 .services-intro-slide {
-     position: absolute; /* Change to absolute positioning */
+    position: absolute; /* Change to absolute positioning */
     top: 0; /* Aligns the slide to the top */
     left: 50%; /* Centers the slide horizontally */
     transform: translateX(-50%); /* Adjusts the position to truly center it */
@@ -470,11 +470,15 @@ header {
     width: 100%; /* Optional: Set width to 100% or a specific value */
     max-width: 800px; /* Maintain the max width */
     margin: 0 auto; /* Center the slide */
-    opacity: 1; /* Ensure it's visible */
+    height: 350px; /* Keep the existing height */
+    border-radius: 20px; /* Keep existing border radius */
+    overflow: hidden; /* Keep existing overflow */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); /* Keep existing box shadow */
+    cursor: pointer; /* Keep existing cursor */
     transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out; /* Keep existing transitions */
-
-    /* Centering the intro slide within services-main-content if it's the only element */
-    /* This will be managed by the parent .services-main-content's flex properties */
+    opacity: 1; /* Ensure it's visible */
+    pointer-events: auto; /* Keep existing pointer events */
+    margin-bottom: 40px; /* Space between intro and potential grid beneath */
 }
 
 .services-intro-slide img {
