@@ -1088,75 +1088,75 @@ footer a:hover {
 
 /* --- Pop-up Styles (reused for hire and enquiry thank you) --- */
 .popup {
-    display: none;
+    display: none; /* Managed by JS to flex on 'active' */
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 100%; /* Ensure full width */
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    z-index: 1000;
+    background: rgba(0, 0, 0, 0.8); /* Dark overlay */
+    z-index: 1000; /* Ensure it's on top */
     justify-content: center;
     align-items: center;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
-    overflow-y: auto;
-    padding: 20px;
-    box-sizing: border-box;
+    overflow-y: auto; /* Allow scrolling for long forms */
+    padding: 20px; /* Padding for mobile view */
+    box-sizing: border-box; /* Include padding in width/height */
 }
 
 .popup.active {
-    display: flex;
+    display: flex; /* Activate flexbox to center content */
     opacity: 1;
     visibility: visible;
 }
 
 .popup-content {
-    background: #fff;
+    background: var(--card-bg);
     padding: 40px;
     border-radius: 15px;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
-    max-width: 900px;
-    width: 90%;
+    max-width: 900px; /* Increased max-width for more horizontal coverage */
+    width: 90%; /* Responsive width, you can adjust this percentage */
     text-align: center;
     position: relative;
-    border: 1px solid #ddd;
-    transform: translateY(-20px);
+    border: 1px solid var(--border-color);
+    transform: translateY(-20px); /* Initial position for animation */
     transition: transform 0.3s ease;
 }
 
 .popup.active .popup-content {
-    transform: translateY(0);
+    transform: translateY(0); /* Animate to final position */
 }
 
 .popup-content h2 {
     font-size: 2rem;
-    color: #333;
+    color: var(--picked-color);
     margin-bottom: 25px;
-    text-shadow: 0 0 10px #333;
+    text-shadow: 0 0 10px var(--picked-color);
 }
 
 .popup-content p {
     font-size: 1.1rem;
-    color: #666;
+    color: var(--secondary-text-color);
     margin-bottom: 25px;
 }
 
-.popup-close-btn {
+.popup-close-btn { /* Moved close button to be global to popup-content */
     position: absolute;
     top: 15px;
     right: 15px;
     background: none;
     border: none;
     font-size: 2em;
-    color: #666;
+    color: var(--secondary-text-color);
     cursor: pointer;
     transition: color 0.3s ease;
 }
 
 .popup-close-btn:hover {
-    color: #333;
+    color: var(--picked-color);
 }
 
 .popup-content form {
@@ -1170,7 +1170,7 @@ footer a:hover {
     text-align: left;
     margin-bottom: 8px;
     font-weight: 600;
-    color: #333;
+    color: var(--text-color);
     font-size: 1rem;
 }
 
@@ -1182,10 +1182,10 @@ footer a:hover {
     width: 100%;
     padding: 12px 10px;
     margin-bottom: 20px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
     border-radius: 8px;
-    background: #f9f9f9;
-    color: #333;
+    background: #1a1a1a;
+    color: var(--text-color);
     font-size: 1rem;
     outline: none;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -1196,8 +1196,8 @@ footer a:hover {
 .popup-content form input[type="email"]:focus,
 .popup-content form input[type="tel"]:focus,
 .popup-content form textarea:focus {
-    border-color: #333;
-    box-shadow: 0 0 0 3px rgba(51, 51, 51, 0.3);
+    border-color: var(--picked-color);
+    box-shadow: 0 0 0 3px rgba(var(--picked-color-rgb), 0.3);
 }
 
 .popup-content form textarea {
@@ -1224,7 +1224,7 @@ footer a:hover {
 
 #popup-cancel-btn, #enquiry-thankyou-ok-btn {
     background: #444;
-    color: #fff;
+    color: var(--text-color);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
@@ -1235,15 +1235,16 @@ footer a:hover {
 }
 
 #popup-submit-btn {
-    background: #333;
-    color: #fff;
-    box-shadow: 0 5px 15px rgba(51, 51, 51, 0.5);
+    background: var(--picked-color);
+    color: var(--bg-color);
+    box-shadow: 0 5px 15px rgba(var(--picked-color-rgb), 0.5);
 }
 
 #popup-submit-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(51, 51, 51, 0.7);
+    box-shadow: 0 8px 20px rgba(var(--picked-color-rgb), 0.7);
 }
+
 
 
 /* Specific styles for enquiry thank you popup */
