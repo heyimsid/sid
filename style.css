@@ -258,41 +258,38 @@ header {
 }
 
 .color-picker {
+  opacity: 0;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.color-picker-wrapper {
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+
+.color-picker-image {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  padding: 0;
-  border: none;
-  cursor: pointer;
-  background-size: cover;
-  background-position: center;
-  appearance: none;
-  -webkit-appearance: none;
-  overflow: hidden;
-  box-shadow: 0 0 10px var(--picked-color);
-  transition: box-shadow 0.3s ease;
-}
-.color-picker-image {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
   animation: spin 2s linear infinite;
   object-fit: cover;
+  pointer-events: none; /* allow clicks to pass through to the hidden input */
 }
 
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
-.color-picker::-webkit-color-swatch-wrapper,
-.color-picker::-webkit-color-swatch,
-.color-picker::-moz-color-swatch {
-  display: none;
-}
 
 .color-picker:focus {
   outline: none;
-  box-shadow: 0 0 20px 3px var(--picked-color);
 }
 /* Page Sections */
 .page-section {
