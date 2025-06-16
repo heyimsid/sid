@@ -454,3 +454,6 @@ document.addEventListener("DOMContentLoaded", function () {
     document.documentElement.style.setProperty('--picked-color', color.hexString);
   });
 });
+document.getElementById("colorPickerPopup").addEventListener("click", function (e) {
+  e.stopPropagation(); // Prevents this popup from closing or bubbling
+});
