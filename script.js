@@ -420,7 +420,10 @@ window.onbeforeunload = function () {
     window.scrollTo(0, 0);
   };
 document.addEventListener("DOMContentLoaded", function () {
-  const colorPicker = new iro.ColorPicker("#colorPickerContainer", {
+  const trigger = document.getElementById("openColorPicker");
+  const container = document.getElementById("colorPickerContainer");
+
+  const colorPicker = new iro.ColorPicker(container, {
     width: 260,
     color: "#87CEEB",
     layout: [
@@ -433,5 +436,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   colorPicker.on("color:change", function (color) {
     document.documentElement.style.setProperty('--picked-color', color.hexString);
+  });
+
+  trigger.addEventListener("click", function () {
+    container.style.display = container.style.display === "none" ? "block" : "none";
   });
 });
