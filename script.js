@@ -433,18 +433,24 @@ document.addEventListener("DOMContentLoaded", function () {
     ]
   });
 
-  trigger.addEventListener("click", () => {
-    popup.style.display = popup.style.display === "none" ? "block" : "none";
+  // Toggle the popup on trigger click
+  trigger.addEventListener("click", (e) => {
+    e.stopPropagation(); // Don't let it bubble and instantly close
+    popup.classList.toggle("hidden");
   });
 
+  // Close if clicked outside of picker or trigger
+  document.addEventListener("click", (e) => {
+    if (
+      !popup.contains(e.target) &&
+      !trigger.contains(e.target)
+    ) {
+      popup.classList.add("hidden");
+    }
+  });
+
+  // Color change
   colorPicker.on("color:change", function (color) {
     document.documentElement.style.setProperty('--picked-color', color.hexString);
-  });
-
-  // Optional: Close popup on outside click
-  document.addEventListener("click", (e) => {
-    if (!popup.contains(e.target) && !trigger.contains(e.target)) {
-      popup.style.display = "none";
-    }
   });
 });
