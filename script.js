@@ -457,3 +457,9 @@ document.addEventListener("DOMContentLoaded", function () {
 document.getElementById("colorPickerPopup").addEventListener("click", function (e) {
   e.stopPropagation(); // Prevents this popup from closing or bubbling
 });
+const popup = document.getElementById('colorPickerPopup');
+const wheelIcon = document.getElementById('colorPickerIcon'); // spinning wheel
+
+wheelIcon.addEventListener('click', () => {
+  popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+});
