@@ -23,15 +23,13 @@
             </ul>
             
          <!-- Spinning Wheel -->
-<label for="color-picker" class="color-picker-label" id="openColorPicker">
-  <span class="color-picker-icon" aria-hidden="true"></span>
-  <div class="color-picker-wrapper">
+<label class="color-picker-label">
+  <div id="colorPickerTrigger" class="color-picker-wrapper">
     <img src="w.png" alt="Color Wheel" class="color-picker-image" />
   </div>
 </label>
 
-<!-- Modern Color Picker Container -->
-<div id="colorPickerContainer" style="display: none; margin-top: 20px;"></div>
+
         </div>
     </header>
 
@@ -418,6 +416,10 @@
     </footer>
 
     <script src="script.js"></script>
+    <!-- Hidden Iro.js Color Picker Popup -->
+<div id="colorPickerPopup" class="color-picker-popup">
+  <div id="colorPickerContainer"></div>
+</div>
 </body>
 </html>
 
