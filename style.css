@@ -462,23 +462,16 @@ header {
 
 /* Intro slide styling */
 .services-intro-slide {
-    position: relative; /* Keep relative to contain its image/overlay */
-    width: 100%;
-    max-width: 800px;
-    height: 350px;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    cursor: pointer;
-    /* Combine transitions for cleaner code and better control */
-    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out,
-                height 0.5s ease-in-out 0.2s, margin-bottom 0.5s ease-in-out 0.2s,
-                z-index 0s linear 0.5s;
-    z-index: 2; /* Ensure it's above the grid when active */
-    transform-origin: center center;
-    opacity: 1;
-    pointer-events: auto;
-    margin-bottom: 40px; /* Space between intro and potential grid beneath */
+     position: absolute; /* Change to absolute positioning */
+    top: 0; /* Aligns the slide to the top */
+    left: 50%; /* Centers the slide horizontally */
+    transform: translateX(-50%); /* Adjusts the position to truly center it */
+    z-index: 10; /* Ensures it appears above other elements */
+    width: 100%; /* Optional: Set width to 100% or a specific value */
+    max-width: 800px; /* Maintain the max width */
+    margin: 0 auto; /* Center the slide */
+    opacity: 1; /* Ensure it's visible */
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out; /* Keep existing transitions */
 
     /* Centering the intro slide within services-main-content if it's the only element */
     /* This will be managed by the parent .services-main-content's flex properties */
