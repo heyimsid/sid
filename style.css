@@ -264,7 +264,7 @@ header {
   padding: 0;
   border: none;
   cursor: pointer;
-  background-image: url('w.jpg'); /* Your image */
+  background-image: url("w.png"); /* Your image */
   background-size: cover;
   background-position: center;
   appearance: none;
