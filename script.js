@@ -420,25 +420,31 @@ window.onbeforeunload = function () {
     window.scrollTo(0, 0);
   };
 document.addEventListener("DOMContentLoaded", function () {
-  const trigger = document.getElementById("openColorPicker");
-  const container = document.getElementById("colorPickerContainer");
+  const popup = document.getElementById("colorPickerPopup");
+  const trigger = document.getElementById("colorPickerTrigger");
 
-  const colorPicker = new iro.ColorPicker(container, {
-    width: 260,
+  const colorPicker = new iro.ColorPicker("#colorPickerContainer", {
+    width: 250,
     color: "#87CEEB",
     layout: [
       { component: iro.ui.Wheel },
       { component: iro.ui.Slider, options: { sliderType: 'hue' }},
       { component: iro.ui.Slider, options: { sliderType: 'value' }},
-      
     ]
+  });
+
+  trigger.addEventListener("click", () => {
+    popup.style.display = popup.style.display === "none" ? "block" : "none";
   });
 
   colorPicker.on("color:change", function (color) {
     document.documentElement.style.setProperty('--picked-color', color.hexString);
   });
 
-  trigger.addEventListener("click", function () {
-    container.style.display = container.style.display === "none" ? "block" : "none";
+  // Optional: Close popup on outside click
+  document.addEventListener("click", (e) => {
+    if (!popup.contains(e.target) && !trigger.contains(e.target)) {
+      popup.style.display = "none";
+    }
   });
 });
