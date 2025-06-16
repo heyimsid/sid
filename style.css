@@ -1124,6 +1124,8 @@ footer a:hover {
     border: 1px solid var(--border-color);
     transform: translateY(-20px); /* Initial position for animation */
     transition: transform 0.3s ease;
+    max-height: 90vh;         /* Keeps the box within the screen */
+    overflow-y: auto;
 }
 
 .popup.active .popup-content {
